@@ -186,7 +186,8 @@ section > h2 { margin-bottom: 1rem; }
   flex-direction: column;
   justify-content: flex-end;
   padding: 1.25rem 1.4rem;
-  background: linear-gradient(to top, rgb(0 0 0 / 0.82), rgb(0 0 0 / 0.45) 60%, rgb(0 0 0 / 0.3));
+  background: linear-gradient(to top, rgb(0 0 0 / 0.88), rgb(0 0 0 / 0.6) 50%, rgb(0 0 0 / 0.35));
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.4);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
@@ -205,7 +206,7 @@ section > h2 { margin-bottom: 1rem; }
 @media (hover: none) {
   .tile { color: var(--text); overflow: visible; }
   .tile-media { border-radius: var(--radius); }
-  .tile-text { position: static; padding: 0.7rem 0.1rem 0; background: none; opacity: 1; }
+  .tile-text { position: static; padding: 0.7rem 0.1rem 0; background: none; text-shadow: none; opacity: 1; }
   .tile-text h3 { font-size: 1.15rem; }
   .tile-org { color: var(--muted); opacity: 1; }
   .tile:hover .tile-media > * { transform: none; }
