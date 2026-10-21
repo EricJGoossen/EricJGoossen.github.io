@@ -1,6 +1,8 @@
 export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets");
-  eleventyConfig.addPassthroughCopy("src/projects/*/images");
+  // Each project's images/ folder. Copied as a directory (not a glob) so images
+  // added while the preview is running show up without a restart.
+  eleventyConfig.addPassthroughCopy({ "src/projects": "projects" }, { filter: ["*/images/**", "!**/.gitkeep"] });
 
   // Project overview pages, in the order set by `order` in each index.md.
   eleventyConfig.addCollection("projects", (api) =>
