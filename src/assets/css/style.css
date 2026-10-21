@@ -93,9 +93,12 @@ section:first-child { border-top: 0; }
 }
 
 /* ---------- Intro ---------- */
-.intro { display: grid; grid-template-columns: 11rem 1fr; gap: 2rem; align-items: start; padding-top: 1.5rem; }
+/* Kept short so the project tiles are visible on load */
+.intro { display: grid; grid-template-columns: 7.5rem 1fr; gap: 1.75rem; align-items: start; padding: 1rem 0 2rem; }
 .intro > .ph, .intro > img { aspect-ratio: 1; border-radius: 50%; margin: 0; }
-.headline { font-size: 1.2rem; color: var(--muted); }
+.intro h1 { margin-bottom: 0.25rem; }
+.intro p { margin-bottom: 0.6rem; }
+.headline { font-size: 1.15rem; color: var(--muted); }
 
 /* ---------- Resume ---------- */
 .section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
@@ -209,8 +212,8 @@ section:first-child { border-top: 0; }
 /* ---------- Phones ---------- */
 @media (max-width: 640px) {
   body { font-size: 1rem; }
-  .intro { grid-template-columns: 1fr; gap: 1.25rem; }
-  .intro > .ph, .intro > img { width: 8rem; }
+  .intro { grid-template-columns: 1fr; gap: 1rem; }
+  .intro > .ph, .intro > img { width: 5.5rem; }
   section { padding: 2rem 0; }
 }
 

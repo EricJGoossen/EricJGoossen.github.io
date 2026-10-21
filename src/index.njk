@@ -15,6 +15,50 @@ scripts: ["/assets/js/skills.js"]
   </div>
 </section>
 
+<section id="projects">
+  <h2>Projects</h2>
+  <div class="project-grid">
+    {% for project in collections.projects %}
+    <a class="project-card" href="{{ project.url }}">
+      {% if project.data.cover %}
+      <img src="{{ project.url }}{{ project.data.cover }}" alt="" loading="lazy">
+      {% else %}
+      {% placeholder "Cover image" %}
+      {% endif %}
+      <div class="project-card-body">
+        <h3>{{ project.data.title }}</h3>
+        {% if project.data.org %}<p class="muted">{{ project.data.org }}</p>{% endif %}
+        <p>{{ project.data.summary }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="skills">
+  <h2>Skills</h2>
+  <p class="muted">Click a skill to jump to where I used it.</p>
+  <div class="chips">
+    {% for skill in skills | skillIndex(collections.projects) %}
+    <details class="skill" name="skill">
+      <summary class="chip">{{ skill.name }}</summary>
+      <div class="skill-menu">
+        {% if skill.best %}
+        <p class="menu-label">Best example</p>
+        <a class="menu-best" href="{{ skill.best.url }}">{{ skill.best.project }} → {{ skill.best.label }}</a>
+        {% endif %}
+        {% if skill.others.length %}
+        <p class="menu-label">Also used in</p>
+        <ul>
+          {% for use in skill.others %}<li><a href="{{ use.url }}">{{ use.project }} → {{ use.label }}</a></li>{% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+    </details>
+    {% endfor %}
+  </div>
+</section>
+
 <section id="resume">
   <div class="section-head">
     <h2>Resume</h2>
@@ -47,46 +91,7 @@ scripts: ["/assets/js/skills.js"]
   </ul>
 </section>
 
-<section id="skills">
-  <h2>Skills</h2>
-  <p class="muted">Click a skill to jump to where I used it.</p>
-  <div class="chips">
-    {% for skill in skills | skillIndex(collections.projects) %}
-    <details class="skill" name="skill">
-      <summary class="chip">{{ skill.name }}</summary>
-      <div class="skill-menu">
-        {% if skill.best %}
-        <p class="menu-label">Best example</p>
-        <a class="menu-best" href="{{ skill.best.url }}">{{ skill.best.project }} → {{ skill.best.label }}</a>
-        {% endif %}
-        {% if skill.others.length %}
-        <p class="menu-label">Also used in</p>
-        <ul>
-          {% for use in skill.others %}<li><a href="{{ use.url }}">{{ use.project }} → {{ use.label }}</a></li>{% endfor %}
-        </ul>
-        {% endif %}
-      </div>
-    </details>
-    {% endfor %}
-  </div>
-</section>
-
-<section id="projects">
-  <h2>Projects</h2>
-  <div class="project-grid">
-    {% for project in collections.projects %}
-    <a class="project-card" href="{{ project.url }}">
-      {% if project.data.cover %}
-      <img src="{{ project.url }}{{ project.data.cover }}" alt="" loading="lazy">
-      {% else %}
-      {% placeholder "Cover image" %}
-      {% endif %}
-      <div class="project-card-body">
-        <h3>{{ project.data.title }}</h3>
-        {% if project.data.org %}<p class="muted">{{ project.data.org }}</p>{% endif %}
-        <p>{{ project.data.summary }}</p>
-      </div>
-    </a>
-    {% endfor %}
-  </div>
+<section id="publications">
+  <h2>Publications</h2>
+  {% for pub in publications %}{% include "pub.njk" %}{% endfor %}
 </section>
