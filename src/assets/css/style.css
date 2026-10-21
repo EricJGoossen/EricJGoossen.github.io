@@ -310,6 +310,8 @@ main:focus { outline: none; }
   .tile:last-child:nth-child(odd) .tile-media { aspect-ratio: 3 / 2; }
   .pub { grid-template-columns: 1fr; gap: 1rem; padding: 1rem; }
   .meta { flex-direction: column; }
+  .resume-row { flex-direction: column; gap: 0; }
+  .resume-row .muted { font-size: 0.9rem; }
   /* Skill menus span the chip row (just below the tapped chip) so they never run off screen */
   #skills .chips { position: relative; }
   .skill { position: static; }
