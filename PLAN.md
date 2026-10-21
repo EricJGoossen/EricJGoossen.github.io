@@ -10,20 +10,22 @@ An overview of Eric: who he is, what he can do, and what he's built, with a page
 
 ### Home (`/`)
 
-Single scrolling page, in this order:
+Single scrolling page, in this order (projects come right after a compact intro so they're visible on load):
 
 1. **Intro / bio.** Name, one-line headline (role + what you're looking for), short bio paragraph, photo (optional), links: GitHub, LinkedIn, email, resume PDF.
-2. **Resume.** Condensed version on the page (experience, education) plus a "Download PDF" button.
+2. **Projects.** Large image tiles, two per row (one on phones), in the style of timothypan.com. Title, lab/org and one-line summary appear over the image on hover or keyboard focus, and below the image on touch screens. The whole tile is the link to the project page.
 3. **Skills.** A row of skill chips (e.g. C++, MuJoCo, RL). Clicking a chip opens a small dropdown:
    - **Best example** first: a direct link to the exact section of the project that shows the skill most (e.g. *OpenDubs → SIMD optimization*).
    - **Also used in:** the other projects/sections that use it.
-4. **Projects.** Grid of cards. Each card: cover image, title, lab/org, one-line summary. The whole card is the button and opens the project page.
+4. **Resume.** Condensed version on the page (experience, education) plus a "Download PDF" button.
+5. **Publications.** One card per paper, like mateoguaman.com: teaser image, venue/status/award badges, title, authors (Eric in bold), a one-line TL;DR, and `[Paper] [arXiv] [Video] [Code] [Project page]`. The same card also appears on the related project page.
 
 ### Project page (`/projects/<name>/`)
 
 1. **Header.** Title, lab/org, timeline, one-paragraph overview, hero image.
 2. **Highlights.** Chips of 1 to 2 words naming the most impressive parts (e.g. *Sim comparison*, *SIMD optimization*, *Matrix library*). Each one jumps to the spot in the log where that work is explained, so it's read in context.
 3. **Links.** Short bracketed links: `[GitHub] [Paper] [Video] [Demo]`.
+   Then the related publication card, if there is one.
 4. **Progress log.** Blog-style entries, oldest first so it reads like a build story. Each entry: date, title, text, any number of images. Entries tied to a highlight get an anchor so the highlight chips (and the home page skill dropdowns) can link straight to them.
 5. **Back to all projects** link.
 
@@ -82,6 +84,7 @@ src/
     site.json                name, headline, bio, links
     skills.json              skill list + best example for each
     resume.json              experience, education
+    publications.json        papers, each linked to a project
   _includes/                 shared layouts (page shell, project page, cards)
   projects/
     opendubs/
