@@ -4,6 +4,16 @@ export default function (eleventyConfig) {
   // added while the preview is running show up without a restart.
   eleventyConfig.addPassthroughCopy({ "src/projects": "projects" }, { filter: ["*/images/**", "!**/.gitkeep"] });
 
+  // Log entries can hold many images, so only load them as they scroll into view.
+  eleventyConfig.amendLibrary("md", (md) => {
+    const renderImage = md.renderer.rules.image;
+    md.renderer.rules.image = (tokens, idx, options, env, self) => {
+      tokens[idx].attrSet("loading", "lazy");
+      tokens[idx].attrSet("decoding", "async");
+      return renderImage(tokens, idx, options, env, self);
+    };
+  });
+
   // Project overview pages, in the order set by `order` in each index.md.
   eleventyConfig.addCollection("projects", (api) =>
     api
