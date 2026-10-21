@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Placeholder: Human-in-the-Loop Feedback for Code as Policies",
+    "authors": ["Placeholder Author", "Eric J. Goossen", "Placeholder Author", "Placeholder Advisor"],
+    "venue": "Placeholder Venue",
+    "year": 2026,
+    "status": "In submission",
+    "award": "",
+    "lab": "Human Centered Robotics Lab",
+    "project": "hil-cap",
+    "image": "",
+    "tldr": "Placeholder one or two sentence summary of the paper's contribution and headline result.",
+    "links": [
+      { "label": "Paper", "url": "#" },
+      { "label": "arXiv", "url": "#" },
+      { "label": "Video", "url": "#" },
+      { "label": "Code", "url": "#" }
+    ]
+  }
+]

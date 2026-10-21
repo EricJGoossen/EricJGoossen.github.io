@@ -1,0 +1,29 @@
+{#- One publication card. Expects `pub` in scope. -#}
+<article class="pub">
+  <div class="pub-media">
+    {% if pub.image %}
+    <img src="{{ pub.image }}" alt="Teaser figure for {{ pub.title }}" loading="lazy">
+    {% else %}
+    {% placeholder "Teaser figure" %}
+    {% endif %}
+  </div>
+  <div class="pub-body">
+    <p class="pub-badges">
+      <span class="badge">{{ pub.venue }} {{ pub.year }}</span>
+      {% if pub.status %}<span class="badge badge-quiet">{{ pub.status }}</span>{% endif %}
+      {% if pub.award %}<span class="badge badge-award">★ {{ pub.award }}</span>{% endif %}
+    </p>
+    <h3>{% if pub.links.length %}<a href="{{ pub.links[0].url }}">{{ pub.title }}</a>{% else %}{{ pub.title }}{% endif %}</h3>
+    <p class="pub-authors">
+      {%- for a in pub.authors -%}
+      {%- if a in site.authorNames %}<strong>{{ a }}</strong>{% else %}{{ a }}{% endif %}{% if not loop.last %}, {% endif -%}
+      {%- endfor -%}
+    </p>
+    {% if pub.lab %}<p class="pub-lab">{{ pub.lab }}</p>{% endif %}
+    {% if pub.tldr %}<p class="pub-tldr">{{ pub.tldr }}</p>{% endif %}
+    <p class="bracket-links">
+      {% for link in pub.links %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}
+      {% if pub.project and page.fileSlug != pub.project %}<a href="/projects/{{ pub.project }}/">Project page</a>{% endif %}
+    </p>
+  </div>
+</article>
