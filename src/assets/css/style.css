@@ -80,6 +80,9 @@ section { padding: 2.25rem 0; }
 section > h2 { margin-bottom: 1rem; }
 
 /* ---------- Header / footer ---------- */
+.skip-link { position: absolute; left: 16px; top: -3rem; z-index: 20; padding: 0.4rem 0.8rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.skip-link:focus { top: 0.75rem; }
+main:focus { outline: none; }
 .site-header { padding: 1.25rem 0; }
 .site-header .wrap { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
 .site-name { color: var(--text); font-weight: 650; }

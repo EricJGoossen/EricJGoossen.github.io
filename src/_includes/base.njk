@@ -11,9 +11,11 @@
   <meta property="og:description" content="{{ pageDescription }}">
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <div class="wrap">
       <a class="site-name" href="/">{{ site.name }}</a>
@@ -26,7 +28,7 @@
     </div>
   </header>
 
-  <main class="wrap">
+  <main class="wrap" id="main" tabindex="-1">
     {{ content | safe }}
   </main>
 
