@@ -9,6 +9,8 @@
   --accent-soft: #eff4ff;
   --ph: #ecebe9;
   --ph-text: #9a948e;
+  --award: #a15c07;
+  --award-soft: #fdf3e2;
   --radius: 10px;
   --wrap: 52rem;
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
@@ -25,6 +27,8 @@
     --accent-soft: #1d2433;
     --ph: #2a2826;
     --ph-text: #77716b;
+    --award: #f3b04f;
+    --award-soft: #33270f;
   }
 }
 
@@ -208,6 +212,42 @@ section:first-child { border-top: 0; }
   .tile:hover .ph span { opacity: 1; }
 }
 
+/* ---------- Publications ---------- */
+/* Teaser image on the left, badges / title / authors / TL;DR / links on the right */
+.pub {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: 1.5rem;
+  align-items: start;
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+}
+.pub-media img, .pub-media .ph { width: 100%; margin: 0; aspect-ratio: 4 / 3; object-fit: cover; }
+.pub-badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.6rem; }
+.badge {
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+}
+.badge-quiet { background: transparent; box-shadow: inset 0 0 0 1px var(--border); color: var(--muted); }
+.badge-award { background: var(--award-soft); color: var(--award); }
+.pub h3 { font-size: 1.2rem; margin-bottom: 0.4rem; }
+.pub h3 a { color: var(--text); }
+.pub h3 a:hover { color: var(--accent); }
+.pub-authors { margin-bottom: 0.1rem; color: var(--muted); font-size: 0.95rem; }
+.pub-authors strong { color: var(--text); font-weight: 650; }
+.pub-lab { color: var(--muted); font-size: 0.9rem; font-style: italic; margin-bottom: 0.6rem; }
+.pub-tldr { font-size: 0.95rem; margin-bottom: 0.75rem; }
+.pub-tldr-label { margin-right: 0.25rem; color: var(--muted); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; }
+.pub .bracket-links { margin: 0; font-size: 0.95rem; }
+
 /* ---------- Project page ---------- */
 .back { display: inline-block; margin: 1rem 0; color: var(--muted); }
 .project-header { padding-bottom: 1rem; }
@@ -249,6 +289,7 @@ section:first-child { border-top: 0; }
   section { padding: 2rem 0; }
   .tiles { grid-template-columns: 1fr; gap: 1.75rem; }
   .tile:last-child:nth-child(odd) .tile-media { aspect-ratio: 3 / 2; }
+  .pub { grid-template-columns: 1fr; gap: 1rem; padding: 1rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

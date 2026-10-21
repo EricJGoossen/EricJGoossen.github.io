@@ -9,7 +9,7 @@
   </div>
   <div class="pub-body">
     <p class="pub-badges">
-      <span class="badge">{{ pub.venue }} {{ pub.year }}</span>
+      {% if pub.venue %}<span class="badge">{{ pub.venue }} {{ pub.year }}</span>{% endif %}
       {% if pub.status %}<span class="badge badge-quiet">{{ pub.status }}</span>{% endif %}
       {% if pub.award %}<span class="badge badge-award">★ {{ pub.award }}</span>{% endif %}
     </p>
@@ -20,7 +20,7 @@
       {%- endfor -%}
     </p>
     {% if pub.lab %}<p class="pub-lab">{{ pub.lab }}</p>{% endif %}
-    {% if pub.tldr %}<p class="pub-tldr">{{ pub.tldr }}</p>{% endif %}
+    {% if pub.tldr %}<p class="pub-tldr"><span class="pub-tldr-label">TL;DR</span> {{ pub.tldr }}</p>{% endif %}
     <p class="bracket-links">
       {% for link in pub.links %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}
       {% if pub.project and page.fileSlug != pub.project %}<a href="/projects/{{ pub.project }}/">Project page</a>{% endif %}
