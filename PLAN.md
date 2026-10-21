@@ -22,10 +22,9 @@ Single scrolling page, in this order (projects come right after a compact intro 
 
 ### Project page (`/projects/<name>/`)
 
-1. **Header.** Title, lab/org, timeline, one-paragraph overview, hero image.
+1. **Header.** Title, lab/org · timeline · tools, then the bracketed links, one-paragraph overview, hero image.
 2. **Highlights.** Chips of 1 to 2 words naming the most impressive parts (e.g. *Sim comparison*, *SIMD optimization*, *Matrix library*). Each one jumps to the spot in the log where that work is explained, so it's read in context.
-3. **Links.** Short bracketed links: `[GitHub] [Paper] [Video] [Demo]`.
-   Then the related publication card, if there is one.
+3. **Publication.** The related publication card, if there is one. (Links like `[GitHub] [Paper] [Video] [Demo]` sit in the header, under the metadata line.)
 4. **Progress log.** Blog-style entries, oldest first so it reads like a build story. Each entry: date, title, text, any number of images. Entries tied to a highlight get an anchor so the highlight chips (and the home page skill dropdowns) can link straight to them.
 5. **Back to all projects** link.
 

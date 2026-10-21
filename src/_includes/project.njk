@@ -10,6 +10,11 @@ layout: base.njk
     <p class="meta">
       {% for item in [org, timeline, (tools | join(", ")) if tools] %}{% if item %}<span>{{ item }}</span>{% endif %}{% endfor %}
     </p>
+    {% if links.length %}
+    <p class="bracket-links project-links">
+      {% for link in links %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}
+    </p>
+    {% endif %}
     <div class="overview">{{ content | safe }}</div>
     {% if hero %}
     <img class="hero" src="{{ hero }}" alt="{{ heroAlt or title }}">
@@ -25,12 +30,6 @@ layout: base.njk
       {% for h in highlights %}<a class="chip" href="#{{ h.entry }}">{{ h.label }}</a>{% endfor %}
     </nav>
   </section>
-  {% endif %}
-
-  {% if links.length %}
-  <p class="bracket-links project-links">
-    {% for link in links %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}
-  </p>
   {% endif %}
 
   {% set projectPubs = [] %}
