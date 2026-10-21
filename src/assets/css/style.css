@@ -251,6 +251,9 @@ section > h2 { margin-bottom: 1rem; }
 
 /* ---------- Project page ---------- */
 .back { display: inline-block; margin: 1rem 0; color: var(--muted); }
+.project-nav { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin: 1rem 0; }
+.project-nav a { margin: 0; }
+.project-nav .next { font-weight: 550; }
 .project-header { padding-bottom: 1rem; }
 .meta { display: flex; flex-wrap: wrap; margin-bottom: 0.2rem; color: var(--muted); font-size: 0.95rem; }
 .meta span:not(:last-child)::after { content: "·"; margin: 0 0.5rem; }
