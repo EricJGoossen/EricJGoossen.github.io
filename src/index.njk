@@ -1,0 +1,92 @@
+---
+layout: base.njk
+permalink: /
+scripts: ["/assets/js/skills.js"]
+---
+<section class="intro">
+  {% placeholder "Photo" %}
+  <div>
+    <h1>{{ site.name }}</h1>
+    <p class="headline">{{ site.headline }}</p>
+    {% for para in site.bio %}<p>{{ para }}</p>{% endfor %}
+    <p class="bracket-links">
+      {% for link in site.links %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}
+    </p>
+  </div>
+</section>
+
+<section id="resume">
+  <div class="section-head">
+    <h2>Resume</h2>
+    <a class="button" href="{{ resume.pdf }}">Download PDF</a>
+  </div>
+
+  <h3>Experience</h3>
+  <ul class="resume-list">
+    {% for job in resume.experience %}
+    <li>
+      <div class="resume-row">
+        <span><strong>{{ job.role }}</strong>, {{ job.org }}</span>
+        <span class="muted">{{ job.dates }}</span>
+      </div>
+      <ul>{% for point in job.points %}<li>{{ point }}</li>{% endfor %}</ul>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <h3>Education</h3>
+  <ul class="resume-list">
+    {% for ed in resume.education %}
+    <li>
+      <div class="resume-row">
+        <span><strong>{{ ed.school }}</strong>, {{ ed.degree }}</span>
+        <span class="muted">{{ ed.dates }}</span>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section id="skills">
+  <h2>Skills</h2>
+  <p class="muted">Click a skill to jump to where I used it.</p>
+  <div class="chips">
+    {% for skill in skills | skillIndex(collections.projects) %}
+    <details class="skill" name="skill">
+      <summary class="chip">{{ skill.name }}</summary>
+      <div class="skill-menu">
+        {% if skill.best %}
+        <p class="menu-label">Best example</p>
+        <a class="menu-best" href="{{ skill.best.url }}">{{ skill.best.project }} → {{ skill.best.label }}</a>
+        {% endif %}
+        {% if skill.others.length %}
+        <p class="menu-label">Also used in</p>
+        <ul>
+          {% for use in skill.others %}<li><a href="{{ use.url }}">{{ use.project }} → {{ use.label }}</a></li>{% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+    </details>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="projects">
+  <h2>Projects</h2>
+  <div class="project-grid">
+    {% for project in collections.projects %}
+    <a class="project-card" href="{{ project.url }}">
+      {% if project.data.cover %}
+      <img src="{{ project.url }}{{ project.data.cover }}" alt="" loading="lazy">
+      {% else %}
+      {% placeholder "Cover image" %}
+      {% endif %}
+      <div class="project-card-body">
+        <h3>{{ project.data.title }}</h3>
+        {% if project.data.org %}<p class="muted">{{ project.data.org }}</p>{% endif %}
+        <p>{{ project.data.summary }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>

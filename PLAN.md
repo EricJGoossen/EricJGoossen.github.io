@@ -1,0 +1,126 @@
+# Site plan
+
+Not published. Only the build output goes live.
+
+## What the site is
+
+An overview of Eric: who he is, what he can do, and what he's built, with a page per project that doubles as a progress log. Built so a recruiter can go from "I want that skill" to seeing it in context in one or two clicks.
+
+## Pages
+
+### Home (`/`)
+
+Single scrolling page, in this order:
+
+1. **Intro / bio.** Name, one-line headline (role + what you're looking for), short bio paragraph, photo (optional), links: GitHub, LinkedIn, email, resume PDF.
+2. **Resume.** Condensed version on the page (experience, education) plus a "Download PDF" button.
+3. **Skills.** A row of skill chips (e.g. C++, MuJoCo, RL). Clicking a chip opens a small dropdown:
+   - **Best example** first: a direct link to the exact section of the project that shows the skill most (e.g. *OpenDubs → SIMD optimization*).
+   - **Also used in:** the other projects/sections that use it.
+4. **Projects.** Grid of cards. Each card: cover image, title, lab/org, one-line summary. The whole card is the button and opens the project page.
+
+### Project page (`/projects/<name>/`)
+
+1. **Header.** Title, lab/org, timeline, one-paragraph overview, hero image.
+2. **Highlights.** Chips of 1 to 2 words naming the most impressive parts (e.g. *Sim comparison*, *SIMD optimization*, *Matrix library*). Each one jumps to the spot in the log where that work is explained, so it's read in context.
+3. **Links.** Short bracketed links: `[GitHub] [Paper] [Video] [Demo]`.
+4. **Progress log.** Blog-style entries, oldest first so it reads like a build story. Each entry: date, title, text, any number of images. Entries tied to a highlight get an anchor so the highlight chips (and the home page skill dropdowns) can link straight to them.
+5. **Back to all projects** link.
+
+### Also
+
+- 404 page
+- Social preview image + description so links look good when shared on LinkedIn/Slack
+- Works on phones, follows light/dark mode
+
+## Projects
+
+| Page | Project | Org |
+|------|---------|-----|
+| `/projects/opendubs/` | OpenDubs | Personal Robotics Lab |
+| `/projects/hil-cap/` | HiL feedback on CaP | Human Centered Robotics Lab |
+| `/projects/fleet-rl/` | Fleet RL | WEIRD Lab |
+| `/projects/aruw/` | Advanced Robotics at UW | ARUW |
+| `/projects/achilles/` | Achilles | |
+| `/projects/botswana/` | Botswana | |
+| `/projects/assorted/` | Assorted projects | One page, several short sections |
+
+## How skills and highlights connect
+
+Each highlight is defined once, in its project's header block, with the skills it shows:
+
+```yaml
+highlights:
+  - label: SIMD optimization
+    entry: simd-optimization      # the log entry it jumps to
+    skills: [C++, SIMD]
+```
+
+`skills.json` lists each skill and which highlight is its best example:
+
+```json
+{ "name": "C++", "best": "opendubs/simd-optimization" }
+```
+
+The site builds everything else from these: the "Also used in" lists, the highlight chips, and the anchor links. Add a highlight in one place and it shows up everywhere it should.
+
+## How content gets written
+
+**Markdown + Eleventy** (a small static site generator).
+
+- Each project is a folder. The overview is one Markdown file with a header block (title, org, summary, cover image, highlights, links). Each log entry is its own Markdown file with a date. Adding an update = drop in a new `.md` file and images, `git push`.
+- Bio, resume, and skills live in small data files, so the home page builds itself from them.
+- Output is still plain static HTML, so security is unchanged. No server, no database, no login. The only JavaScript is the skill dropdown.
+- **Node runs in Docker**, not on the machine. `docker compose up` starts a live-reloading preview at localhost:8080. Cloudflare runs the same build itself on each push.
+
+## Folder layout
+
+```
+src/
+  index.njk                  home page template
+  _data/
+    site.json                name, headline, bio, links
+    skills.json              skill list + best example for each
+    resume.json              experience, education
+  _includes/                 shared layouts (page shell, project page, cards)
+  projects/
+    opendubs/
+      index.md               overview, cover, highlights, links
+      log/
+        2026-10-21-first-prototype.md
+      images/
+    ...
+  assets/
+    css/style.css
+    js/skills.js             the skill dropdown, the only JavaScript
+    resume.pdf
+_site/                       build output, what Cloudflare serves
+Dockerfile, compose.yaml     Node toolchain for local preview
+wrangler.jsonc               points Cloudflare at _site/
+```
+
+## Design direction
+
+From the reference sites (mateoguaman.com, mnats, timothypan.com): one clean centered column, generous white space, restrained color, images doing the visual work, and compact bracketed links. Borrow the per-project metadata line from timothypan.com (org · timeline · tools). Quick mockup of the home page and a project page to react to before building it for real.
+
+## Build order
+
+**Phase 1: Bones with placeholders** (no real content needed)
+
+1. Docker + Eleventy setup; switch Cloudflare to build from `src/` into `_site/`.
+2. Home page: bio, resume, skill chips with dropdowns, project grid. All placeholder text and gray image boxes.
+3. Project page template: header, highlights, links, log with anchors.
+4. All 7 project pages stubbed with placeholder overviews, 2 to 3 placeholder highlights, and a couple of placeholder log entries each, so every link and dropdown actually works.
+5. Design pass on the real skeleton: type, spacing, colors, phone layout, dark mode.
+6. Push. Live site shows the full structure with placeholders.
+
+**Phase 2: Backfill** (one project at a time, any order)
+
+7. Bio, headline, resume PDF + condensed resume, skills list.
+8. Each project: real overview, cover image, highlights, links, log entries.
+9. Polish: image compression, social preview, 404, accessibility check.
+
+## Still open
+
+- Skill list: which skills, and which highlight is each one's best example. Can be filled during backfill.
+- Placeholder site going live: OK to push the skeleton to ericjgoossen.com, or keep the "coming soon" page up until Phase 2 has some real content? *(Recommended: keep "coming soon" live, preview locally until there's real content)*

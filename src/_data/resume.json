@@ -1,0 +1,30 @@
+{
+  "pdf": "/assets/resume.pdf",
+  "experience": [
+    {
+      "role": "Placeholder Role",
+      "org": "Personal Robotics Lab",
+      "dates": "2025 – Present",
+      "points": ["Placeholder accomplishment with a concrete result.", "Placeholder accomplishment."]
+    },
+    {
+      "role": "Placeholder Role",
+      "org": "Human Centered Robotics Lab",
+      "dates": "2024 – 2025",
+      "points": ["Placeholder accomplishment with a concrete result."]
+    },
+    {
+      "role": "Placeholder Role",
+      "org": "WEIRD Lab",
+      "dates": "2024",
+      "points": ["Placeholder accomplishment with a concrete result."]
+    }
+  ],
+  "education": [
+    {
+      "school": "University of Washington",
+      "degree": "Placeholder degree",
+      "dates": "Placeholder dates"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "Eric J. Goossen",
+  "url": "https://ericjgoossen.com",
+  "headline": "Placeholder headline: role, focus, and what I'm looking for.",
+  "description": "Portfolio of Eric J. Goossen.",
+  "bio": [
+    "Placeholder bio paragraph. Who you are, what you work on, and where (labs, school, teams).",
+    "Placeholder second paragraph. What you're looking for next and what you care about."
+  ],
+  "links": [
+    { "label": "GitHub", "url": "https://github.com/EricJGoossen" },
+    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/ericjgoossen" },
+    { "label": "Email", "url": "mailto:placeholder@example.com" },
+    { "label": "Resume", "url": "/assets/resume.pdf" }
+  ]
+}

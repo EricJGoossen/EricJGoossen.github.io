@@ -1,0 +1,13 @@
+# Local preview. `docker compose up`, then open http://localhost:8090
+# (8080 is taken by another app on this machine.)
+# Node only lives in this container; nothing is installed on the machine.
+services:
+  site:
+    image: node:22-alpine
+    working_dir: /app
+    user: "1000:1000"
+    volumes:
+      - .:/app
+    ports:
+      - "8090:8080"
+    command: sh -c "npm install && npx @11ty/eleventy --serve --port 8080"

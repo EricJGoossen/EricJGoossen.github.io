@@ -1,9 +1,13 @@
 // Cloudflare Workers config. This is a static-only site: no server code,
-// Cloudflare just serves the files in ./site.
+// Cloudflare just serves the built files in ./_site.
 {
   "name": "ericjgoossen-com",
   "compatibility_date": "2026-06-01",
+  "build": {
+    "command": "npm run build"
+  },
   "assets": {
-    "directory": "./site"
+    "directory": "./_site",
+    "not_found_handling": "404-page"
   }
 }

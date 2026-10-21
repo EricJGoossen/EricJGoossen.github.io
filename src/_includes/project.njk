@@ -1,0 +1,50 @@
+---
+layout: base.njk
+---
+{% set slug = page.fileSlug %}
+<article class="project">
+  <a class="back" href="/#projects">← All projects</a>
+
+  <header class="project-header">
+    <h1>{{ title }}</h1>
+    <p class="meta">
+      {% for item in [org, timeline, (tools | join(", ")) if tools] %}{% if item %}<span>{{ item }}</span>{% endif %}{% endfor %}
+    </p>
+    <div class="overview">{{ content | safe }}</div>
+    {% if hero %}
+    <img class="hero" src="{{ hero }}" alt="{{ heroAlt or title }}">
+    {% else %}
+    {% placeholder "Hero image" %}
+    {% endif %}
+  </header>
+
+  {% if highlights.length %}
+  <section class="highlights" aria-labelledby="highlights-title">
+    <h2 id="highlights-title">Highlights</h2>
+    <nav class="chips">
+      {% for h in highlights %}<a class="chip" href="#{{ h.entry }}">{{ h.label }}</a>{% endfor %}
+    </nav>
+  </section>
+  {% endif %}
+
+  {% if links.length %}
+  <p class="bracket-links project-links">
+    {% for link in links %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}
+  </p>
+  {% endif %}
+
+  <section class="log" aria-labelledby="log-title">
+    <h2 id="log-title">Progress log</h2>
+    {% for entry in collections.logEntries | entriesFor(slug) %}
+    <article class="entry" id="{{ entry | entryId }}">
+      <time datetime="{{ entry.date.toISOString() }}">{{ entry.date | readableDate }}</time>
+      <h3><a href="#{{ entry | entryId }}">{{ entry.data.title }}</a></h3>
+      {{ entry.templateContent | safe }}
+    </article>
+    {% else %}
+    <p class="muted">No entries yet.</p>
+    {% endfor %}
+  </section>
+
+  <a class="back" href="/#projects">← All projects</a>
+</article>
