@@ -16,6 +16,7 @@ docker compose down       # stop it
 | To change... | Edit |
 |---|---|
 | Name, headline, bio, top links | `src/_data/site.json` |
+| Link preview image (LinkedIn/Slack) | `ogImage` in `site.json` for the home page, e.g. `"/assets/og.jpg"`. Project pages use their `cover` automatically. |
 | Resume section | `src/_data/resume.json`, PDF at `src/assets/resume.pdf` |
 | Skills and each one's best example | `src/_data/skills.json` |
 | Publications | `src/_data/publications.json` (see below) |
