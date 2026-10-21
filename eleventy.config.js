@@ -32,6 +32,11 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addFilter("entryId", (entry) => entry.data.id ?? entry.fileSlug);
 
+  // The highlight (if any) that points at a log entry, for its skill tags.
+  eleventyConfig.addFilter("highlightFor", (highlights, id) =>
+    (highlights ?? []).find((h) => h.entry === id)
+  );
+
   eleventyConfig.addFilter("readableDate", (date) =>
     new Date(date).toLocaleDateString("en-US", {
       year: "numeric",

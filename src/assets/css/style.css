@@ -283,6 +283,8 @@ main:focus { outline: none; }
 .entry time { color: var(--muted); font-size: 0.9rem; }
 .entry h3 { font-size: 1.3rem; margin-top: 0.15rem; }
 .entry h3 a { color: inherit; }
+.entry-skills { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; font-size: 0.85rem; }
+.tag { padding: 0.05rem 0.55rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
 .entry img, .entry .ph { margin: 1.25rem 0; }
 
 /* Briefly mark the entry a highlight or skill link jumped to */
