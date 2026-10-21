@@ -5,7 +5,7 @@ scripts: ["/assets/js/skills.js"]
 ---
 <section class="intro">
   {% placeholder "Photo" %}
-  <div>
+  <div class="intro-text">
     <h1>{{ site.name }}</h1>
     <p class="headline">{{ site.headline }}</p>
     {% for para in site.bio %}<p>{{ para }}</p>{% endfor %}
@@ -17,18 +17,21 @@ scripts: ["/assets/js/skills.js"]
 
 <section id="projects">
   <h2>Projects</h2>
-  <div class="project-grid">
+  <div class="tiles">
     {% for project in collections.projects %}
-    <a class="project-card" href="{{ project.url }}">
-      {% if project.data.cover %}
-      <img src="{{ project.url }}{{ project.data.cover }}" alt="" loading="lazy">
-      {% else %}
-      {% placeholder "Cover image" %}
-      {% endif %}
-      <div class="project-card-body">
+    <a class="tile" href="{{ project.url }}">
+      <div class="tile-media">
+        {% if project.data.cover %}
+        <img src="{{ project.url }}{{ project.data.cover }}" alt="" loading="lazy">
+        {% else %}
+        {#- Until there's a cover image, show the title so the tile is identifiable -#}
+        <div class="ph" aria-hidden="true"><span>{{ project.data.title }}</span></div>
+        {% endif %}
+      </div>
+      <div class="tile-text">
         <h3>{{ project.data.title }}</h3>
-        {% if project.data.org %}<p class="muted">{{ project.data.org }}</p>{% endif %}
-        <p>{{ project.data.summary }}</p>
+        {% if project.data.org %}<p class="tile-org">{{ project.data.org }}</p>{% endif %}
+        <p class="tile-summary">{{ project.data.summary }}</p>
       </div>
     </a>
     {% endfor %}

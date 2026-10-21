@@ -163,24 +163,50 @@ section:first-child { border-top: 0; }
 .menu-label:not(:first-child) { margin-top: 0.75rem; }
 .menu-best { font-weight: 600; }
 
-/* ---------- Project grid ---------- */
-.project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 1.25rem; margin-top: 1rem; }
-.project-card {
+/* ---------- Project tiles ---------- */
+/* Big image tiles. Title, org and summary sit in an overlay that appears on
+   hover or keyboard focus; on touch screens they show below the image instead. */
+.tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin-top: 1.25rem; }
+.tile { position: relative; display: block; border-radius: var(--radius); overflow: hidden; color: #fff; }
+.tile:hover, .tile:focus-visible { text-decoration: none; }
+.tile:focus-visible { outline-offset: 3px; border-radius: var(--radius); }
+
+.tile-media { aspect-ratio: 3 / 2; overflow: hidden; background: var(--ph); }
+.tile-media img, .tile-media .ph { width: 100%; height: 100%; margin: 0; border-radius: 0; object-fit: cover; aspect-ratio: auto; transition: transform 0.4s ease; }
+.tile-media .ph span { padding: 0 1rem; color: var(--ph-text); font-size: 1.35rem; font-weight: 600; letter-spacing: -0.01em; text-align: center; }
+
+.tile-text {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  color: var(--text);
-  transition: border-color 0.15s, transform 0.15s;
+  justify-content: flex-end;
+  padding: 1.25rem 1.4rem;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.82), rgb(0 0 0 / 0.45) 60%, rgb(0 0 0 / 0.3));
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
-.project-card:hover { border-color: var(--accent); transform: translateY(-2px); text-decoration: none; }
-.project-card > .ph, .project-card > img { margin: 0; border-radius: 0; aspect-ratio: 16 / 10; object-fit: cover; }
-.project-card-body { padding: 0.9rem 1rem 1rem; }
-.project-card-body h3 { margin-bottom: 0.1rem; }
-.project-card-body .muted { font-size: 0.9rem; margin-bottom: 0.5rem; }
-.project-card-body p:last-child { margin: 0; font-size: 0.95rem; }
+.tile:hover .tile-text, .tile:focus-visible .tile-text { opacity: 1; }
+.tile:hover .tile-media > *, .tile:focus-visible .tile-media > * { transform: scale(1.03); }
+.tile-media .ph span { transition: opacity 0.2s ease; }
+.tile:hover .ph span, .tile:focus-visible .ph span { opacity: 0; }
+.tile-text h3 { margin: 0; font-size: 1.3rem; }
+.tile-org { margin: 0.1rem 0 0.4rem; font-size: 0.9rem; opacity: 0.85; }
+.tile-summary { margin: 0; font-size: 0.95rem; line-height: 1.5; }
+
+/* Odd tile out spans the full row instead of leaving a gap */
+.tile:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.tile:last-child:nth-child(odd) .tile-media { aspect-ratio: 3 / 1; }
+
+@media (hover: none) {
+  .tile { color: var(--text); overflow: visible; }
+  .tile-media { border-radius: var(--radius); }
+  .tile-text { position: static; padding: 0.7rem 0.1rem 0; background: none; opacity: 1; }
+  .tile-text h3 { font-size: 1.15rem; }
+  .tile-org { color: var(--muted); opacity: 1; }
+  .tile:hover .tile-media > * { transform: none; }
+  .tile:hover .ph span { opacity: 1; }
+}
 
 /* ---------- Project page ---------- */
 .back { display: inline-block; margin: 1rem 0; color: var(--muted); }
@@ -212,13 +238,21 @@ section:first-child { border-top: 0; }
 /* ---------- Phones ---------- */
 @media (max-width: 640px) {
   body { font-size: 1rem; }
-  .intro { grid-template-columns: 1fr; gap: 1rem; }
-  .intro > .ph, .intro > img { width: 5.5rem; }
+  /* Photo sits beside the name and headline; bio and links run full width below */
+  .intro { grid-template-columns: 4.5rem 1fr; gap: 0 1rem; align-items: center; padding: 0.5rem 0 1.5rem; }
+  .intro > .ph, .intro > img { grid-row: 1 / 3; align-self: start; font-size: 0.75rem; }
+  .intro-text { display: contents; }
+  .intro-text > * { grid-column: 1 / -1; }
+  .intro h1, .intro .headline { grid-column: 2; }
+  .intro h1 { font-size: 1.75rem; margin: 0; }
+  .intro .headline { font-size: 1rem; margin-bottom: 0.9rem; line-height: 1.45; }
   section { padding: 2rem 0; }
+  .tiles { grid-template-columns: 1fr; gap: 1.75rem; }
+  .tile:last-child:nth-child(odd) .tile-media { aspect-ratio: 3 / 2; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .entry:target { animation: none; }
-  .project-card { transition: none; }
+  .tile-text, .tile-media > * { transition: none; }
 }
