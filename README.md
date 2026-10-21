@@ -1,6 +1,6 @@
 # ericjgoossen.com
 
-Personal portfolio site. Plain static HTML/CSS, hosted on Cloudflare Pages.
+Personal portfolio site. Plain static HTML/CSS, hosted on Cloudflare Workers (static assets only, no server code).
 
 ## How it works
 
@@ -8,8 +8,9 @@ Personal portfolio site. Plain static HTML/CSS, hosted on Cloudflare Pages.
 - Pushing to `main` on GitHub automatically redeploys the live site.
 - To preview locally, open `site/index.html` in a browser.
 
-## Cloudflare Pages settings
+## Cloudflare settings
 
-- Framework preset: None
+Config lives in `wrangler.jsonc`, which points Cloudflare at `site/`.
+
 - Build command: (empty)
-- Build output directory: `site`
+- Deploy command: `npx wrangler deploy`

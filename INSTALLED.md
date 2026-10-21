@@ -4,4 +4,4 @@ Everything installed for this project, so it can be moved into Docker or uninsta
 
 | Tool | How installed | Uninstall |
 |------|---------------|-----------|
-| _(nothing yet; uses the git and gh already on the machine)_ | | |
+| Claude Code CLI 2.1.306 (needed for `claude plugin` commands) | Official installer: `curl -fsSL https://claude.ai/install.sh \| bash` → `~/.local/bin/claude` | `rm ~/.local/bin/claude && rm -rf ~/.local/share/claude` |
