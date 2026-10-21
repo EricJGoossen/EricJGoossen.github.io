@@ -37,7 +37,11 @@
 
 html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
 
+/* Column layout keeps the footer at the bottom on short pages */
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   margin: 0;
   background: var(--bg);
   color: var(--text);
@@ -48,6 +52,7 @@ body {
 }
 
 .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 16px; }
+main.wrap { flex: 1; width: 100%; }
 
 h1, h2, h3 { line-height: 1.25; margin: 0 0 0.5rem; }
 h1 { font-size: clamp(2rem, 5vw, 2.6rem); letter-spacing: -0.02em; }
