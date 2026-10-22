@@ -308,7 +308,7 @@ main:focus { outline: none; }
   margin: 0;
   border-radius: 0;
   object-fit: cover;
-  object-position: 12% 40%;
+  object-position: 30% 40%;
   background: #0f1114;
 }
 .hero-bg .still { display: none; }
@@ -318,7 +318,7 @@ main:focus { outline: none; }
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(90deg, rgb(11 12 15 / 0.94) 0%, rgb(11 12 15 / 0.82) 34%, rgb(11 12 15 / 0.3) 66%, rgb(11 12 15 / 0) 100%),
+    linear-gradient(90deg, rgb(11 12 15 / 0.94) 0%, rgb(11 12 15 / 0.82) 34%, rgb(11 12 15 / 0.3) 66%, rgb(11 12 15 / 0) 82%, rgb(11 12 15 / 0.55) 93%, rgb(11 12 15 / 0.95) 100%),
     linear-gradient(0deg, rgb(11 12 15 / 0.7) 0%, rgb(11 12 15 / 0) 50%);
 }
 .hero-content { max-width: 40rem; padding: clamp(1.5rem, 4.5vw, 3.25rem); }
