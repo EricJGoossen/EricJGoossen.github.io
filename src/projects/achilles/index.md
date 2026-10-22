@@ -15,24 +15,18 @@ highlights:
   - label: SIMD batching
     entry: simd
     skills: [C++, SIMD, Performance engineering]
-  - label: Viewer
+  - label: OpenGL renderer
     entry: renderer
     skills: [OpenGL]
   - label: 3× MuJoCo
     entry: mujoco-comparison
     skills: [Performance engineering, MuJoCo, C++]
-  - label: Dynamics (ABA)
-    entry: dynamics
-    skills: [Rigid-body dynamics, C++]
   - label: Integrators
     entry: integrators
     skills: [Numerical methods, C++]
-  - label: Collisions
-    entry: collisions
-    skills: [Collision detection, SIMD, C++]
   - label: Contact solver
     entry: collision-response
-    skills: [Rigid-body dynamics, Numerical methods, C++]
+    skills: [Rigid-body dynamics, Collision detection, Numerical methods, C++]
 links:
   - label: GitHub
     url: https://github.com/EricJGoossen/Achilles
