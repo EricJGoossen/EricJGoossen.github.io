@@ -17,7 +17,7 @@ Single scrolling page, in this order (a compact intro, then skills and projects 
    - **Best example** first: a direct link to the exact section of the project that shows the skill most (e.g. *OpenDubs → SIMD optimization*).
    - **Also used in:** the other projects/sections that use it.
 3. **Projects.** Large image tiles, two per row (one on phones), in the style of timothypan.com. Title, lab/org and one-line summary appear over the image on hover or keyboard focus, and below the image on touch screens. The whole tile is the link to the project page.
-4. **Resume.** Condensed version on the page (experience, education) plus a "Download PDF" button.
+4. **Resume.** The PDF itself, shown as an image of its first page that opens it, plus a "Download PDF" button.
 5. **Publications.** One card per paper, like mateoguaman.com: teaser image, venue/status/award badges, title, authors (Eric in bold), a one-line TL;DR, and `[Paper] [arXiv] [Video] [Code] [Project page]`. The same card also appears on the related project page.
 
 ### Project page (`/projects/<name>/`)
@@ -82,7 +82,7 @@ src/
   _data/
     site.json                name, headline, bio, photo, links
     skills.json              skill list + best example for each
-    resume.json              experience, education
+    resume.json              resume PDF and preview image paths
     publications.json        papers, each linked to a project
   _includes/                 shared layouts (page shell, project page, publication card)
   projects/
@@ -132,7 +132,7 @@ From the reference sites (mateoguaman.com, mnats, timothypan.com): one clean cen
 
 **Done (phase-1 branch):** Phase 1 bones, the design pass, publications, video support, build-time content checks, `npm run check` / `todo` / `new:project` / `new:entry`, security headers, and `AGENTS.md`.
 
-**MVP (publishable now):** real intro, bio, resume (page + PDF), the "A Few Words Go a Long Way" publication, and the Achilles project. The other six projects are `draft: true` (hidden), and the build refuses to publish any visible placeholder text, so the live site only shows what's real.
+**MVP (publishable now):** real intro, bio, resume (PDF), the "A Few Words Go a Long Way" publication, and the Achilles project. The other six projects are `draft: true` (hidden), and the build refuses to publish any visible placeholder text, so the live site only shows what's real.
 
 **Next, in order:**
 

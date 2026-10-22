@@ -32,7 +32,7 @@
         {#- Same order and conditions as the sections in index.njk -#}
         {% if (skills | skillIndex(collections.projects)).length %}<a href="/#skills">Skills</a>{% endif %}
         {% if collections.projects.length %}<a href="/#projects">Projects</a>{% endif %}
-        {% if resume.experience.length or resume.education.length %}<a href="/#resume">Resume</a>{% endif %}
+        {% if resume.pdf and (resume.pdf | fileReady) %}<a href="/#resume">Resume</a>{% endif %}
         {% if (publications | published).length %}<a href="/#publications">Publications</a>{% endif %}
       </nav>
     </div>

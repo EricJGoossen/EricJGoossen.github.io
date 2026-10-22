@@ -66,47 +66,14 @@ scripts: ["/assets/js/skills.js"]
 </section>
 {% endif %}
 
-{% if resume.experience.length or resume.education.length %}
+{% if resume.pdf and (resume.pdf | fileReady) %}
 <section id="resume">
   <div class="section-head">
     <h2>Resume</h2>
-    {% if resume.pdf | fileReady %}<a class="button" href="{{ resume.pdf }}">Download PDF</a>{% endif %}
+    <a class="button" href="{{ resume.pdf }}" download="{{ site.name }} Resume.pdf">Download PDF</a>
   </div>
-
-  {% if resume.experience.length %}
-  <h3>Experience</h3>
-  <ul class="resume-list">
-    {% for job in resume.experience %}
-    <li>
-      <div class="resume-row">
-        <span><strong>{{ job.role }}</strong>, {{ job.org }}</span>
-        <span class="muted">{{ job.dates }}</span>
-      </div>
-      {% if job.points.length %}<ul>{% for point in job.points %}<li>{{ point }}</li>{% endfor %}</ul>{% endif %}
-    </li>
-    {% endfor %}
-  </ul>
-  {% endif %}
-
-  {% if resume.education.length %}
-  <h3>Education</h3>
-  <ul class="resume-list">
-    {% for ed in resume.education %}
-    <li>
-      <div class="resume-row">
-        <span><strong>{{ ed.school }}</strong>, {{ ed.degree }}</span>
-        <span class="muted">{{ ed.dates }}</span>
-      </div>
-    </li>
-    {% endfor %}
-  </ul>
-  {% endif %}
-
-  {% if resume.skills.length %}
-  <h3>Technical skills</h3>
-  <div class="resume-skills">
-    {% for group in resume.skills %}<p><strong>{{ group.label }}:</strong> {{ group.items }}</p>{% endfor %}
-  </div>
+  {% if resume.preview %}
+  <a class="resume-page" href="{{ resume.pdf }}"><img src="{{ resume.preview }}" alt="{{ site.name }}'s resume (PDF)" width="1360" height="1760" loading="lazy"></a>
   {% endif %}
 </section>
 {% endif %}

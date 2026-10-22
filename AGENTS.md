@@ -31,7 +31,7 @@ Run these in the repo root. In a cloud/CI environment with Node 22, run them dir
 ```
 src/_data/site.json          name, headline, bio, photo, links, authorNames, ogImage
 src/_data/skills.json        skill list (order = chip order) + each skill's best example
-src/_data/resume.json        experience, education, pdf path
+src/_data/resume.json        paths to the resume PDF and the image of its first page
 src/_data/publications.json  papers; `project` ties one to a project page
 src/projects/<folder>/
   index.md                   project front matter + one-paragraph overview
@@ -130,7 +130,8 @@ Add an object to `publications.json`:
 **Bio, photo, links, resume**
 - Bio, headline, photo and links go in `site.json`. `photo` and `ogImage` paths start at `src/`, e.g. `/assets/photo.jpg`.
 - The resume PDF goes at `src/assets/resume.pdf`. The Resume links appear automatically once it exists.
-- To update the resume, edit `assets-src/resume/resume.tex` and recompile it (`pdflatex resume.tex` in a TeX Live environment; Eric's machine has no TeX, so do this in a cloud session or ask), copy the PDF to `src/assets/resume.pdf`, then update `resume.json` to match. `resume.json` is the condensed version: a few bullets per role, copied from the PDF, plus the technical-skills lines.
+- The home page Resume section shows the PDF itself: an image of its first page (`src/assets/resume.png`) that opens the PDF, and a Download PDF button. Nothing from the resume is copied onto the page.
+- To update the resume, replace `src/assets/resume.pdf` with Eric's new PDF (or edit `assets-src/resume/resume.tex` and recompile it with `pdflatex` in a cloud session; Eric's machine has no TeX), then regenerate the page image: `pdftoppm -png -r 160 -singlefile src/assets/resume.pdf page && convert page.png -colors 16 PNG8:src/assets/resume.png` (poppler and ImageMagick, in a cloud session).
 
 **Reorder, rename or remove**
 - Reorder projects by changing their `order` numbers.
