@@ -4,7 +4,12 @@
   "type": "module",
   "scripts": {
     "build": "eleventy",
-    "start": "eleventy --serve --port 8080"
+    "start": "eleventy --serve --port 8080",
+    "check": "eleventy && node scripts/check-links.js _site",
+    "test": "npm run check",
+    "todo": "node scripts/todo.js",
+    "new:project": "node scripts/new-project.js",
+    "new:entry": "node scripts/new-entry.js"
   },
   "dependencies": {
     "@11ty/eleventy": "^3.1.7"

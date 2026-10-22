@@ -15,7 +15,7 @@ scripts: ["/assets/js/skills.js"]
     <p class="headline">{{ site.headline }}</p>
     {% for para in site.bio %}<p>{{ para }}</p>{% endfor %}
     <p class="bracket-links">
-      {% for link in site.links %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}
+      {% for link in site.links | readyLinks %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}
     </p>
   </div>
 </section>
@@ -74,7 +74,7 @@ scripts: ["/assets/js/skills.js"]
 <section id="resume">
   <div class="section-head">
     <h2>Resume</h2>
-    <a class="button" href="{{ resume.pdf }}">Download PDF</a>
+    {% if resume.pdf | fileReady %}<a class="button" href="{{ resume.pdf }}">Download PDF</a>{% endif %}
   </div>
 
   {% if resume.experience.length %}

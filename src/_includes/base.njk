@@ -45,7 +45,7 @@
     <div class="wrap">
       <span>© {{ site.name }}</span>
       <span class="bracket-links">
-        {% for link in site.links %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}
+        {% for link in site.links | readyLinks %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}
       </span>
     </div>
   </footer>

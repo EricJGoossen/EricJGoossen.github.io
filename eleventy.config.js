@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import { checkSite } from "./lib/checks.js";
 
 export default function (eleventyConfig) {
@@ -55,6 +56,12 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("entriesFor", (entries, slug) =>
     entries.filter((e) => e.inputPath.includes(`/projects/${slug}/log/`))
   );
+
+  // Links to files that aren't in src/ yet (e.g. /assets/resume.pdf) are left
+  // out until the file is added, so the site never shows a dead link.
+  const fileReady = (url = "") => !/^\/.+\.[a-z0-9]+$/i.test(url) || fs.existsSync(`src${url}`);
+  eleventyConfig.addFilter("fileReady", fileReady);
+  eleventyConfig.addFilter("readyLinks", (links = []) => links.filter((link) => fileReady(link.url)));
 
   eleventyConfig.addFilter("entryId", (entry) => entry.data.id ?? entry.fileSlug);
 
