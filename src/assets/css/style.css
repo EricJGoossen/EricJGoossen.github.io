@@ -79,6 +79,10 @@ img { max-width: 100%; height: auto; display: block; border-radius: var(--radius
 section { padding: 2.25rem 0; }
 section > h2 { margin-bottom: 1rem; }
 
+/* Local preview only: lists problems a real build would stop on */
+.check-banner { padding: 1rem 16px; background: #fde8e8; color: #7f1d1d; border-bottom: 2px solid #dc2626; font-size: 0.9rem; }
+.check-banner ul { margin: 0.4rem 0 0; padding-left: 1.25rem; }
+
 /* ---------- Header / footer ---------- */
 .skip-link { position: absolute; left: 16px; top: -3rem; z-index: 20; padding: 0.4rem 0.8rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
 .skip-link:focus { top: 0.75rem; }

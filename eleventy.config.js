@@ -1,3 +1,5 @@
+import { checkSite } from "./lib/checks.js";
+
 export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets");
   // Each project's images/ folder. Copied as a directory (not a glob) so images
@@ -19,6 +21,30 @@ export default function (eleventyConfig) {
     api
       .getFilteredByGlob("src/projects/*/index.md")
       .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  );
+
+  // Not a real collection: runs lib/checks.js on every build. A real build
+  // (npm run build, Cloudflare) stops with the list of problems. The local
+  // preview keeps running and shows them in a red banner on every page instead.
+  const preview = process.env.ELEVENTY_RUN_MODE === "serve";
+  let checkErrors = [];
+  eleventyConfig.addCollection("_checks", (api) => {
+    const { errors, warnings } = checkSite(api);
+    for (const w of warnings) console.warn(`[checks] warning: ${w}`);
+    checkErrors = errors;
+    if (errors.length) {
+      const message = `Site checks failed:\n${errors.map((e) => `  - ${e}`).join("\n")}\n`;
+      if (!preview) throw new Error(message);
+      console.error(`[checks] ${message}`);
+    }
+    return [];
+  });
+  eleventyConfig.addShortcode("checkBanner", () =>
+    preview && checkErrors.length
+      ? `<div class="check-banner" role="alert"><strong>Site checks failed. A real build would stop here:</strong><ul>${checkErrors
+          .map((e) => `<li>${e.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</li>`)
+          .join("")}</ul></div>`
+      : ""
   );
 
   // Progress log entries across all projects, oldest first.
