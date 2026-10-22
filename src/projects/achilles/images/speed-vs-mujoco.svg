@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 400" role="img" aria-labelledby="t d">
+  <title id="t">Achilles V2 and V3 speed relative to MuJoCo</title>
+  <desc id="d">Simulation speed as a multiple of single-threaded MuJoCo on the same laptop, by number of links in the arm. V2, one robot at a time: 1.1 times MuJoCo&#x27;s speed at one link, falling to 0.8 at two links and 0.48 at eight. V3 with one robot: 2.1 times at two links, 1.6 at three, 0.97 at seven. V3 with 64 robots batched across SIMD lanes: 2.6, 3.0 and 3.3 times at two, three and seven links.</desc>
+  <style>
+    svg { --text:#1c1917; --muted:#6b6560; --grid:#e7e5e4; --axis:#a8a29e;
+          --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#6250d6; --ref:#78716c; }
+    @media (prefers-color-scheme: dark) {
+      svg { --text:#f2f1ef; --muted:#a39d97; --grid:#33312e; --axis:#57534e;
+            --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#9085e9; --ref:#a8a29e; }
+    }
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: var(--text); font-size: 13px; }
+    .m { fill: var(--muted); } .s { font-size: 12px; } .b { font-weight: 650; }
+    .e { text-anchor: end; } .c { text-anchor: middle; }
+    .grid { stroke: var(--grid); stroke-width: 1; }
+    .axis { stroke: var(--axis); stroke-width: 1; }
+    .ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+    .dash { stroke-dasharray: 6 4; }
+    .guide { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+  </style>
+  <line class="grid" x1="64" x2="656" y1="348.0" y2="348.0"/>
+  <text class="s m e" x="56" y="352.0">0×</text>
+  <line class="grid" x1="64" x2="656" y1="308.3" y2="308.3"/>
+  <text class="s m e" x="56" y="312.3">0.5×</text>
+  <line class="grid" x1="64" x2="656" y1="268.6" y2="268.6"/>
+  <text class="s m e" x="56" y="272.6">1×</text>
+  <line class="grid" x1="64" x2="656" y1="228.9" y2="228.9"/>
+  <text class="s m e" x="56" y="232.9">1.5×</text>
+  <line class="grid" x1="64" x2="656" y1="189.1" y2="189.1"/>
+  <text class="s m e" x="56" y="193.1">2×</text>
+  <line class="grid" x1="64" x2="656" y1="149.4" y2="149.4"/>
+  <text class="s m e" x="56" y="153.4">2.5×</text>
+  <line class="grid" x1="64" x2="656" y1="109.7" y2="109.7"/>
+  <text class="s m e" x="56" y="113.7">3×</text>
+  <line class="grid" x1="64" x2="656" y1="70.0" y2="70.0"/>
+  <text class="s m e" x="56" y="74.0">3.5×</text>
+  <line class="axis" x1="64" x2="656" y1="348" y2="348"/>
+  <text class="s m c" x="64.0" y="366">1</text>
+  <text class="s m c" x="261.3" y="366">2</text>
+  <text class="s m c" x="376.8" y="366">3</text>
+  <text class="s m c" x="458.7" y="366">4</text>
+  <text class="s m c" x="618.0" y="366">7</text>
+  <text class="s m c" x="656.0" y="366">8</text>
+  <text class="s m c" x="360" y="388">links in the arm (log scale)</text>
+  <text class="s m" x="56" y="56" text-anchor="start">speed relative to MuJoCo (× faster)</text>
+  <line class="guide" x1="64" x2="656" y1="268.6" y2="268.6"/>
+  <text class="s m e" x="652" y="262.6"></text>
+  <text class="s m" x="281.9" y="261.6" text-anchor="start">MuJoCo (1×)</text>
+  <polyline class="ln" style="stroke:var(--s2)" stroke-width="2" points="64.0,259.5 261.3,283.9 458.7,291.6 656.0,310.2"/>
+  <circle cx="64.0" cy="259.5" r="4.5" style="fill:var(--s2)" stroke="var(--surface, #fff)" stroke-width="0"/>
+  <circle cx="261.3" cy="283.9" r="4.5" style="fill:var(--s2)" stroke="var(--surface, #fff)" stroke-width="0"/>
+  <circle cx="458.7" cy="291.6" r="4.5" style="fill:var(--s2)" stroke="var(--surface, #fff)" stroke-width="0"/>
+  <circle cx="656.0" cy="310.2" r="4.5" style="fill:var(--s2)" stroke="var(--surface, #fff)" stroke-width="0"/>
+  <polyline class="ln" style="stroke:var(--s3)" stroke-width="2" points="261.3,184.4 376.8,219.3 618.0,271.0"/>
+  <circle cx="261.3" cy="184.4" r="4.5" style="fill:var(--s3)" stroke="var(--surface, #fff)" stroke-width="0"/>
+  <circle cx="376.8" cy="219.3" r="4.5" style="fill:var(--s3)" stroke="var(--surface, #fff)" stroke-width="0"/>
+  <circle cx="618.0" cy="271.0" r="4.5" style="fill:var(--s3)" stroke="var(--surface, #fff)" stroke-width="0"/>
+  <polyline class="ln" style="stroke:var(--s1)" stroke-width="2" points="261.3,141.5 376.8,110.5 618.0,86.7"/>
+  <circle cx="261.3" cy="141.5" r="4.5" style="fill:var(--s1)" stroke="var(--surface, #fff)" stroke-width="0"/>
+  <circle cx="376.8" cy="110.5" r="4.5" style="fill:var(--s1)" stroke="var(--surface, #fff)" stroke-width="0"/>
+  <circle cx="618.0" cy="86.7" r="4.5" style="fill:var(--s1)" stroke="var(--surface, #fff)" stroke-width="0"/>
+  <line x1="64" x2="84" y1="18" y2="18" style="stroke:var(--s2)" stroke-width="2.5" stroke-linecap="round"/>
+  <text class="s" x="90" y="22">V2, 1 robot</text>
+  <line x1="177.2" x2="197.2" y1="18" y2="18" style="stroke:var(--s3)" stroke-width="2.5" stroke-linecap="round"/>
+  <text class="s" x="203.2" y="22">V3, 1 robot</text>
+  <line x1="290.4" x2="310.4" y1="18" y2="18" style="stroke:var(--s1)" stroke-width="2.5" stroke-linecap="round"/>
+  <text class="s" x="316.4" y="22">V3, 64 robots batched</text>
+  <text class="s b" x="650.0" y="330.2" text-anchor="end">V2</text>
+  <text class="s b" x="626.0" y="263.0" text-anchor="start">V3 ×1</text>
+  <text class="s b" x="626.0" y="90.7" text-anchor="start">V3 ×64</text>
+</svg>
