@@ -5,11 +5,19 @@ org: ""
 timeline: 2026 – present
 tools: [C++20, xsimd (SIMD), CMake, GoogleTest, OpenGL/GLFW, Valgrind, MuJoCo (benchmarks)]
 order: 5
+cover: images/eight-pendulums.mp4
+coverPoster: images/eight-pendulums.jpg
+hero: images/double-pendulum.mp4
+heroAlt: A red and blue double pendulum swinging chaotically under gravity in the Achilles viewer
+heroPoster: images/double-pendulum.jpg
 summary: A C++20 rigid-body simulator that steps 8 robots per SIMD instruction, about 3× MuJoCo's single-threaded throughput.
 highlights:
   - label: SIMD batching
     entry: simd
     skills: [C++, SIMD, Performance engineering]
+  - label: Viewer
+    entry: renderer
+    skills: [OpenGL]
 links:
   - label: GitHub
     url: https://github.com/EricJGoossen/Achilles

@@ -2,6 +2,7 @@
   {"name": "C++", "best": "achilles/simd"},
   {"name": "SIMD", "best": "achilles/simd"},
   {"name": "Performance engineering", "best": "achilles/simd"},
+  {"name": "OpenGL", "best": "achilles/renderer"},
   {"name": "Python", "best": "hil-cap/highlight-one"},
   {"name": "PyTorch", "best": "hil-cap/highlight-one"},
   {"name": "Reinforcement learning", "best": "fleet-rl/highlight-one"},
