@@ -368,3 +368,6 @@ figcaption { margin-top: 0.4rem; color: var(--muted); font-size: 0.9rem; }
   .entry:target { animation: none; }
   .tile-text, .tile-media > * { transition: none; }
 }
+
+/* An image with a caption in a log entry: the figure carries the spacing. */
+.entry figure > img { margin: 0; }

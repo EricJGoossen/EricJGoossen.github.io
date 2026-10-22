@@ -1,10 +1,10 @@
 [
-  { "name": "C++", "best": "opendubs/highlight-one" },
-  { "name": "Python", "best": "hil-cap/highlight-one" },
-  { "name": "PyTorch", "best": "hil-cap/highlight-one" },
-  { "name": "Reinforcement learning", "best": "fleet-rl/highlight-one" },
-  { "name": "MuJoCo", "best": "fleet-rl/highlight-two" },
-  { "name": "ROS 2", "best": "opendubs/highlight-two" },
-  { "name": "Embedded C", "best": "aruw/highlight-one" },
-  { "name": "CAD", "best": "achilles/highlight-one" }
+  {"name": "C++", "best": "opendubs/highlight-one"},
+  {"name": "Python", "best": "hil-cap/highlight-one"},
+  {"name": "PyTorch", "best": "hil-cap/highlight-one"},
+  {"name": "Reinforcement learning", "best": "fleet-rl/highlight-one"},
+  {"name": "MuJoCo", "best": "fleet-rl/highlight-two"},
+  {"name": "ROS 2", "best": "opendubs/highlight-two"},
+  {"name": "Embedded C", "best": "aruw/highlight-one"},
+  {"name": "CAD", "best": "aruw/highlight-two"}
 ]

@@ -2,25 +2,13 @@
 layout: project.njk
 title: Achilles
 org: ""
-timeline: Placeholder timeline
-tools: [Placeholder tool, Placeholder tool]
+timeline: 2026 – present
+tools: [C++20, xsimd (SIMD), CMake, GoogleTest, OpenGL/GLFW, Valgrind, MuJoCo (benchmarks)]
 order: 5
-summary: Placeholder one-line summary of Achilles.
-# cover: images/cover.jpg   # card image on the home page
-# hero: images/hero.jpg     # big image at the top of this page
-highlights:
-  - label: Highlight one
-    entry: highlight-one
-    skills: [CAD]
-  - label: Highlight two
-    entry: highlight-two
-    skills: [Embedded C]
+summary: A C++20 rigid-body simulator that steps 8 robots per SIMD instruction, about 3× MuJoCo's single-threaded throughput.
 links:
   - label: GitHub
-    url: "#"
-  - label: Paper
-    url: "#"
-  - label: Video
-    url: "#"
+    url: https://github.com/EricJGoossen/Achilles
 ---
-Placeholder overview of Achilles. What the project is, why it matters, your role, and the headline result, in one short paragraph.
+{# Placeholder: org (personal project or ARUW?) #}
+Achilles is a C++20 articulated rigid-body simulator I'm building for my club, Advanced Robotics at UW (ARUW), whose codebase had too much technical debt to take an off-the-shelf simulator. It loads a jointed scene from a YAML file, runs forward dynamics with the Articulated Body Algorithm, integrates at a fixed timestep and can draw the scene live in an OpenGL viewer. Because I want to train RL policies for ARUW without much GPU compute, V3 runs independent robots side by side in SIMD lanes: on one laptop core it steps a seven-link arm 3.3× faster than single-threaded MuJoCo.
