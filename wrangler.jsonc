@@ -4,7 +4,7 @@
   "name": "ericjgoossen-com",
   "compatibility_date": "2026-06-01",
   "build": {
-    "command": "npm run build"
+    "command": "npm ci && npm run build"
   },
   "assets": {
     "directory": "./_site",
