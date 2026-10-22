@@ -21,6 +21,9 @@ highlights:
   - label: 3× MuJoCo
     entry: mujoco-comparison
     skills: [Performance engineering, MuJoCo, C++]
+  - label: Dynamics (ABA)
+    entry: dynamics
+    skills: [Rigid-body dynamics, Numerical methods, C++]
 links:
   - label: GitHub
     url: https://github.com/EricJGoossen/Achilles
