@@ -72,7 +72,7 @@ The site builds everything else from these: the "Also used in" lists, the highli
 - Each project is a folder. The overview is one Markdown file with a header block (title, org, summary, cover image, highlights, links). Each log entry is its own Markdown file with a date. Adding an update = drop in a new `.md` file and images, `git push`.
 - Bio, resume, and skills live in small data files, so the home page builds itself from them.
 - Output is still plain static HTML, so security is unchanged. No server, no database, no login. The only JavaScript is the skill dropdown.
-- **Node runs in Docker**, not on the machine. `docker compose up` starts a live-reloading preview at localhost:8080. Cloudflare runs the same build itself on each push.
+- **Node runs in Docker**, not on the machine. `docker compose up` starts a live-reloading preview at localhost:8090. Cloudflare runs the same build itself on each push.
 
 ## Folder layout
 
@@ -80,25 +80,31 @@ The site builds everything else from these: the "Also used in" lists, the highli
 src/
   index.njk                  home page template
   _data/
-    site.json                name, headline, bio, links
+    site.json                name, headline, bio, photo, links
     skills.json              skill list + best example for each
     resume.json              experience, education
     publications.json        papers, each linked to a project
-  _includes/                 shared layouts (page shell, project page, cards)
+  _includes/                 shared layouts (page shell, project page, publication card)
   projects/
     opendubs/
       index.md               overview, cover, highlights, links
       log/
         2026-10-21-first-prototype.md
-      images/
+      images/                images and videos
     ...
   assets/
     css/style.css
     js/skills.js             the skill dropdown, the only JavaScript
     resume.pdf
+  _headers                   security headers, read by Cloudflare
+lib/
+  checks.js                  build-time content checks
+  media.js                   image/video/YouTube markup
+scripts/                     check-links, todo, new-project, new-entry
 _site/                       build output, what Cloudflare serves
-Dockerfile, compose.yaml     Node toolchain for local preview
+compose.yaml                 Node toolchain for local preview (Docker)
 wrangler.jsonc               points Cloudflare at _site/
+AGENTS.md                    protocol for AI agents updating the site
 ```
 
 ## Design direction
@@ -122,7 +128,24 @@ From the reference sites (mateoguaman.com, mnats, timothypan.com): one clean cen
 8. Each project: real overview, cover image, highlights, links, log entries.
 9. Polish: image compression, social preview, 404, accessibility check.
 
+## Status and next steps
+
+**Done (phase-1 branch):** Phase 1 bones, the design pass, publications, video support, build-time content checks, `npm run check` / `todo` / `new:project` / `new:entry`, security headers, and `AGENTS.md`.
+
+**Next, in order:**
+
+1. **Backfill real content** (Phase 2 above). This is the biggest improvement left. `npm run todo` is the checklist.
+2. **Automatic image resizing.** `@11ty/eleventy-img` would make phone-sized WebP/AVIF copies with width/height at build time, so full-size photos don't slow the site down. One dependency, inside Docker only.
+3. **Confirm the Cloudflare build** before merging to `main`: a `phase-1` preview build log should show `npm run build` succeeding (see README, Deploying).
+4. **Nice to have, when wanted:**
+   - a short News list on the home page (`news.json`)
+   - Cloudflare Web Analytics (cookie-free, but adds one Cloudflare script and needs a CSP update)
+   - print styles for a one-page resume
+   - a table of contents for long project logs
+
+**Not planned:** contact form (needs a server or a third-party service), site search, comments, a CMS, JS frameworks.
+
 ## Still open
 
 - Skill list: which skills, and which highlight is each one's best example. Can be filled during backfill.
-- Placeholder site going live: OK to push the skeleton to ericjgoossen.com, or keep the "coming soon" page up until Phase 2 has some real content? *(Recommended: keep "coming soon" live, preview locally until there's real content)*
+- When to replace the "coming soon" page on `main`: Eric's call, once there's enough real content.

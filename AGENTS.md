@@ -1,0 +1,169 @@
+# Working on ericjgoossen.com (agent protocol)
+
+Eric J. Goossen's portfolio: Markdown + Eleventy, built into plain static HTML in `_site/` and served by Cloudflare (static files only). Eric adds information over time, and agents turn it into pages. This file covers how to do that without breaking anything. `README.md` is the short human guide and `PLAN.md` is the design and roadmap. Read both once.
+
+## Rules
+
+1. **Branch.** Work on `phase-1`, or whatever branch Eric names. **Never merge into or push to `main`.** `main` is the live site and only Eric decides when it changes. Pushing other branches is fine (Cloudflare builds a private preview).
+2. **Keep it static.** No server code, frameworks, databases, logins, analytics, trackers, third-party scripts or web fonts. The only JavaScript is `src/assets/js/skills.js`. If Eric approves something that loads from another domain, also add that domain to `src/_headers` (the Content-Security-Policy), or browsers will block it.
+3. **Eric's machine.** Node runs only in Docker (`compose.yaml`, preview on port 8090). Don't change that setup. Don't install anything without asking. If something does get installed (including a Docker image), add it to `INSTALLED.md` with an uninstall command.
+4. **Never invent facts about Eric.** Use only what Eric provides. Anything not provided yet stays as text starting with `Placeholder` (or a `"#"` link), so `npm run todo` can find it. That includes dates, numbers, results, co-authors, venues and awards.
+5. **Pronouns.** Use they/them for anyone whose pronouns aren't stated.
+6. **Commits.** Make small, focused commits with a message that says what and why. Push to the working branch as you go. `npm run check` must pass before every commit.
+7. **Finish with a handoff.** Say what changed, what you checked, and what still needs Eric's content (summarize `npm run todo`).
+
+## Commands
+
+Run these in the repo root. In a cloud/CI environment with Node 22, run them directly. On Eric's machine, run them in Docker: `docker compose run --rm site <command>`, or `docker compose exec site <command>` while the preview is running.
+
+| Command | What it does |
+|---|---|
+| `npm install` | Once, to get Eleventy (into `node_modules/`, gitignored) |
+| `npm start` | Live preview on port 8080 (8090 on Eric's machine via Docker). Content problems show in a red banner at the top of every page. |
+| `npm run check` | Builds the site and checks every link and #anchor. **Must pass before you commit.** |
+| `npm run todo` | Lists every placeholder, `#` link and missing file still to fill in |
+| `npm run new:project -- <folder> "Title" ["Org"]` | Creates a project page with a first log entry |
+| `npm run new:entry -- <folder> "Entry title" [YYYY-MM-DD]` | Adds a dated log entry and prints its anchor |
+
+## How the content fits together
+
+```
+src/_data/site.json          name, headline, bio, photo, links, authorNames, ogImage
+src/_data/skills.json        skill list (order = chip order) + each skill's best example
+src/_data/resume.json        experience, education, pdf path
+src/_data/publications.json  papers; `project` ties one to a project page
+src/projects/<folder>/
+  index.md                   project front matter + one-paragraph overview
+  log/YYYY-MM-DD-<id>.md     progress log entries, oldest first; <id> is the anchor
+  images/                    that project's images and videos
+src/assets/resume.pdf        resume (the Resume links stay hidden until this file exists)
+```
+
+- **The folder name is the URL**: `src/projects/fleet-rl/` becomes `/projects/fleet-rl/`.
+- **Entry anchors**: the filename after the date is the entry's anchor. `log/2026-03-20-sim-comparison.md` is `/projects/<folder>/#sim-comparison`.
+- **Highlights** live in a project's `index.md`. Each one names a log entry and the skills it shows. From those, the site builds:
+  - the highlight chips on the project page
+  - the skill tags on that log entry
+  - the home page skill dropdowns ("Best example" and "Also used in")
+
+  Add a highlight in one place and it shows up everywhere it should.
+- **Skills** in `skills.json` set the chip order and each skill's `best` example (`"<folder>/<entry id>"`). A skill no highlight uses yet is hidden (the build prints a warning).
+
+### Project front matter (`src/projects/<folder>/index.md`)
+
+| Field | Required | Notes |
+|---|---|---|
+| `layout` | yes | Always `project.njk` |
+| `title`, `summary` | yes | `summary` is the one-liner on the home page tile |
+| `org`, `timeline`, `tools` | no | Shown as the metadata line. `tools` is a list. |
+| `order` | no | Number. Lower comes first on the home page. Leave gaps (10, 20, 30) if you like. |
+| `cover` | no | Tile image or video, relative to the project folder: `images/cover.jpg` or `images/cover.mp4` |
+| `coverPoster` | no | Still image for a video cover. Shown with reduced motion and used for link previews. |
+| `hero`, `heroAlt`, `heroPoster` | no | Big image or video at the top of the project page |
+| `highlights` | no | List of `{ label, entry, skills: [...] }`. `entry` must match a log entry anchor, and every skill must be in `skills.json`. |
+| `links` | no | List of `{ label, url }`, shown as `[GitHub] [Paper] ...` |
+
+## Recipes
+
+**Add a project**
+1. Run `npm run new:project -- <folder> "Title" "Org"`. Use a short lowercase folder name with dashes (it becomes the URL).
+2. Fill in `index.md`: summary, org, timeline, tools, the overview paragraph, and `cover` once there's an image.
+3. Add log entries (next recipe), then highlights.
+4. Run `npm run check`, commit, push.
+
+**Add a progress log entry**
+1. Run `npm run new:entry -- <folder> "What happened" [date]`. Use the date the work happened, not today, if Eric gives one.
+2. Write the text in Markdown, and delete the template comment.
+3. To feature it, add a highlight to the project's `index.md`:
+   ```yaml
+   highlights:
+     - label: SIMD optimization     # 1 to 3 words
+       entry: simd-optimization     # the anchor the script printed
+       skills: [C++, SIMD]          # each must be in skills.json
+   ```
+
+**Add or change a skill**
+- New skill: add `{ "name": "SIMD", "best": "opendubs/simd-optimization" }` to `skills.json`, at the position where its chip should appear. Then tag highlights with exactly the same spelling.
+- Renaming a skill means renaming it in `skills.json` **and** in every highlight that uses it. The build lists any you miss.
+- `best` must be a highlight that lists this skill. Without `best`, the first project in `order` that uses the skill wins.
+
+**Add images and videos** (put the files in the project's `images/` folder)
+- Image in a log entry: `![What the image shows](images/photo.jpg)`. Always write real alt text.
+- Short clip that loops like a GIF (muted, with pause controls): `{% video "images/clip.mp4", "What it shows" %}`
+- Longer video with sound (click to play): `{% video "images/talk.mp4", "What it shows", { play: true, poster: "images/talk.jpg" } %}`
+- Optional caption on either: add `caption: "..."` to the options.
+- YouTube: `{% youtube "VIDEO_ID or full link", "Title" %}`. This shows a thumbnail that links to YouTube; no YouTube code runs on the site.
+- Covers, heroes and publication teasers can be `.mp4` too. Give a video cover a `coverPoster`.
+- Sizes: aim for images under about 1 MB (2000px on the long side) and clips under 5 MB. Cloudflare rejects any file over 25 MB, and the build stops on it.
+- Use MP4 (H.264) for video so every browser plays it. To shrink a clip, ffmpeg in Docker works:
+  `docker run --rm -v "$PWD":/w -w /w linuxserver/ffmpeg -i in.mov -vf "scale=1280:-2" -c:v libx264 -crf 28 -preset slow -an -movflags +faststart out.mp4`
+  (`-an` drops audio; leave it off for clips with sound.) That pulls a Docker image, so ask Eric first and log it in `INSTALLED.md`.
+
+**Add a publication**
+Add an object to `publications.json`:
+```json
+{
+  "title": "...", "authors": ["...", "Eric J. Goossen"], "venue": "CoRL", "year": 2026,
+  "status": "", "award": "", "lab": "Human Centered Robotics Lab", "project": "hil-cap",
+  "image": "/projects/hil-cap/images/teaser.jpg", "tldr": "One or two sentences.",
+  "links": [{ "label": "Paper", "url": "https://..." }, { "label": "arXiv", "url": "https://..." }]
+}
+```
+- `image` (and the optional `poster`) start at `src/`.
+- Names listed in `site.json` `authorNames` are shown in bold.
+- Empty badge fields are hidden.
+- `project` must be an existing project folder. The card then also appears on that project page.
+
+**Bio, photo, links, resume**
+- Bio, headline, photo and links go in `site.json`. `photo` and `ogImage` paths start at `src/`, e.g. `/assets/photo.jpg`.
+- The resume PDF goes at `src/assets/resume.pdf`. The Resume links appear automatically once it exists.
+- Condensed resume entries go in `resume.json`.
+
+**Reorder, rename or remove**
+- Reorder projects by changing their `order` numbers.
+- Renaming a project folder or a log entry changes its URL or anchor. Update every highlight `entry`, every skill `best`, and every publication `project` that points at it. The build lists any you miss. Avoid renames once the site is live, because people may have links to them.
+- To remove a project, delete its folder and fix whatever the build reports.
+
+## Checks (what keeps the site from breaking)
+
+`lib/checks.js` runs on every build. A real build (`npm run build`, `npm run check`, Cloudflare) **stops** on any of these. The live preview shows them in a red banner instead.
+- A highlight points at a log entry that doesn't exist.
+- A highlight uses a skill that's not in `skills.json`.
+- A skill's `best` isn't a highlight, or that highlight doesn't list the skill.
+- A skill name is listed twice.
+- A log file doesn't start with a date, or two entries in one project share an anchor.
+- A project is missing `title` or `summary`, or its `order` isn't a number.
+- A `cover`, `hero`, poster, publication `image`, `photo` or `ogImage` file doesn't exist.
+- A publication's `project` doesn't exist, or it has no `title` or `authors`.
+- A file is over 25 MB (files over 5 MB get a warning).
+
+`scripts/check-links.js` (part of `npm run check`) then checks every internal link, image/video source and #anchor in `_site/`.
+
+The checks can't judge content quality. Read what you wrote, and keep `Placeholder` markers on anything not confirmed by Eric.
+
+## Changing templates, CSS or code
+
+- **Where things live:**
+  - Templates: `src/index.njk` (home), `src/_includes/base.njk` (page shell), `project.njk` (project page), `pub.njk` (publication card)
+  - Styles: `src/assets/css/style.css` (color tokens at the top, with a dark-mode block)
+  - Code: `eleventy.config.js` (collections, filters, shortcodes), `lib/checks.js`, `lib/media.js`
+- **Design rules** (from mateoguaman.com, timothypan.com and the mnats bio page):
+  - one clean centered column with generous white space
+  - images and video do the visual work
+  - restrained color
+  - compact `[bracketed]` links
+- Home sections render only when their data has entries, in this order: Intro, Skills, Projects, Resume, Publications. The nav follows the same order.
+- After a visual change, check:
+  - light mode, dark mode, and a ~375px-wide phone
+  - hover and keyboard focus on project tiles
+  - a skill dropdown near the right edge
+  - no horizontal scrolling
+- Keep it accessible: real alt text, visible focus outlines, 4.5:1 text contrast, and nothing that only works on hover.
+- If you add a new kind of data, add a check for it in `lib/checks.js` so mistakes fail loudly.
+
+## Before you hand off
+
+1. `npm run check` passes.
+2. Visual check done, if templates or CSS changed.
+3. Committed and pushed to the working branch (not `main`).
+4. Tell Eric what changed and paste the short version of `npm run todo`.
