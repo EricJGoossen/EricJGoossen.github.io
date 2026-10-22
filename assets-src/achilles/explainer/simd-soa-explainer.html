@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Achilles SIMD Batching</title>
+<style>
+  :root {
+    --bg: #fcfcfb; --surface: #ffffff; --text: #1c1917; --muted: #6b6560; --line: #e4e2df;
+    --cell: #eeece9; --b0: #1d4ed8; --b1: #7048e8; --b2: #0c8599; --b3: #c2255c;
+    --done: #2b8a3e; --bad: #c92a2a; --reg: #f4f6fb; --stack: #fff4e6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161514; --surface: #1f1e1c; --text: #f2f1ef; --muted: #a39d97; --line: #33312e;
+      --cell: #2a2826; --b0: #7aa2ff; --b1: #b197fc; --b2: #3bc9db; --b3: #f783ac;
+      --done: #51cf66; --bad: #ff6b6b; --reg: #1d2433; --stack: #3a2418;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1000px; margin: 0 auto; padding: 28px 16px 48px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .muted { color: var(--muted); }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-top: 16px; }
+  .caption { min-height: 4.8em; font-size: 15px; }
+  .caption b { font-weight: 650; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0; }
+  button { font: inherit; font-size: 14px; color: var(--text); background: var(--bg); border: 1px solid var(--line);
+           border-radius: 999px; padding: 5px 14px; cursor: pointer; }
+  button:hover, button:focus-visible { border-color: var(--b0); outline: none; }
+  button[aria-pressed="true"] { border-color: var(--b0); color: var(--b0); font-weight: 600; }
+  #play { min-width: 92px; font-weight: 600; }
+  .dots { display: flex; gap: 6px; margin-left: auto; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--line); border: 0; padding: 0; }
+  .dot.on { background: var(--b0); }
+  canvas { display: block; width: 100%; }
+  .foot { font-size: 12px; color: var(--muted); margin-top: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>How Achilles feeds the SIMD lanes</h1>
+  <div class="muted">One batch of robot instances, from structure-of-arrays memory into vector registers and back,
+    using the real velocity integrator: <b>q̇ += q̈ · dt</b>.</div>
+
+  <div class="panel">
+    <div class="caption" id="caption"></div>
+    <div class="controls">
+      <button id="prev" aria-label="Previous step">◀</button>
+      <button id="play" aria-label="Play or pause">▶ Play</button>
+      <button id="next" aria-label="Next step">▶|</button>
+      <span class="muted" style="font-size:13px;margin-left:8px">Lanes:</span>
+      <button id="w8" aria-pressed="true">8 · AVX2</button>
+      <button id="w4" aria-pressed="false">4 · SSE</button>
+      <div class="dots" id="dots"></div>
+    </div>
+    <canvas id="cv" aria-label="Animation of memory cells moving into SIMD registers"></canvas>
+  </div>
+  <p class="foot" id="foot"></p>
+</main>
+<script>
+// Measured with tools/memviz (Valgrind Lackey) on 8 three-joint arms (24 joints), one step,
+// IntegrateVelocityOp only.
+const MEASURED = {
+  8: {isa: 'AVX2 (-mavx2 -mfma)', bytes: 32, batches: 7, loadsA: 42, loadsV: 42, storesV: 42, aligned: '126 of 126', stackPct: 75},
+  4: {isa: 'SSE (default build)', bytes: 16, batches: 10, loadsA: 60, loadsV: 60, storesV: 60, aligned: '180 of 180', stackPct: 75},
+};
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const COMPS = ['ωx', 'ωy', 'ωz', 'vx', 'vy', 'vz'];
+const N = 16;  // instances drawn
+let W = 8;     // lanes
+
+// ---------- steps ----------
+// Each step: caption + an action the renderer animates over `dur` seconds.
+function buildSteps() {
+  const m = MEASURED[W], reg = W === 8 ? 'ymm' : 'xmm', nb = N / W;
+  const s = [];
+  s.push({dur: 3.5, act: {type: 'intro'}, cap:
+    `<b>Structure of arrays.</b> Each component of each field is its own array, indexed by instance. ` +
+    `Here are 16 robots' joint accelerations (q̈) and velocities (q̇): six components each, so twelve rows.`});
+  for (let b = 0; b < nb; b++) {
+    const lo = b * W, hi = lo + W - 1, first = b === 0;
+    s.push({dur: first ? 3.2 : 1.6, act: {type: 'load', field: 'a', batch: b}, cap: first
+      ? `<b>Load q̈ for instances ${lo}–${hi}.</b> Their ωx values sit side by side in memory, so <b>one</b> ${m.bytes}-byte ` +
+        `load fills all ${W} lanes of a register. Six loads cover all six components.`
+      : `<b>Next batch: instances ${lo}–${hi}.</b> Same six loads for q̈…`});
+    s.push({dur: first ? 2.6 : 1.2, act: {type: 'load', field: 'v', batch: b}, cap: first
+      ? `<b>Load q̇ for the same instances.</b> Six more vector loads. ${2 * 6} registers now hold every input for ${W} robots.`
+      : `…and six for q̇…`});
+    s.push({dur: first ? 2.6 : 1.2, act: {type: 'fma', batch: b}, cap: first
+      ? `<b>Compute.</b> One fused multiply-add per component, <b>q̇ += q̈ · dt</b>, updates all ${W} lanes at once. ` +
+        `Six instructions do the work of ${6 * W} scalar ones.`
+      : `…six multiply-adds…`});
+    s.push({dur: first ? 2.6 : 1.4, act: {type: 'store', batch: b}, cap: first
+      ? `<b>Store.</b> Six vector stores write the new velocities straight back into the same arrays.`
+      : `…six stores. Done with instances ${lo}–${hi}.`});
+  }
+  s.push({dur: 4.5, act: {type: 'aos'}, cap:
+    `<b>Why the layout matters.</b> Stored the usual way (one struct per robot), a register-sized chunk of memory ` +
+    `holds all six components of one robot plus part of the next. Filling one register with ωx for ${W} robots ` +
+    `would take ${W} separate loads instead of one.`});
+  s.push({dur: 5, act: {type: 'spill'}, cap:
+    `<b>The limit: register count.</b> AVX2 has 16 vector registers. A 6×6 matrix of batches (like the articulated ` +
+    `inertia in ABA) is 36 registers' worth, so 20 of them live on the stack instead. That and temporaries are ` +
+    `why ~80% of all memory accesses in a step go to the stack, nearly all hitting L1.`});
+  s.push({dur: 6, act: {type: 'measured'}, cap:
+    `<b>Measured in the real binary.</b> In the ${m.isa} build, every access to joint velocity and acceleration ` +
+    `is a ${m.bytes}-byte vector access (${W} floats), ${m.aligned} aligned. The integrator made ${m.loadsA} loads of q̈, ` +
+    `${m.loadsV} of q̇ and ${m.storesV} stores: exactly 6 components × ${m.batches} batches.`});
+  return s;
+}
+let steps = buildSteps();
+
+// ---------- layout ----------
+const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+let L;  // layout
+function layout() {
+  const Wpx = cv.parentElement.clientWidth - 32;
+  const wide = Wpx >= 720;
+  const label = wide ? 92 : 58;
+  // Wide: memory on the left, registers on the right, rows aligned so a load slides sideways.
+  // Narrow: memory above, registers below.
+  const memCols = N, regCols = W;
+  let cell;
+  if (wide) cell = Math.min(30, Math.floor((Wpx - 2 * label - 70) / (memCols + regCols)));
+  else cell = Math.min(26, Math.floor((Wpx - label) / memCols));
+  const rowH = cell + 4, top = 38, fieldGap = 18;
+  const memX = label, regX = wide ? label + memCols * cell + 70 + label : label;
+  const rowsTop = r => top + r * rowH + (r >= 6 ? fieldGap : 0);
+  const memH = rowsTop(12);
+  const regTop = wide ? 0 : memH + 34;
+  L = {Wpx, wide, label, cell, rowH, top, memX, regX, rowsTop, regTop,
+       H: wide ? memH + 120 : regTop + memH + 120};
+  const dpr = window.devicePixelRatio || 1;
+  cv.width = Wpx * dpr; cv.height = L.H * dpr; cv.style.height = L.H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+const memCell = (r, i) => ({x: L.memX + i * L.cell, y: L.rowsTop(r)});
+const regCell = (r, lane) => ({x: L.regX + lane * L.cell, y: L.regTop + L.rowsTop(r)});
+
+// ---------- state ----------
+// Replayed from the start of the sequence to any step, so prev/next always land on a correct frame.
+function stateAt(k) {
+  const st = {mem: Array.from({length: 12}, () => Array(N).fill('idle')), regs: Array(12).fill(null), loads: 0, stores: 0, fma: 0};
+  for (let j = 0; j < k; j++) apply(st, steps[j].act);
+  return st;
+}
+function apply(st, a) {
+  if (a.type === 'load') {
+    const base = a.field === 'a' ? 0 : 6;
+    for (let c = 0; c < 6; c++) { st.regs[base + c] = {batch: a.batch, done: false}; st.loads++; }
+  } else if (a.type === 'fma') {
+    for (let c = 0; c < 6; c++) st.regs[6 + c].done = true; st.fma += 6;
+  } else if (a.type === 'store') {
+    for (let c = 0; c < 6; c++) for (let i = 0; i < W; i++) st.mem[6 + c][a.batch * W + i] = 'done';
+    st.stores += 6;
+    st.regs = Array(12).fill(null);
+  }
+}
+
+// ---------- drawing ----------
+const batchColor = b => css(['--b0', '--b1', '--b2', '--b3'][b % 4]);
+function rr(x, y, w, h, r) { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); }
+function drawCell(x, y, fill, text, alpha = 1) {
+  ctx.globalAlpha = alpha; ctx.fillStyle = fill;
+  rr(x + 1, y + 1, L.cell - 2, L.cell - 2, 3); ctx.fill(); ctx.globalAlpha = 1;
+  if (text && L.cell >= 18) { ctx.fillStyle = '#fff'; ctx.font = `600 ${Math.min(11, L.cell * 0.4)}px system-ui`; ctx.textAlign = 'center';
+    ctx.fillText(text, x + L.cell / 2, y + L.cell / 2 + 4); ctx.textAlign = 'left'; }
+}
+
+function drawBase(st, a, p) {
+  ctx.font = '600 12px system-ui'; ctx.fillStyle = css('--text');
+  ctx.fillText('Memory (structure of arrays)', L.memX, 18);
+  ctx.font = '11px system-ui'; ctx.fillStyle = css('--muted');
+  for (let i = 0; i < N; i += W === 8 ? 4 : 2) ctx.fillText(String(i), memCell(0, i).x + 3, 32);
+  for (let r = 0; r < 12; r++) {
+    const y = L.rowsTop(r);
+    ctx.fillStyle = css('--muted'); ctx.font = '12px system-ui';
+    ctx.fillText((r < 6 ? 'q̈ ' : 'q̇ ') + COMPS[r % 6], 6, y + L.cell / 2 + 4);
+    for (let i = 0; i < N; i++) {
+      // Colored by batch (lighter than in a register), so a register's lanes visibly match the run they came from.
+      const done = st.mem[r][i] === 'done';
+      drawCell(memCell(r, i).x, y, done ? css('--done') : batchColor(Math.floor(i / W)), String(i), done ? 1 : 0.45);
+    }
+  }
+  // cache-line bracket on the first row
+  const lineFloats = 16, y0 = L.rowsTop(12) + 6;
+  ctx.strokeStyle = css('--muted'); ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(L.memX + 1, y0); ctx.lineTo(L.memX + 1, y0 + 5); ctx.lineTo(L.memX + lineFloats * L.cell - 1, y0 + 5);
+  ctx.lineTo(L.memX + lineFloats * L.cell - 1, y0); ctx.stroke();
+  ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui';
+  ctx.fillText('each row of 16 floats is exactly one 64-byte cache line', L.memX, y0 + 20);
+
+  // registers
+  const rname = W === 8 ? 'ymm' : 'xmm';
+  ctx.font = '600 12px system-ui'; ctx.fillStyle = css('--text');
+  ctx.fillText(`Vector registers (${W} lanes each)`, L.regX, L.regTop + 18);
+  for (let r = 0; r < 12; r++) {
+    const y = L.regTop + L.rowsTop(r);
+    ctx.fillStyle = css('--muted'); ctx.font = '12px system-ui';
+    ctx.fillText(`${rname}${r}`, L.regX - (L.wide ? 50 : 52), y + L.cell / 2 + 4);
+    ctx.fillStyle = css('--reg'); rr(L.regX - 2, y - 1, W * L.cell + 4, L.cell + 2, 5); ctx.fill();
+    const reg = st.regs[r];
+    for (let lane = 0; lane < W; lane++) {
+      const c = regCell(r, lane);
+      if (reg) drawCell(c.x, c.y, reg.done ? css('--done') : batchColor(reg.batch), String(reg.batch * W + lane));
+      else { ctx.strokeStyle = css('--line'); rr(c.x + 1, c.y + 1, L.cell - 2, L.cell - 2, 3); ctx.stroke(); }
+    }
+  }
+}
+
+const ease = t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+function drawAction(st, a, p) {
+  if (a.type === 'load' || a.type === 'store') {
+    const into = a.type === 'load';
+    const rows = into ? (a.field === 'a' ? [0, 1, 2, 3, 4, 5] : [6, 7, 8, 9, 10, 11]) : [6, 7, 8, 9, 10, 11];
+    rows.forEach((r, k) => {
+      const t = ease(Math.max(0, Math.min(1, p * 1.6 - k * 0.12)));
+      for (let lane = 0; lane < W; lane++) {
+        const i = a.batch * W + lane, from = into ? memCell(r, i) : regCell(r, lane), to = into ? regCell(r, lane) : memCell(r, i);
+        if (from.y !== undefined) {
+          const x = from.x + (to.x - from.x) * t, y = (into ? from.y : from.y) + (to.y - from.y) * t;
+          drawCell(x, y, into ? batchColor(a.batch) : css('--done'), L.cell >= 18 ? String(i) : '');
+        }
+      }
+      if (t > 0 && t < 1) {  // the "one instruction" label
+        ctx.fillStyle = css('--text'); ctx.font = '600 11px system-ui';
+        const lx = L.wide ? L.memX + N * L.cell + 8 : L.regX + W * L.cell + 8;
+        const ly = L.wide ? L.rowsTop(r) + L.cell / 2 + 4 : L.regTop + L.rowsTop(r) + L.cell / 2 + 4;
+        ctx.fillText(into ? `1 load →` : `← 1 store`, lx, ly);
+      }
+    });
+  } else if (a.type === 'fma') {
+    // Flash, then leave the updated q̇ lanes green for the rest of the step.
+    const glow = p < 0.5 ? Math.sin(p / 0.5 * Math.PI / 2) : 1;
+    for (let r = 6; r < 12; r++) for (let lane = 0; lane < W; lane++) {
+      const c = regCell(r, lane);
+      ctx.globalAlpha = glow; drawCell(c.x, c.y, css('--done'), String(a.batch * W + lane)); ctx.globalAlpha = 1;
+    }
+    ctx.fillStyle = css('--text'); ctx.font = '600 13px system-ui';
+    const ty = L.regTop + L.rowsTop(12) + 20;
+    ctx.fillText('6 × vfmadd: q̇ += q̈ · dt', L.regX, ty);
+    ctx.fillStyle = css('--muted'); ctx.font = '12px system-ui';
+    ctx.fillText(`= ${6 * W} multiply-adds`, L.regX, ty + 17);
+  }
+}
+
+function drawAoS(p) {
+  ctx.clearRect(0, 0, L.Wpx, L.H);
+  const y = 60, cell = Math.min(L.cell, Math.floor((L.Wpx - 40) / (6 * 4)));
+  ctx.font = '600 12px system-ui'; ctx.fillStyle = css('--text');
+  ctx.fillText('Same data, one struct per robot (array of structs)', 20, 30);
+  for (let inst = 0; inst < 4; inst++) for (let c = 0; c < 6; c++) {
+    const x = 20 + (inst * 6 + c) * cell;
+    ctx.fillStyle = batchColor(0); ctx.globalAlpha = 0.25 + 0.15 * (inst % 2); rr(x + 1, y + 1, cell - 2, cell - 2, 3); ctx.fill(); ctx.globalAlpha = 1;
+    if (cell >= 18) { ctx.fillStyle = css('--text'); ctx.font = `${Math.min(10, cell * 0.35)}px system-ui`; ctx.textAlign = 'center';
+      ctx.fillText(COMPS[c], x + cell / 2, y + cell / 2 + 3); ctx.textAlign = 'left'; }
+  }
+  ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui';
+  for (let inst = 0; inst < 4; inst++) ctx.fillText(`robot ${inst}`, 20 + inst * 6 * cell + 2, y - 6);
+  // what one register-sized load grabs
+  const t = ease(Math.min(1, p * 1.5));
+  ctx.strokeStyle = css('--bad'); ctx.lineWidth = 2; rr(20 + 1, y - 2 + 0 * t, W * cell - 2, cell + 4, 5); ctx.globalAlpha = t; ctx.stroke(); ctx.globalAlpha = 1;
+  ctx.fillStyle = css('--bad'); ctx.font = '600 12px system-ui';
+  ctx.fillText(`one ${W}-lane load grabs this: mixed components, not ωx for ${W} robots`, 20, y + cell + 26);
+  // the scalar loads it would take instead
+  const y2 = y + cell + 70;
+  ctx.fillStyle = css('--text'); ctx.font = '600 12px system-ui'; ctx.fillText(`To fill one register with ωx for ${W} robots:`, 20, y2);
+  const shown = Math.floor(Math.min(1, Math.max(0, (p - 0.35) * 1.8)) * W);
+  for (let k = 0; k < W; k++) {
+    ctx.globalAlpha = k < shown ? 1 : 0.2; ctx.fillStyle = css('--muted'); ctx.font = '12px system-ui';
+    ctx.fillText(`load ωx of robot ${k}`, 20 + (k % 4) * Math.max(130, cell * 6), y2 + 22 + Math.floor(k / 4) * 18);
+  }
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = css('--done'); ctx.font = '600 12px system-ui';
+  ctx.fillText(`Structure of arrays: 1 load.`, 20, y2 + 22 + Math.ceil(W / 4) * 18 + 16);
+}
+
+function drawSpill(p) {
+  ctx.clearRect(0, 0, L.Wpx, L.H);
+  const cols = L.wide ? 8 : 4, size = Math.min(44, Math.floor((L.Wpx - 60) / (cols * 2 + 2)));
+  const regX = 20, stX = L.wide ? regX + 8 * (size + 6) + 60 : regX, stY0 = L.wide ? 60 : 60 + 2 * (size + 6) * 2 + 60;
+  ctx.font = '600 12px system-ui'; ctx.fillStyle = css('--text');
+  ctx.fillText('16 vector registers', regX, 40); ctx.fillText('Stack (in L1 cache)', stX, stY0 - 20);
+  const shown = Math.floor(ease(Math.min(1, p * 1.25)) * 36);
+  for (let k = 0; k < 16; k++) {
+    const x = regX + (k % cols) * (size + 6), y = 60 + Math.floor(k / cols) * (size + 6);
+    ctx.fillStyle = css('--reg'); rr(x, y, size, size, 6); ctx.fill();
+    if (k < shown) { ctx.fillStyle = css('--b0'); rr(x + 3, y + 3, size - 6, size - 6, 4); ctx.fill(); }
+  }
+  for (let k = 16; k < 36; k++) {
+    const j = k - 16, x = stX + (j % cols) * (size + 6), y = stY0 + Math.floor(j / cols) * (size + 6);
+    ctx.strokeStyle = css('--line'); rr(x, y, size, size, 6); ctx.stroke();
+    if (k < shown) { ctx.fillStyle = css('--stack'); rr(x, y, size, size, 6); ctx.fill(); ctx.fillStyle = css('--b3'); rr(x + 3, y + 3, size - 6, size - 6, 4); ctx.fill(); }
+  }
+  ctx.fillStyle = css('--muted'); ctx.font = '12px system-ui';
+  const by = Math.max(60 + 2 * (size + 6), stY0 + Math.ceil(20 / cols) * (size + 6)) + 28;
+  ctx.fillText(`6×6 matrix of batches: ${Math.min(shown, 36)} of 36 values placed`, regX, by);
+}
+
+function drawMeasured(p) {
+  ctx.clearRect(0, 0, L.Wpx, L.H);
+  const rows = [
+    {k: 4, label: 'SSE build: every access is', m: MEASURED[4]},
+    {k: 8, label: 'AVX2 build: every access is', m: MEASURED[8]},
+  ];
+  const cell = Math.min(30, Math.floor((L.Wpx - 60) / 16));
+  rows.forEach((row, ri) => {
+    const y = 50 + ri * 110;
+    ctx.fillStyle = css('--text'); ctx.font = '600 13px system-ui';
+    ctx.fillText(`${row.label} ${row.m.bytes} bytes = ${row.k} floats`, 20, y);
+    const t = ease(Math.min(1, Math.max(0, p * 2 - ri * 0.5)));
+    for (let i = 0; i < 16; i++) {
+      const b = Math.floor(i / row.k);
+      ctx.fillStyle = batchColor(b); ctx.globalAlpha = 0.3 + 0.7 * t; rr(20 + i * cell + 1, y + 12, cell - 2, cell - 2, 3); ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+    for (let b = 0; b < 16 / row.k; b++) {
+      ctx.strokeStyle = css('--text'); ctx.lineWidth = 1.5; rr(20 + b * row.k * cell, y + 10, row.k * cell, cell + 2, 5); ctx.globalAlpha = t; ctx.stroke(); ctx.globalAlpha = 1;
+    }
+    ctx.fillStyle = css('--muted'); ctx.font = '12px system-ui';
+    ctx.fillText(`IntegrateVelocityOp: ${row.m.loadsA} + ${row.m.loadsV} loads, ${row.m.storesV} stores = 6 components × ${row.m.batches} batches · ${row.m.aligned} aligned`, 20, y + cell + 30);
+  });
+}
+
+// ---------- playback ----------
+let k = 0, t0 = performance.now(), playing = true, paused = 0;
+function frame(now) {
+  const step = steps[k];
+  const p = playing ? Math.min(1, (now - t0) / 1000 / step.dur) : paused;
+  layoutIfNeeded();
+  const a = step.act;
+  if (a.type === 'aos') drawAoS(p);
+  else if (a.type === 'spill') drawSpill(p);
+  else if (a.type === 'measured') drawMeasured(p);
+  else {
+    ctx.clearRect(0, 0, L.Wpx, L.H);
+    const st = stateAt(k);
+    // while a load/store is in flight, the destination is still empty in `st`
+    drawBase(st, a, p);
+    drawAction(st, a, p);
+  }
+  if (playing && p >= 1) { if (k < steps.length - 1) go(k + 1); else setPlaying(false, 1); }
+  requestAnimationFrame(frame);
+}
+let lastW = 0;
+function layoutIfNeeded() { const w = cv.parentElement.clientWidth; if (w !== lastW) { lastW = w; layout(); } }
+function go(n) {
+  k = Math.max(0, Math.min(steps.length - 1, n)); t0 = performance.now(); paused = playing ? 0 : 1;
+  document.getElementById('caption').innerHTML = steps[k].cap;
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('on', i === k));
+}
+function setPlaying(on, at) {
+  playing = on; document.getElementById('play').textContent = on ? '❚❚ Pause' : '▶ Play';
+  if (on) t0 = performance.now() - (at || 0) * steps[k].dur * 1000; else paused = at ?? Math.min(1, (performance.now() - t0) / 1000 / steps[k].dur);
+}
+function buildDots() {
+  document.getElementById('dots').innerHTML = steps.map((_, i) => `<button class="dot" aria-label="Step ${i + 1}"></button>`).join('');
+  document.querySelectorAll('.dot').forEach((d, i) => d.addEventListener('click', () => { setPlaying(false, 1); go(i); }));
+}
+function setLanes(w) {
+  W = w; steps = buildSteps(); buildDots(); layout();
+  document.getElementById('w8').setAttribute('aria-pressed', w === 8); document.getElementById('w4').setAttribute('aria-pressed', w === 4);
+  document.getElementById('foot').textContent =
+    `Measured with tools/memviz (every load and store recorded by Valgrind) on 8 three-joint arms, one step. ` +
+    `Lanes: ${MEASURED[w].isa}. Animation is a simplified view: in the real build these values also pass through a ` +
+    `stack temporary (${MEASURED[w].stackPct}% of this op's accesses), likely because the op's body lives in a separate .cpp file and can't be inlined.`;
+  go(0); setPlaying(true, 0);
+}
+document.getElementById('play').addEventListener('click', () => setPlaying(!playing, playing ? undefined : (paused >= 1 ? 0 : paused)));
+document.getElementById('prev').addEventListener('click', () => { setPlaying(false, 1); go(k - 1); });
+document.getElementById('next').addEventListener('click', () => { setPlaying(false, 1); go(k + 1); });
+document.getElementById('w8').addEventListener('click', () => setLanes(8));
+document.getElementById('w4').addEventListener('click', () => setLanes(4));
+document.addEventListener('keydown', e => {
+  if (e.key === ' ') { e.preventDefault(); document.getElementById('play').click(); }
+  if (e.key === 'ArrowRight') document.getElementById('next').click();
+  if (e.key === 'ArrowLeft') document.getElementById('prev').click();
+});
+setLanes(8);
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

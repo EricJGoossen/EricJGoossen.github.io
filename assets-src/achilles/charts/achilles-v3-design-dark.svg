@@ -1,0 +1,178 @@
+<svg style="background:#161514" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 700" role="img" aria-labelledby="t d">
+  <title id="t">Achilles V3 design</title>
+  <desc id="d">Top: one simulation frame as eight passes in one direction. Actuator torques, then ABA forward dynamics (outward, inward, outward tree sweeps), integration with joint limits, an outward kinematics scan, then flat collision passes: broad phase, narrow phase, contact resolution with a sensor split, and a debug render. Contact impulses feed joint velocities in the next frame. Bottom: data lifetimes. Static data is built once at load, only joint positions and velocities persist between frames, and everything else is rederived each frame in a frame arena whose bytes are reused between passes.</desc>
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: #f2f1ef; font-size: 13px; }
+    .c { text-anchor: middle; }
+    .e { text-anchor: end; }
+    .b { font-weight: 650; font-size: 14px; }
+    .s { font-size: 12px; }
+    .m { fill: #a39d97; }
+    .big { font-size: 26px; font-weight: 650; }
+    .lbl { font-size: 11px; fill: #a39d97; }
+    .id { font-size: 11px; font-weight: 650; fill: #a39d97; letter-spacing: 0.04em; }
+    .head { font-size: 11px; font-weight: 650; letter-spacing: 0.08em; fill: #a39d97; }
+    .box { fill: #1f1e1c; stroke: #3d3a37; stroke-width: 1.25; }
+    .hi { fill: #1d2433; stroke: #7aa2ff; stroke-width: 1.5; }
+    .ar { stroke: #8a847e; stroke-width: 1.5; fill: none; }
+    .ar-dash { stroke: #8a847e; stroke-width: 1.5; fill: none; stroke-dasharray: 5 4; }
+    .ar-out { stroke: #7aa2ff; stroke-width: 2; fill: none; }
+    .ar-in { stroke: #fb923c; stroke-width: 2; fill: none; }
+    .head-ar { fill: #8a847e; }
+    .tag { fill: #2a2826; } .tag-out { fill: #1d2433; } .tag-in { fill: #3a2418; }
+    .t-out { fill: #7aa2ff; } .t-in { fill: #fb923c; }
+    .bar { fill: #2a2826; stroke: #3d3a37; stroke-width: 1.25; }
+    .guide { stroke: #a39d97; stroke-width: 1; stroke-dasharray: 3 3; }
+    .rule { stroke: #3d3a37; stroke-width: 1; }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="head-ar" d="M0,0 L10,5 L0,10 z"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#161514"/>
+
+  <!-- ===== Each frame ===== -->
+  <text class="head" x="20" y="30">EACH FRAME</text>
+
+  <!-- row 1: dynamics + kinematics (B1-B4) -->
+  <rect class="box" x="20" y="44" width="135" height="100" rx="10"/>
+  <text class="id" x="32" y="62">B1</text>
+  <text class="c b" x="87" y="82">Actuator</text>
+  <text class="c b" x="87" y="99">torques</text>
+  <rect class="tag" x="57" y="113" width="60" height="20" rx="10"/>
+  <text class="c lbl" x="87" y="127">flat</text>
+
+  <rect class="box" x="188" y="44" width="135" height="100" rx="10"/>
+  <text class="id" x="200" y="62">B2</text>
+  <text class="c b" x="255" y="82">ABA forward</text>
+  <text class="c b" x="255" y="99">dynamics</text>
+  <rect class="tag-out" x="196" y="113" width="38" height="20" rx="10"/>
+  <text class="c lbl t-out" x="215" y="127">out</text>
+  <rect class="tag-in" x="237" y="113" width="36" height="20" rx="10"/>
+  <text class="c lbl t-in" x="255" y="127">in</text>
+  <rect class="tag-out" x="276" y="113" width="38" height="20" rx="10"/>
+  <text class="c lbl t-out" x="295" y="127">out</text>
+
+  <rect class="box" x="356" y="44" width="135" height="100" rx="10"/>
+  <text class="id" x="368" y="62">B3</text>
+  <text class="c b" x="423" y="82">Integrate +</text>
+  <text class="c b" x="423" y="99">joint limits</text>
+  <rect class="tag" x="393" y="113" width="60" height="20" rx="10"/>
+  <text class="c lbl" x="423" y="127">flat</text>
+
+  <rect class="box" x="524" y="44" width="135" height="100" rx="10"/>
+  <text class="id" x="536" y="62">B4</text>
+  <text class="c b" x="591" y="82">Kinematics</text>
+  <text class="c b" x="591" y="99">scan</text>
+  <rect class="tag-out" x="561" y="113" width="60" height="20" rx="10"/>
+  <text class="c lbl t-out" x="591" y="127">out</text>
+
+  <line class="ar" x1="155" y1="94" x2="185" y2="94" marker-end="url(#a)"/>
+  <text class="lbl c" x="171" y="86">τ</text>
+  <line class="ar" x1="323" y1="94" x2="353" y2="94" marker-end="url(#a)"/>
+  <text class="lbl c" x="339" y="86">q̈</text>
+  <line class="ar" x1="491" y1="94" x2="521" y2="94" marker-end="url(#a)"/>
+  <text class="lbl c" x="507" y="86">q, q̇</text>
+
+  <line class="ar" x1="591" y1="144" x2="591" y2="197" marker-end="url(#a)"/>
+  <text class="lbl e" x="583" y="167">world</text>
+  <text class="lbl e" x="583" y="180">transforms</text>
+
+  <!-- row 2: collision + render (C1-D1), right to left -->
+  <rect class="box" x="524" y="200" width="135" height="100" rx="10"/>
+  <text class="id" x="536" y="218">C1</text>
+  <text class="c b" x="591" y="238">Broad phase</text>
+  <text class="c s m" x="591" y="255">occupancy grid</text>
+  <rect class="tag" x="561" y="269" width="60" height="20" rx="10"/>
+  <text class="c lbl" x="591" y="283">flat</text>
+
+  <rect class="box" x="356" y="200" width="135" height="100" rx="10"/>
+  <text class="id" x="368" y="218">C2</text>
+  <text class="c b" x="423" y="238">Narrow phase</text>
+  <text class="c s m" x="423" y="255">sphere vs sphere</text>
+  <rect class="tag" x="393" y="269" width="60" height="20" rx="10"/>
+  <text class="c lbl" x="423" y="283">flat</text>
+
+  <rect class="box" x="188" y="200" width="135" height="100" rx="10"/>
+  <text class="id" x="200" y="218">C3</text>
+  <text class="c b" x="255" y="238">Contacts</text>
+  <text class="c s m" x="255" y="255">resolve + sensor split</text>
+  <rect class="tag" x="225" y="269" width="60" height="20" rx="10"/>
+  <text class="c lbl" x="255" y="283">flat</text>
+
+  <rect class="box" x="20" y="200" width="135" height="100" rx="10"/>
+  <text class="id" x="32" y="218">D1</text>
+  <text class="c b" x="87" y="238">Debug render</text>
+  <text class="c s m" x="87" y="255">via OpenGL</text>
+  <rect class="tag" x="52" y="269" width="70" height="20" rx="10"/>
+  <text class="c lbl" x="87" y="283">library</text>
+
+  <line class="ar" x1="524" y1="250" x2="494" y2="250" marker-end="url(#a)"/>
+  <text class="lbl c" x="508" y="242">pairs</text>
+  <line class="ar" x1="356" y1="250" x2="326" y2="250" marker-end="url(#a)"/>
+  <text class="lbl c" x="340" y="242">hits</text>
+  <line class="ar" x1="188" y1="250" x2="158" y2="250" marker-end="url(#a)"/>
+
+  <!-- the one cross-frame edge -->
+  <line class="ar-dash" x1="255" y1="200" x2="255" y2="147" marker-end="url(#a)"/>
+  <text class="lbl" x="263" y="171">impulses → q̇</text>
+  <text class="lbl" x="263" y="184">(next frame)</text>
+
+  <!-- legend -->
+  <line class="ar-out" x1="20" y1="324" x2="42" y2="324"/>
+  <text class="lbl" x="50" y="328">outward tree sweep</text>
+  <line class="ar-in" x1="175" y1="324" x2="197" y2="324"/>
+  <text class="lbl" x="205" y="328">inward tree sweep</text>
+  <rect class="tag" x="325" y="317" width="22" height="14" rx="7"/>
+  <text class="lbl" x="355" y="328">flat pass over arrays</text>
+  <text class="lbl e" x="660" y="328">data only flows forward</text>
+
+  <line class="rule" x1="20" y1="350" x2="660" y2="350"/>
+
+  <!-- ===== Data lifetimes ===== -->
+  <text class="head" x="20" y="380">DATA LIFETIMES</text>
+
+  <rect class="box" x="20" y="394" width="200" height="170" rx="10"/>
+  <text class="c b" x="120" y="418">Static</text>
+  <text class="c s m" x="120" y="435">built once at load</text>
+  <text class="c" x="120" y="460">parent indices</text>
+  <text class="c" x="120" y="478">joint subspaces S</text>
+  <text class="c" x="120" y="496">joint offsets</text>
+  <text class="c" x="120" y="514">inertias (10 floats)</text>
+  <text class="c" x="120" y="532">collision spheres</text>
+  <text class="c s m" x="120" y="550">meshes, limits (cold)</text>
+
+  <rect class="hi" x="240" y="394" width="200" height="170" rx="10"/>
+  <text class="c b" x="340" y="418">Persistent</text>
+  <text class="c s m" x="340" y="435">survives between frames</text>
+  <text class="c big" x="340" y="484">q, q̇</text>
+  <text class="c" x="340" y="518">the only real state</text>
+  <text class="c s m" x="340" y="538">reset = rewrite q, q̇</text>
+
+  <rect class="box" x="460" y="394" width="200" height="170" rx="10"/>
+  <text class="c b" x="560" y="418">Temporary</text>
+  <text class="c s m" x="560" y="435">rederived every frame</text>
+  <text class="c" x="560" y="460">τ, q̈</text>
+  <text class="c" x="560" y="478">ABA scratch:</text>
+  <text class="c" x="560" y="496">Xup, v, c, IA, pA</text>
+  <text class="c" x="560" y="514">world transforms</text>
+  <text class="c" x="560" y="532">contacts</text>
+  <text class="c s m" x="560" y="550">nothing to save</text>
+
+  <!-- frame arena: same bytes, different passes -->
+  <text class="head" x="20" y="600">FRAME ARENA</text>
+  <line class="guide" x1="130" y1="610" x2="130" y2="690"/>
+  <text class="lbl" x="134" y="607">offset 0</text>
+
+  <text class="lbl e" x="122" y="636">during ABA</text>
+  <rect class="bar" x="130" y="618" width="390" height="28" rx="6"/>
+  <text class="c s" x="325" y="637">Xup · v · c · IA · pA</text>
+
+  <text class="lbl e" x="122" y="676">during collision</text>
+  <rect class="bar" x="130" y="658" width="300" height="28" rx="6"/>
+  <text class="c s" x="280" y="677">pairs · sphere positions</text>
+
+  <text class="lbl" x="534" y="636">same bytes,</text>
+  <text class="lbl" x="534" y="650">rewound between</text>
+  <text class="lbl" x="534" y="664">passes; sized to</text>
+  <text class="lbl" x="534" y="678">the largest one</text>
+</svg>

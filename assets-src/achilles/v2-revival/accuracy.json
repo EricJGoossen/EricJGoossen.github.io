@@ -1,0 +1,48 @@
+{
+  "disk": {
+    "joint0": {
+      "v2_final_rad": 4.001,
+      "mujoco_final_rad": 4.0009999999997525,
+      "max_abs_err_rad": 4.999999972499225e-06,
+      "rms_err_rad": 2.092643108688522e-06,
+      "peak_speed_v2": 2.0,
+      "peak_speed_mujoco": 1.9999999999998352
+    },
+    "vs_exact": {
+      "v2_max_abs_err_rad": 4.999999972499225e-06,
+      "mujoco_max_abs_err_rad": 0.0
+    }
+  },
+  "arm": {
+    "joint0": {
+      "v2_final_rad": 4.58366,
+      "mujoco_final_rad": 1.1459146477836961,
+      "max_abs_err_rad": 3.43774620978843,
+      "rms_err_rad": 2.0056993830235688,
+      "peak_speed_v2": 1.52789,
+      "peak_speed_mujoco": 0.3819715492612318
+    },
+    "vs_exact": {
+      "v2_max_abs_err_rad": 3.437746209788429,
+      "mujoco_max_abs_err_rad": 1.1102230246251565e-15
+    }
+  },
+  "arm2": {
+    "joint0": {
+      "v2_final_rad": 2.86479,
+      "mujoco_final_rad": 0.5696531776637574,
+      "max_abs_err_rad": 2.298453662427382,
+      "rms_err_rad": 1.3404891227674165,
+      "peak_speed_v2": 0.954929,
+      "peak_speed_mujoco": 0.25568549114709105
+    },
+    "joint1": {
+      "v2_final_rad": 2.86767,
+      "mujoco_final_rad": -1.4295772279989951,
+      "max_abs_err_rad": 4.297247227998995,
+      "rms_err_rad": 2.569452709996501,
+      "peak_speed_v2": 1.04482,
+      "peak_speed_mujoco": 0.6876227827530642
+    }
+  }
+}

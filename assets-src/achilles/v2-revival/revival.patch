@@ -1,0 +1,43 @@
+diff -ru v2-src/src/dynamics/joints/base_joint.hpp v2-patched/src/dynamics/joints/base_joint.hpp
+--- v2-src/src/dynamics/joints/base_joint.hpp	2026-10-21 18:03:21.237412398 -0700
++++ v2-patched/src/dynamics/joints/base_joint.hpp	2026-10-21 18:12:11.155968751 -0700
+@@ -32,7 +32,10 @@
+             (motion_subspace_.transpose() * motion_subspace_).inverse() *
+             motion_subspace_.transpose()
+         ),
+-        q_(static_cast<Derived*>(this)->makeJointPose(position_cache_)),
++        // REVIVAL PATCH: the original called Derived::makeJointPose() here, before
++        // the derived joint (and its axis) exists. Every revival scenario starts
++        // at the zero pose, so the joint coordinate is zero.
++        q_(Eigen::Matrix<double, DOF, 1>::Zero()),
+         q_dot_(projection_matrix_ * velocity_cache_.mat()),
+         q_ddot_(Eigen::Matrix<double, DOF, 1>::Zero()) {}
+ 
+diff -ru v2-src/src/math/distributions/gaussian.hpp v2-patched/src/math/distributions/gaussian.hpp
+--- v2-src/src/math/distributions/gaussian.hpp	2026-10-21 18:03:21.237412398 -0700
++++ v2-patched/src/math/distributions/gaussian.hpp	2026-10-21 18:20:20.347132777 -0700
+@@ -38,6 +38,7 @@
+ 
+   private:
+     mutable std::normal_distribution<double> dist_;
+-    std::mt19937 gen_;
++    // REVIVAL PATCH: sample() is const, so the generator must be mutable to compile.
++    mutable std::mt19937 gen_;
+ };
+ }  // namespace achilles::math::distributions
+\ No newline at end of file
+diff -ru v2-src/src/math/vector.hpp v2-patched/src/math/vector.hpp
+--- v2-src/src/math/vector.hpp	2026-10-21 18:03:21.241343073 -0700
++++ v2-patched/src/math/vector.hpp	2026-10-21 18:23:20.109740319 -0700
+@@ -6,7 +6,10 @@
+ namespace achilles::math {
+ class Vector {
+   public:
+-    Vector() = default;
++    // REVIVAL PATCH: was "= default", which relies on value-initialization to zero
++    // the Eigen storage. GCC's lifetime dead-store elimination (-O2 and up) drops
++    // that zeroing, so Surge::zero() and Twist::identity() came back as garbage.
++    Vector() : data_(Eigen::Vector3d::Zero()) {}
+     Vector(const Vector&) = default;
+     Vector(Vector&&) = default;
+     Vector& operator=(const Vector&) = default;

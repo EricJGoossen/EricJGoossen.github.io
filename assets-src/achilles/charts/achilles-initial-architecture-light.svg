@@ -1,0 +1,168 @@
+<svg style="background:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 792" role="img" aria-labelledby="t d">
+  <title id="t">Achilles initial architecture</title>
+  <desc id="d">Top: the core objects. Link, Joint and Transform all reference a Frame. A Joint joins a parent link to a child link and holds the parent-to-joint transform. An Actuator drives a joint. An SSOF tree owns objects, and the Transform tree extends it, storing transforms by child frame. Bottom: each timestep computes velocities root to leaves, propagates effective mass leaves to root, turns actuator forces into accelerations, propagates accelerations root to leaves, integrates, and updates the transform tree.</desc>
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: #1c1917; font-size: 13px; }
+    .c { text-anchor: middle; }
+    .b { font-weight: 650; font-size: 14px; }
+    .s { font-size: 12px; }
+    .m { fill: #6b6560; }
+    .lbl { font-size: 11px; fill: #6b6560; }
+    .head { font-size: 11px; font-weight: 650; letter-spacing: 0.08em; fill: #6b6560; }
+    .box { fill: #ffffff; stroke: #d6d3d1; stroke-width: 1.25; }
+    .hi { fill: #eff4ff; stroke: #1d4ed8; stroke-width: 1.5; }
+    .ar { stroke: #8a847e; stroke-width: 1.5; fill: none; }
+    .ar-out { stroke: #1d4ed8; stroke-width: 2; fill: none; }
+    .ar-in { stroke: #c2410c; stroke-width: 2; fill: none; }
+    .head-ar { fill: #8a847e; } .head-out { fill: #1d4ed8; } .head-in { fill: #c2410c; }
+    .tag { fill: #f0efed; } .tag-out { fill: #e6eeff; } .tag-in { fill: #fdeee6; }
+    .t-out { fill: #1d4ed8; } .t-in { fill: #c2410c; }
+    .node { fill: #ffffff; stroke: #6b6560; stroke-width: 1.5; }
+    .edge { stroke: #d6d3d1; stroke-width: 2; }
+    .rule { stroke: #d6d3d1; stroke-width: 1; }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="head-ar" d="M0,0 L10,5 L0,10 z"/></marker>
+    <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="head-out" d="M0,0 L10,5 L0,10 z"/></marker>
+    <marker id="ai" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="head-in" d="M0,0 L10,5 L0,10 z"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <!-- ===== Objects ===== -->
+  <text class="head" x="20" y="30">OBJECTS</text>
+
+  <rect class="hi" x="210" y="44" width="260" height="70" rx="10"/>
+  <text class="c b" x="340" y="68">Frame</text>
+  <text class="c s" x="340" y="87">Everything references a frame</text>
+  <text class="c s m" x="340" y="103">Index for finding objects in trees</text>
+
+  <line class="ar" x1="110" y1="170" x2="262" y2="117" marker-end="url(#a)"/>
+  <line class="ar" x1="340" y1="170" x2="340" y2="117" marker-end="url(#a)"/>
+  <line class="ar" x1="570" y1="170" x2="418" y2="117" marker-end="url(#a)"/>
+  <text class="lbl" x="348" y="148">references</text>
+
+  <rect class="box" x="20" y="170" width="180" height="140" rx="10"/>
+  <text class="c b" x="110" y="194">Link</text>
+  <text class="c" x="110" y="216">Mass</text>
+  <text class="c" x="110" y="234">Inertia</text>
+  <text class="c" x="110" y="252">COM offset</text>
+  <text class="c" x="110" y="270">Frame reference</text>
+
+  <rect class="box" x="250" y="170" width="180" height="140" rx="10"/>
+  <text class="c b" x="340" y="194">Joint</text>
+  <text class="c" x="340" y="216">Motion subspace S</text>
+  <text class="c s m" x="340" y="232">(allowed velocities)</text>
+  <text class="c" x="340" y="252">Relative pose, velocity</text>
+  <text class="c" x="340" y="270">Accumulated force</text>
+  <text class="c" x="340" y="288">Parent → joint transform</text>
+
+  <rect class="box" x="480" y="170" width="180" height="140" rx="10"/>
+  <text class="c b" x="570" y="194">Transform</text>
+  <text class="c" x="570" y="216">Relative pose of</text>
+  <text class="c" x="570" y="234">two frames</text>
+
+  <line class="ar" x1="250" y1="236" x2="203" y2="236" marker-end="url(#a)"/>
+  <text class="lbl c" x="225" y="228">joins</text>
+  <line class="ar" x1="430" y1="236" x2="477" y2="236" marker-end="url(#a)"/>
+  <text class="lbl c" x="455" y="228">holds</text>
+
+  <rect class="box" x="250" y="350" width="180" height="74" rx="10"/>
+  <text class="c b" x="340" y="374">Actuator</text>
+  <text class="c" x="340" y="394">Attaches to a joint</text>
+  <text class="c" x="340" y="411">and adds force</text>
+  <line class="ar" x1="340" y1="350" x2="340" y2="313" marker-end="url(#a)"/>
+  <text class="lbl" x="348" y="335">drives</text>
+
+  <rect class="box" x="20" y="350" width="180" height="140" rx="10"/>
+  <text class="c b" x="110" y="374">SSOF tree</text>
+  <text class="c" x="110" y="396">Owns each object</text>
+  <text class="c s m" x="110" y="412">(deletes other references)</text>
+  <text class="c" x="110" y="432">Hands out const copies</text>
+  <line class="ar" x1="110" y1="350" x2="110" y2="313" marker-end="url(#a)"/>
+  <text class="lbl" x="118" y="335">owns</text>
+
+  <rect class="box" x="480" y="350" width="180" height="140" rx="10"/>
+  <text class="c b" x="570" y="374">Transform tree</text>
+  <text class="c" x="570" y="396">Keyed by child frame</text>
+  <text class="c s m" x="570" y="412">(one parent each)</text>
+  <text class="c" x="570" y="432">Pose between any two</text>
+  <text class="c" x="570" y="450">frames = multiply</text>
+  <text class="c" x="570" y="468">poses along the path</text>
+  <line class="ar" x1="570" y1="350" x2="570" y2="313" marker-end="url(#a)"/>
+  <text class="lbl" x="578" y="335">stores</text>
+
+  <line class="ar" x1="200" y1="470" x2="477" y2="470" marker-end="url(#a)"/>
+  <text class="lbl c" x="340" y="462">extended by</text>
+
+  <line class="rule" x1="20" y1="515" x2="660" y2="515"/>
+
+  <!-- ===== Each timestep ===== -->
+  <text class="head" x="20" y="545">EACH TIMESTEP</text>
+
+  <!-- mini joint tree with pass directions -->
+  <line class="edge" x1="95" y1="590" x2="60" y2="640"/>
+  <line class="edge" x1="95" y1="590" x2="130" y2="640"/>
+  <line class="edge" x1="60" y1="640" x2="40" y2="690"/>
+  <line class="edge" x1="60" y1="640" x2="80" y2="690"/>
+  <line class="edge" x1="130" y1="640" x2="130" y2="690"/>
+  <circle class="node" cx="95" cy="590" r="7"/>
+  <circle class="node" cx="60" cy="640" r="7"/>
+  <circle class="node" cx="130" cy="640" r="7"/>
+  <circle class="node" cx="40" cy="690" r="7"/>
+  <circle class="node" cx="80" cy="690" r="7"/>
+  <circle class="node" cx="130" cy="690" r="7"/>
+  <text class="lbl" x="107" y="586">root</text>
+  <line class="ar-out" x1="22" y1="588" x2="22" y2="700" marker-end="url(#ao)"/>
+  <line class="ar-in" x1="162" y1="700" x2="162" y2="588" marker-end="url(#ai)"/>
+  <line class="ar-out" x1="22" y1="735" x2="44" y2="735"/>
+  <text class="lbl" x="52" y="739">outward pass</text>
+  <line class="ar-in" x1="22" y1="757" x2="44" y2="757"/>
+  <text class="lbl" x="52" y="761">inward pass</text>
+
+  <!-- row 1: steps 1-3 -->
+  <rect class="box" x="190" y="565" width="140" height="88" rx="10"/>
+  <text class="c b" x="260" y="589">1. Compute</text>
+  <text class="c b" x="260" y="606">velocities</text>
+  <rect class="tag-out" x="210" y="619" width="100" height="20" rx="10"/>
+  <text class="c lbl t-out" x="260" y="633">root → leaves</text>
+
+  <rect class="box" x="355" y="565" width="140" height="88" rx="10"/>
+  <text class="c b" x="425" y="589">2. Propagate</text>
+  <text class="c b" x="425" y="606">effective mass</text>
+  <rect class="tag-in" x="375" y="619" width="100" height="20" rx="10"/>
+  <text class="c lbl t-in" x="425" y="633">leaves → root</text>
+
+  <rect class="box" x="520" y="565" width="140" height="88" rx="10"/>
+  <text class="c b" x="590" y="589">3. Actuator forces</text>
+  <text class="c b" x="590" y="606">→ accelerations</text>
+  <rect class="tag" x="540" y="619" width="100" height="20" rx="10"/>
+  <text class="c lbl" x="590" y="633">per joint</text>
+
+  <line class="ar" x1="330" y1="609" x2="352" y2="609" marker-end="url(#a)"/>
+  <line class="ar" x1="495" y1="609" x2="517" y2="609" marker-end="url(#a)"/>
+  <line class="ar" x1="590" y1="653" x2="590" y2="682" marker-end="url(#a)"/>
+
+  <!-- row 2: steps 4-6, right to left -->
+  <rect class="box" x="520" y="685" width="140" height="88" rx="10"/>
+  <text class="c b" x="590" y="709">4. Propagate</text>
+  <text class="c b" x="590" y="726">accelerations</text>
+  <rect class="tag-out" x="540" y="739" width="100" height="20" rx="10"/>
+  <text class="c lbl t-out" x="590" y="753">root → leaves</text>
+
+  <rect class="box" x="355" y="685" width="140" height="88" rx="10"/>
+  <text class="c b" x="425" y="709">5. Integrate</text>
+  <text class="c b" x="425" y="726">joint states</text>
+  <rect class="tag" x="375" y="739" width="100" height="20" rx="10"/>
+  <text class="c lbl" x="425" y="753">every joint</text>
+
+  <rect class="box" x="190" y="685" width="140" height="88" rx="10"/>
+  <text class="c b" x="260" y="709">6. Update</text>
+  <text class="c b" x="260" y="726">transform tree</text>
+  <rect class="tag" x="210" y="739" width="100" height="20" rx="10"/>
+  <text class="c lbl" x="260" y="753">new poses</text>
+
+  <line class="ar" x1="520" y1="729" x2="498" y2="729" marker-end="url(#a)"/>
+  <line class="ar" x1="355" y1="729" x2="333" y2="729" marker-end="url(#a)"/>
+  <line class="ar" x1="260" y1="685" x2="260" y2="656" marker-end="url(#a)"/>
+  <text class="lbl" x="268" y="674">next timestep</text>
+</svg>

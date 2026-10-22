@@ -1,0 +1,2042 @@
+{
+  "meta": {
+    "scene": "examples/three_joint_arm.arow",
+    "config": "examples/sim_config.yaml",
+    "copies": 8,
+    "steps": 1,
+    "warmup": 1,
+    "caches": [
+      {
+        "name": "L1",
+        "bytes": 49152,
+        "ways": 12
+      },
+      {
+        "name": "L2",
+        "bytes": 3145728,
+        "ways": 12
+      },
+      {
+        "name": "L3",
+        "bytes": 25165824,
+        "ways": 12
+      }
+    ],
+    "tlb": {
+      "dtlb": [
+        64,
+        4
+      ],
+      "stlb": [
+        2048,
+        16
+      ]
+    },
+    "line": 64,
+    "page": 4096
+  },
+  "summary": {
+    "overall": {
+      "accesses": 8059150,
+      "accesses_per_step": 8059150,
+      "levels": [
+        7342572,
+        716578,
+        0,
+        0
+      ],
+      "loads": 5506484,
+      "stores": 2552666,
+      "stack": 6403381,
+      "arena": 1561424,
+      "other": 94345,
+      "unique_lines": 13351,
+      "unique_pages": 364,
+      "working_set_bytes_per_step": 854464,
+      "arena_full_vector": 1388680,
+      "tlb": [
+        7791447,
+        267703,
+        0
+      ],
+      "page_faults": 0,
+      "instructions_per_step": 17271548
+    },
+    "by_pass": [
+      {
+        "op": "aba::PropagateVelocityOp",
+        "traversal": "TreeTraversal<kForward, 8>",
+        "calls": 1,
+        "accesses": 6063,
+        "levels": [
+          5737,
+          326,
+          0,
+          0
+        ],
+        "stack": 4716,
+        "instructions": 9473
+      },
+      {
+        "op": "aba::PropagateInertiaOp",
+        "traversal": "TreeTraversal<kBackward, 8>",
+        "calls": 1,
+        "accesses": 33170,
+        "levels": [
+          32380,
+          790,
+          0,
+          0
+        ],
+        "stack": 30789,
+        "instructions": 55013
+      },
+      {
+        "op": "aba::PropagateAccelerationOp",
+        "traversal": "TreeTraversal<kForward, 8>",
+        "calls": 1,
+        "accesses": 4153,
+        "levels": [
+          3875,
+          278,
+          0,
+          0
+        ],
+        "stack": 3192,
+        "instructions": 6483
+      },
+      {
+        "op": "broad_phase::ComputeSweptBoxBoundsOp",
+        "traversal": "LinearTraversal<kForward, 8>",
+        "calls": 1,
+        "accesses": 1067,
+        "levels": [
+          954,
+          113,
+          0,
+          0
+        ],
+        "stack": 785,
+        "instructions": 2152
+      },
+      {
+        "op": "broad_phase::TestBoundsOverlapOp",
+        "traversal": "PairTraversal<kForward, 8>",
+        "calls": 1,
+        "accesses": 18143,
+        "levels": [
+          18115,
+          28,
+          0,
+          0
+        ],
+        "stack": 13655,
+        "instructions": 38205
+      },
+      {
+        "op": "narrow_phase::ComputeSweptBoxContactOp",
+        "traversal": "PairTraversal<kForward, 8>",
+        "calls": 1,
+        "accesses": 895526,
+        "levels": [
+          893396,
+          2130,
+          0,
+          0
+        ],
+        "stack": 862982,
+        "instructions": 2084028
+      },
+      {
+        "op": "contact_solver::BeginSolveOp",
+        "traversal": "LinearTraversal<kForward, 8>",
+        "calls": 1,
+        "accesses": 369,
+        "levels": [
+          264,
+          105,
+          0,
+          0
+        ],
+        "stack": 153,
+        "instructions": 477
+      },
+      {
+        "op": "contact_solver::ApplyInertiaForwardOp<contact_solver::kQaccSmooth>",
+        "traversal": "TreeTraversal<kForward, 8>",
+        "calls": 1,
+        "accesses": 2275,
+        "levels": [
+          2043,
+          232,
+          0,
+          0
+        ],
+        "stack": 1728,
+        "instructions": 4113
+      },
+      {
+        "op": "contact_solver::SetupRowsOp",
+        "traversal": "PairTraversal<kForward, 8>",
+        "calls": 1,
+        "accesses": 381831,
+        "levels": [
+          371744,
+          10087,
+          0,
+          0
+        ],
+        "stack": 333495,
+        "instructions": 813661
+      },
+      {
+        "op": "contact_solver::ApplyInertiaForwardOp<contact_solver::kSearch>",
+        "traversal": "TreeTraversal<kForward, 8>",
+        "calls": 21,
+        "accesses": 47775,
+        "levels": [
+          46443,
+          1332,
+          0,
+          0
+        ],
+        "stack": 36288,
+        "instructions": 86373
+      },
+      {
+        "op": "contact_solver::ApplyInertiaBackwardOp",
+        "traversal": "TreeTraversal<kBackward, 8>",
+        "calls": 21,
+        "accesses": 15225,
+        "levels": [
+          14784,
+          441,
+          0,
+          0
+        ],
+        "stack": 6510,
+        "instructions": 37464
+      },
+      {
+        "op": "contact_solver::ProjectSearchOp",
+        "traversal": "PairTraversal<kForward, 8>",
+        "calls": 21,
+        "accesses": 1934688,
+        "levels": [
+          1843470,
+          91218,
+          0,
+          0
+        ],
+        "stack": 1618176,
+        "instructions": 5033658
+      },
+      {
+        "op": "contact_solver::GaussTermsOp",
+        "traversal": "LinearTraversal<kForward, 8>",
+        "calls": 21,
+        "accesses": 4620,
+        "levels": [
+          3171,
+          1449,
+          0,
+          0
+        ],
+        "stack": 1806,
+        "instructions": 8736
+      },
+      {
+        "op": "contact_solver::WarmstartCostOp",
+        "traversal": "PairTraversal<kForward, 8>",
+        "calls": 1,
+        "accesses": 32182,
+        "levels": [
+          26994,
+          5188,
+          0,
+          0
+        ],
+        "stack": 23276,
+        "instructions": 79979
+      },
+      {
+        "op": "contact_solver::ChooseWarmstartOp",
+        "traversal": "GlobalTraversal",
+        "calls": 1,
+        "accesses": 52,
+        "levels": [
+          45,
+          7,
+          0,
+          0
+        ],
+        "stack": 42,
+        "instructions": 74
+      },
+      {
+        "op": "contact_solver::StepJointOp",
+        "traversal": "LinearTraversal<kForward, 8>",
+        "calls": 21,
+        "accesses": 12537,
+        "levels": [
+          8988,
+          3549,
+          0,
+          0
+        ],
+        "stack": 4851,
+        "instructions": 18081
+      },
+      {
+        "op": "contact_solver::ContactForceOp",
+        "traversal": "PairTraversal<kForward, 8>",
+        "calls": 21,
+        "accesses": 1673742,
+        "levels": [
+          1509400,
+          164342,
+          0,
+          0
+        ],
+        "stack": 1244334,
+        "instructions": 3047520
+      },
+      {
+        "op": "contact_solver::ConstraintForceOp",
+        "traversal": "TreeTraversal<kBackward, 8>",
+        "calls": 21,
+        "accesses": 49119,
+        "levels": [
+          43764,
+          5355,
+          0,
+          0
+        ],
+        "stack": 37254,
+        "instructions": 87717
+      },
+      {
+        "op": "contact_solver::GradientOp",
+        "traversal": "LinearTraversal<kForward, 8>",
+        "calls": 21,
+        "accesses": 9912,
+        "levels": [
+          7623,
+          2289,
+          0,
+          0
+        ],
+        "stack": 4620,
+        "instructions": 11550
+      },
+      {
+        "op": "contact_solver::InverseInertiaBackwardOp",
+        "traversal": "TreeTraversal<kBackward, 8>",
+        "calls": 21,
+        "accesses": 137571,
+        "levels": [
+          129234,
+          8337,
+          0,
+          0
+        ],
+        "stack": 117642,
+        "instructions": 226065
+      },
+      {
+        "op": "contact_solver::InverseInertiaForwardOp",
+        "traversal": "TreeTraversal<kForward, 8>",
+        "calls": 21,
+        "accesses": 83265,
+        "levels": [
+          82698,
+          567,
+          0,
+          0
+        ],
+        "stack": 63966,
+        "instructions": 132321
+      },
+      {
+        "op": "contact_solver::ConjugacyTermsOp",
+        "traversal": "LinearTraversal<kForward, 8>",
+        "calls": 21,
+        "accesses": 28098,
+        "levels": [
+          27384,
+          714,
+          0,
+          0
+        ],
+        "stack": 22680,
+        "instructions": 42189
+      },
+      {
+        "op": "contact_solver::ConjugateOp",
+        "traversal": "GlobalTraversal",
+        "calls": 21,
+        "accesses": 1533,
+        "levels": [
+          1449,
+          84,
+          0,
+          0
+        ],
+        "stack": 1239,
+        "instructions": 2352
+      },
+      {
+        "op": "contact_solver::UpdateSearchOp",
+        "traversal": "LinearTraversal<kForward, 8>",
+        "calls": 21,
+        "accesses": 2982,
+        "levels": [
+          2919,
+          63,
+          0,
+          0
+        ],
+        "stack": 588,
+        "instructions": 4179
+      },
+      {
+        "op": "contact_solver::BeginLineSearchOp",
+        "traversal": "GlobalTraversal",
+        "calls": 20,
+        "accesses": 760,
+        "levels": [
+          720,
+          40,
+          0,
+          0
+        ],
+        "stack": 640,
+        "instructions": 1120
+      },
+      {
+        "op": "contact_solver::LineSearchRowsOp",
+        "traversal": "PairTraversal<kForward, 8>",
+        "calls": 80,
+        "accesses": 2655520,
+        "levels": [
+          2240640,
+          414880,
+          0,
+          0
+        ],
+        "stack": 1943040,
+        "instructions": 5390720
+      },
+      {
+        "op": "contact_solver::NewtonStepOp",
+        "traversal": "GlobalTraversal",
+        "calls": 80,
+        "accesses": 5040,
+        "levels": [
+          4640,
+          400,
+          0,
+          0
+        ],
+        "stack": 4080,
+        "instructions": 8000
+      },
+      {
+        "op": "contact_solver::FinishSolveOp",
+        "traversal": "LinearTraversal<kForward, 8>",
+        "calls": 1,
+        "accesses": 92,
+        "levels": [
+          49,
+          43,
+          0,
+          0
+        ],
+        "stack": 20,
+        "instructions": 146
+      },
+      {
+        "op": "vi::IntegrateVelocityOp",
+        "traversal": "LinearTraversal<kForward, 8>",
+        "calls": 1,
+        "accesses": 502,
+        "levels": [
+          476,
+          26,
+          0,
+          0
+        ],
+        "stack": 376,
+        "instructions": 649
+      },
+      {
+        "op": "pi::IntegratePositionOp",
+        "traversal": "LinearTraversal<kForward, 8>",
+        "calls": 1,
+        "accesses": 2385,
+        "levels": [
+          2350,
+          35,
+          0,
+          0
+        ],
+        "stack": 1874,
+        "instructions": 4277
+      }
+    ],
+    "by_region": [
+      {
+        "name": "JointSubspaceSlot",
+        "bytes": 8064,
+        "accesses": 23796,
+        "levels": [
+          20545,
+          3251,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 23796
+        },
+        "aligned": 23796,
+        "loads": 23796,
+        "stores": 0
+      },
+      {
+        "name": "aba::kJointActivationMask",
+        "bytes": 224,
+        "accesses": 6,
+        "levels": [
+          3,
+          3,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 6
+        },
+        "aligned": 6,
+        "loads": 6,
+        "stores": 0
+      },
+      {
+        "name": "aba::kFixedJointTransform",
+        "bytes": 1568,
+        "accesses": 42,
+        "levels": [
+          17,
+          25,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 42
+        },
+        "aligned": 42,
+        "loads": 42,
+        "stores": 0
+      },
+      {
+        "name": "RigidBodyInertiaSlot",
+        "bytes": 2240,
+        "accesses": 1380,
+        "levels": [
+          575,
+          805,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 1380
+        },
+        "aligned": 1380,
+        "loads": 1380,
+        "stores": 0
+      },
+      {
+        "name": "JointPositionSlot",
+        "bytes": 1568,
+        "accesses": 140,
+        "levels": [
+          116,
+          24,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 140
+        },
+        "aligned": 140,
+        "loads": 91,
+        "stores": 49
+      },
+      {
+        "name": "JointVelocitySlot",
+        "bytes": 1344,
+        "accesses": 162,
+        "levels": [
+          140,
+          22,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 162
+        },
+        "aligned": 162,
+        "loads": 120,
+        "stores": 42
+      },
+      {
+        "name": "aba::kJointTorque",
+        "bytes": 1344,
+        "accesses": 36,
+        "levels": [
+          15,
+          21,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 36
+        },
+        "aligned": 36,
+        "loads": 36,
+        "stores": 0
+      },
+      {
+        "name": "ParentToBodyTransformSlot",
+        "bytes": 1568,
+        "accesses": 4620,
+        "levels": [
+          3969,
+          651,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 4620
+        },
+        "aligned": 4620,
+        "loads": 4578,
+        "stores": 42
+      },
+      {
+        "name": "WorldTransformSlot",
+        "bytes": 1568,
+        "accesses": 52808,
+        "levels": [
+          51717,
+          1091,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 25872,
+          "32": 26936
+        },
+        "aligned": 52808,
+        "loads": 52759,
+        "stores": 49
+      },
+      {
+        "name": "SpatialVelocitySlot",
+        "bytes": 1344,
+        "accesses": 2136,
+        "levels": [
+          2082,
+          54,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 1008,
+          "32": 1128
+        },
+        "aligned": 2136,
+        "loads": 2094,
+        "stores": 42
+      },
+      {
+        "name": "aba::kBiasAcceleration",
+        "bytes": 1344,
+        "accesses": 144,
+        "levels": [
+          97,
+          47,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 144
+        },
+        "aligned": 144,
+        "loads": 108,
+        "stores": 36
+      },
+      {
+        "name": "aba::kArticulatedInertia",
+        "bytes": 8064,
+        "accesses": 1152,
+        "levels": [
+          962,
+          190,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 1152
+        },
+        "aligned": 1152,
+        "loads": 684,
+        "stores": 468
+      },
+      {
+        "name": "aba::kArticulatedBiasForce",
+        "bytes": 1344,
+        "accesses": 192,
+        "levels": [
+          161,
+          31,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 192
+        },
+        "aligned": 192,
+        "loads": 114,
+        "stores": 78
+      },
+      {
+        "name": "UTermSlot",
+        "bytes": 8064,
+        "accesses": 9720,
+        "levels": [
+          6877,
+          2843,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 9720
+        },
+        "aligned": 9720,
+        "loads": 9504,
+        "stores": 216
+      },
+      {
+        "name": "DInvTermSlot",
+        "bytes": 8064,
+        "accesses": 9720,
+        "levels": [
+          6899,
+          2821,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 9720
+        },
+        "aligned": 9720,
+        "loads": 9504,
+        "stores": 216
+      },
+      {
+        "name": "aba::kJointBiasForce",
+        "bytes": 1344,
+        "accesses": 108,
+        "levels": [
+          76,
+          32,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 108
+        },
+        "aligned": 108,
+        "loads": 72,
+        "stores": 36
+      },
+      {
+        "name": "JointAccelerationSlot",
+        "bytes": 1344,
+        "accesses": 186,
+        "levels": [
+          122,
+          64,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 186
+        },
+        "aligned": 186,
+        "loads": 114,
+        "stores": 72
+      },
+      {
+        "name": "aba::kSpatialAcceleration",
+        "bytes": 1344,
+        "accesses": 120,
+        "levels": [
+          98,
+          22,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 120
+        },
+        "aligned": 120,
+        "loads": 78,
+        "stores": 42
+      },
+      {
+        "name": "broad_phase::kCollisionPose",
+        "bytes": 1568,
+        "accesses": 42,
+        "levels": [
+          18,
+          24,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 42
+        },
+        "aligned": 42,
+        "loads": 42,
+        "stores": 0
+      },
+      {
+        "name": "CollisionExtentsSlot",
+        "bytes": 672,
+        "accesses": 1026,
+        "levels": [
+          1016,
+          10,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 504,
+          "32": 522
+        },
+        "aligned": 1026,
+        "loads": 1026,
+        "stores": 0
+      },
+      {
+        "name": "CollisionRadiusSlot",
+        "bytes": 224,
+        "accesses": 342,
+        "levels": [
+          338,
+          4,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 168,
+          "32": 174
+        },
+        "aligned": 342,
+        "loads": 342,
+        "stores": 0
+      },
+      {
+        "name": "CollisionMarginSlot",
+        "bytes": 224,
+        "accesses": 678,
+        "levels": [
+          671,
+          7,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 336,
+          "32": 342
+        },
+        "aligned": 678,
+        "loads": 678,
+        "stores": 0
+      },
+      {
+        "name": "broad_phase::kCollisionGroup",
+        "bytes": 224,
+        "accesses": 336,
+        "levels": [
+          332,
+          4,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 168,
+          "32": 168
+        },
+        "aligned": 336,
+        "loads": 336,
+        "stores": 0
+      },
+      {
+        "name": "broad_phase::kCollisionMask",
+        "bytes": 224,
+        "accesses": 336,
+        "levels": [
+          333,
+          3,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 168,
+          "32": 168
+        },
+        "aligned": 336,
+        "loads": 336,
+        "stores": 0
+      },
+      {
+        "name": "WorldShapePoseSlot",
+        "bytes": 1568,
+        "accesses": 2436,
+        "levels": [
+          2411,
+          25,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 1176,
+          "32": 1260
+        },
+        "aligned": 2436,
+        "loads": 2394,
+        "stores": 42
+      },
+      {
+        "name": "broad_phase::kWorldBoundCenter",
+        "bytes": 672,
+        "accesses": 1044,
+        "levels": [
+          1034,
+          10,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 504,
+          "32": 540
+        },
+        "aligned": 1044,
+        "loads": 1026,
+        "stores": 18
+      },
+      {
+        "name": "broad_phase::kWorldBoundExtents",
+        "bytes": 672,
+        "accesses": 1044,
+        "levels": [
+          1033,
+          11,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 504,
+          "32": 540
+        },
+        "aligned": 1044,
+        "loads": 1026,
+        "stores": 18
+      },
+      {
+        "name": "BoundsOverlapSlot",
+        "bytes": 1568,
+        "accesses": 504,
+        "levels": [
+          467,
+          37,
+          0,
+          0
+        ],
+        "sizes": {
+          "1": 336,
+          "4": 168
+        },
+        "aligned": 504,
+        "loads": 336,
+        "stores": 168
+      },
+      {
+        "name": "ContactNormalSlot",
+        "bytes": 37632,
+        "accesses": 1512,
+        "levels": [
+          864,
+          648,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 1512
+        },
+        "aligned": 1512,
+        "loads": 1008,
+        "stores": 504
+      },
+      {
+        "name": "ContactDistanceSlot",
+        "bytes": 50176,
+        "accesses": 2016,
+        "levels": [
+          1152,
+          864,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 2016
+        },
+        "aligned": 2016,
+        "loads": 1344,
+        "stores": 672
+      },
+      {
+        "name": "ContactPointSlot",
+        "bytes": 150528,
+        "accesses": 6048,
+        "levels": [
+          3456,
+          2592,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 6048
+        },
+        "aligned": 6048,
+        "loads": 4032,
+        "stores": 2016
+      },
+      {
+        "name": "ContactActiveSlot",
+        "bytes": 1568,
+        "accesses": 504,
+        "levels": [
+          460,
+          44,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 504
+        },
+        "aligned": 504,
+        "loads": 336,
+        "stores": 168
+      },
+      {
+        "name": "contact_solver::kContactFriction",
+        "bytes": 224,
+        "accesses": 336,
+        "levels": [
+          333,
+          3,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 168,
+          "32": 168
+        },
+        "aligned": 336,
+        "loads": 336,
+        "stores": 0
+      },
+      {
+        "name": "contact_solver::kContactSolref",
+        "bytes": 448,
+        "accesses": 672,
+        "levels": [
+          659,
+          13,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 336,
+          "32": 336
+        },
+        "aligned": 672,
+        "loads": 672,
+        "stores": 0
+      },
+      {
+        "name": "contact_solver::kContactSolimp",
+        "bytes": 1120,
+        "accesses": 1680,
+        "levels": [
+          1645,
+          35,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 840,
+          "32": 840
+        },
+        "aligned": 1680,
+        "loads": 1680,
+        "stores": 0
+      },
+      {
+        "name": "contact_solver::kInverseInertia",
+        "bytes": 8064,
+        "accesses": 0,
+        "levels": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "sizes": {},
+        "aligned": 0,
+        "loads": 0,
+        "stores": 0
+      },
+      {
+        "name": "contact_solver::kInvWeight",
+        "bytes": 448,
+        "accesses": 672,
+        "levels": [
+          658,
+          14,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 336,
+          "32": 336
+        },
+        "aligned": 672,
+        "loads": 672,
+        "stores": 0
+      },
+      {
+        "name": "contact_solver::kQaccSmooth",
+        "bytes": 1344,
+        "accesses": 72,
+        "levels": [
+          51,
+          21,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 72
+        },
+        "aligned": 72,
+        "loads": 36,
+        "stores": 36
+      },
+      {
+        "name": "contact_solver::kQacc",
+        "bytes": 1344,
+        "accesses": 1620,
+        "levels": [
+          1137,
+          483,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 1620
+        },
+        "aligned": 1620,
+        "loads": 828,
+        "stores": 792
+      },
+      {
+        "name": "contact_solver::kMa",
+        "bytes": 1344,
+        "accesses": 3060,
+        "levels": [
+          1716,
+          1344,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 3060
+        },
+        "aligned": 3060,
+        "loads": 2268,
+        "stores": 792
+      },
+      {
+        "name": "contact_solver::kSearch",
+        "bytes": 1344,
+        "accesses": 4572,
+        "levels": [
+          3207,
+          1365,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 4572
+        },
+        "aligned": 4572,
+        "loads": 3780,
+        "stores": 792
+      },
+      {
+        "name": "contact_solver::kMSearch",
+        "bytes": 1344,
+        "accesses": 2268,
+        "levels": [
+          945,
+          1323,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 2268
+        },
+        "aligned": 2268,
+        "loads": 1512,
+        "stores": 756
+      },
+      {
+        "name": "contact_solver::kConstraintForce",
+        "bytes": 1344,
+        "accesses": 2268,
+        "levels": [
+          1827,
+          441,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 2268
+        },
+        "aligned": 2268,
+        "loads": 1512,
+        "stores": 756
+      },
+      {
+        "name": "contact_solver::kGrad",
+        "bytes": 1344,
+        "accesses": 3024,
+        "levels": [
+          2562,
+          462,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 3024
+        },
+        "aligned": 3024,
+        "loads": 2268,
+        "stores": 756
+      },
+      {
+        "name": "contact_solver::kGradPrev",
+        "bytes": 1344,
+        "accesses": 1512,
+        "levels": [
+          1050,
+          462,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 1512
+        },
+        "aligned": 1512,
+        "loads": 756,
+        "stores": 756
+      },
+      {
+        "name": "contact_solver::kMgrad",
+        "bytes": 1344,
+        "accesses": 3780,
+        "levels": [
+          3213,
+          567,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 3780
+        },
+        "aligned": 3780,
+        "loads": 3024,
+        "stores": 756
+      },
+      {
+        "name": "contact_solver::kMgradPrev",
+        "bytes": 1344,
+        "accesses": 1512,
+        "levels": [
+          945,
+          567,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 1512
+        },
+        "aligned": 1512,
+        "loads": 756,
+        "stores": 756
+      },
+      {
+        "name": "contact_solver::kBodyAcceleration",
+        "bytes": 1344,
+        "accesses": 49254,
+        "levels": [
+          48759,
+          495,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 22176,
+          "32": 27078
+        },
+        "aligned": 49254,
+        "loads": 47448,
+        "stores": 1806
+      },
+      {
+        "name": "contact_solver::kBodyForce",
+        "bytes": 1344,
+        "accesses": 7128,
+        "levels": [
+          5824,
+          1304,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 7128
+        },
+        "aligned": 7128,
+        "loads": 3816,
+        "stores": 3312
+      },
+      {
+        "name": "contact_solver::kBodyWrenchTarget",
+        "bytes": 1344,
+        "accesses": 43848,
+        "levels": [
+          43134,
+          714,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 43848
+        },
+        "aligned": 43848,
+        "loads": 21924,
+        "stores": 21924
+      },
+      {
+        "name": "contact_solver::kBodyWrenchSource",
+        "bytes": 1344,
+        "accesses": 43848,
+        "levels": [
+          42840,
+          1008,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 42336,
+          "32": 1512
+        },
+        "aligned": 43848,
+        "loads": 21924,
+        "stores": 21924
+      },
+      {
+        "name": "contact_solver::kInverseBiasForce",
+        "bytes": 1344,
+        "accesses": 3150,
+        "levels": [
+          2268,
+          882,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 3150
+        },
+        "aligned": 3150,
+        "loads": 1512,
+        "stores": 1638
+      },
+      {
+        "name": "contact_solver::kInverseJointForce",
+        "bytes": 1344,
+        "accesses": 2268,
+        "levels": [
+          1827,
+          441,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 2268
+        },
+        "aligned": 2268,
+        "loads": 1512,
+        "stores": 756
+      },
+      {
+        "name": "contact_solver::kEdgeDirections",
+        "bytes": 150528,
+        "accesses": 88704,
+        "levels": [
+          32976,
+          55728,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 88704
+        },
+        "aligned": 88704,
+        "loads": 86688,
+        "stores": 2016
+      },
+      {
+        "name": "contact_solver::kRowPoint",
+        "bytes": 150528,
+        "accesses": 88704,
+        "levels": [
+          32976,
+          55728,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 88704
+        },
+        "aligned": 88704,
+        "loads": 86688,
+        "stores": 2016
+      },
+      {
+        "name": "contact_solver::kRowReference",
+        "bytes": 200704,
+        "accesses": 5376,
+        "levels": [
+          3648,
+          1728,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 5376
+        },
+        "aligned": 5376,
+        "loads": 2688,
+        "stores": 2688
+      },
+      {
+        "name": "contact_solver::kRowWeight",
+        "bytes": 200704,
+        "accesses": 279552,
+        "levels": [
+          101568,
+          177984,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 279552
+        },
+        "aligned": 279552,
+        "loads": 276864,
+        "stores": 2688
+      },
+      {
+        "name": "contact_solver::kRowResidual",
+        "bytes": 200704,
+        "accesses": 336000,
+        "levels": [
+          158016,
+          177984,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 336000
+        },
+        "aligned": 336000,
+        "loads": 276864,
+        "stores": 59136
+      },
+      {
+        "name": "contact_solver::kRowSearch",
+        "bytes": 200704,
+        "accesses": 387072,
+        "levels": [
+          174528,
+          212544,
+          0,
+          0
+        ],
+        "sizes": {
+          "32": 387072
+        },
+        "aligned": 387072,
+        "loads": 330624,
+        "stores": 56448
+      },
+      {
+        "name": "contact_solver::kStep",
+        "bytes": 32,
+        "accesses": 17296,
+        "levels": [
+          17275,
+          21,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 17296
+        },
+        "aligned": 17296,
+        "loads": 17195,
+        "stores": 101
+      },
+      {
+        "name": "contact_solver::kStepLow",
+        "bytes": 32,
+        "accesses": 200,
+        "levels": [
+          200,
+          0,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 200
+        },
+        "aligned": 200,
+        "loads": 100,
+        "stores": 100
+      },
+      {
+        "name": "contact_solver::kStepHigh",
+        "bytes": 32,
+        "accesses": 200,
+        "levels": [
+          180,
+          20,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 200
+        },
+        "aligned": 200,
+        "loads": 100,
+        "stores": 100
+      },
+      {
+        "name": "contact_solver::kRowSlope",
+        "bytes": 32,
+        "accesses": 27040,
+        "levels": [
+          27040,
+          0,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 27040
+        },
+        "aligned": 27040,
+        "loads": 13520,
+        "stores": 13520
+      },
+      {
+        "name": "contact_solver::kRowCurvature",
+        "bytes": 32,
+        "accesses": 27040,
+        "levels": [
+          27020,
+          20,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 27040
+        },
+        "aligned": 27040,
+        "loads": 13520,
+        "stores": 13520
+      },
+      {
+        "name": "contact_solver::kRowCostSmooth",
+        "bytes": 32,
+        "accesses": 338,
+        "levels": [
+          337,
+          1,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 338
+        },
+        "aligned": 338,
+        "loads": 169,
+        "stores": 169
+      },
+      {
+        "name": "contact_solver::kRowCostWarm",
+        "bytes": 32,
+        "accesses": 338,
+        "levels": [
+          338,
+          0,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 338
+        },
+        "aligned": 338,
+        "loads": 169,
+        "stores": 169
+      },
+      {
+        "name": "contact_solver::kSearchMSearch",
+        "bytes": 32,
+        "accesses": 354,
+        "levels": [
+          253,
+          101,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 354
+        },
+        "aligned": 354,
+        "loads": 207,
+        "stores": 147
+      },
+      {
+        "name": "contact_solver::kSearchMa",
+        "bytes": 32,
+        "accesses": 354,
+        "levels": [
+          252,
+          102,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 354
+        },
+        "aligned": 354,
+        "loads": 207,
+        "stores": 147
+      },
+      {
+        "name": "contact_solver::kSearchDotDiff",
+        "bytes": 32,
+        "accesses": 294,
+        "levels": [
+          273,
+          21,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 294
+        },
+        "aligned": 294,
+        "loads": 147,
+        "stores": 147
+      },
+      {
+        "name": "contact_solver::kDiffDotMDiff",
+        "bytes": 32,
+        "accesses": 294,
+        "levels": [
+          273,
+          21,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 294
+        },
+        "aligned": 294,
+        "loads": 147,
+        "stores": 147
+      },
+      {
+        "name": "contact_solver::kDiffDotMgrad",
+        "bytes": 32,
+        "accesses": 294,
+        "levels": [
+          294,
+          0,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 294
+        },
+        "aligned": 294,
+        "loads": 147,
+        "stores": 147
+      },
+      {
+        "name": "contact_solver::kSearchDotGrad",
+        "bytes": 32,
+        "accesses": 294,
+        "levels": [
+          273,
+          21,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 294
+        },
+        "aligned": 294,
+        "loads": 147,
+        "stores": 147
+      },
+      {
+        "name": "contact_solver::kSearchNormSq",
+        "bytes": 32,
+        "accesses": 294,
+        "levels": [
+          294,
+          0,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 294
+        },
+        "aligned": 294,
+        "loads": 147,
+        "stores": 147
+      },
+      {
+        "name": "contact_solver::kGradNormSq",
+        "bytes": 32,
+        "accesses": 294,
+        "levels": [
+          273,
+          21,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 294
+        },
+        "aligned": 294,
+        "loads": 147,
+        "stores": 147
+      },
+      {
+        "name": "contact_solver::kBeta",
+        "bytes": 32,
+        "accesses": 168,
+        "levels": [
+          168,
+          0,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 168
+        },
+        "aligned": 168,
+        "loads": 147,
+        "stores": 21
+      },
+      {
+        "name": "contact_solver::kRestart",
+        "bytes": 32,
+        "accesses": 44,
+        "levels": [
+          22,
+          22,
+          0,
+          0
+        ],
+        "sizes": {
+          "4": 44
+        },
+        "aligned": 44,
+        "loads": 22,
+        "stores": 22
+      },
+      {
+        "name": "midpoint::kStartPosition",
+        "bytes": 1568,
+        "accesses": 0,
+        "levels": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "sizes": {},
+        "aligned": 0,
+        "loads": 0,
+        "stores": 0
+      },
+      {
+        "name": "midpoint::kStartVelocity",
+        "bytes": 1344,
+        "accesses": 0,
+        "levels": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "sizes": {},
+        "aligned": 0,
+        "loads": 0,
+        "stores": 0
+      },
+      {
+        "name": "midpoint::kNextVelocity",
+        "bytes": 1344,
+        "accesses": 0,
+        "levels": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "sizes": {},
+        "aligned": 0,
+        "loads": 0,
+        "stores": 0
+      },
+      {
+        "name": "rk4::kStartPosition",
+        "bytes": 1568,
+        "accesses": 0,
+        "levels": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "sizes": {},
+        "aligned": 0,
+        "loads": 0,
+        "stores": 0
+      },
+      {
+        "name": "rk4::kStartVelocity",
+        "bytes": 1344,
+        "accesses": 0,
+        "levels": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "sizes": {},
+        "aligned": 0,
+        "loads": 0,
+        "stores": 0
+      },
+      {
+        "name": "rk4::kVelocitySum",
+        "bytes": 1344,
+        "accesses": 0,
+        "levels": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "sizes": {},
+        "aligned": 0,
+        "loads": 0,
+        "stores": 0
+      },
+      {
+        "name": "rk4::kAccelerationSum",
+        "bytes": 1344,
+        "accesses": 0,
+        "levels": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "sizes": {},
+        "aligned": 0,
+        "loads": 0,
+        "stores": 0
+      },
+      {
+        "name": "viz::kVisualExtents",
+        "bytes": 672,
+        "accesses": 0,
+        "levels": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "sizes": {},
+        "aligned": 0,
+        "loads": 0,
+        "stores": 0
+      },
+      {
+        "name": "viz::kVisualColor",
+        "bytes": 672,
+        "accesses": 0,
+        "levels": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "sizes": {},
+        "aligned": 0,
+        "loads": 0,
+        "stores": 0
+      },
+      {
+        "name": "[stack: locals + spills]",
+        "bytes": 0,
+        "accesses": 6403381,
+        "levels": [
+          6397927,
+          5454,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "[other heap / statics]",
+        "bytes": 0,
+        "accesses": 94345,
+        "levels": [
+          93512,
+          833,
+          0,
+          0
+        ]
+      }
+    ],
+    "reuse_hist": [
+      [
+        0,
+        1537073
+      ],
+      [
+        1,
+        415582
+      ],
+      [
+        2,
+        746533
+      ],
+      [
+        3,
+        487587
+      ],
+      [
+        4,
+        535941
+      ],
+      [
+        5,
+        949109
+      ],
+      [
+        6,
+        1147136
+      ],
+      [
+        7,
+        1022429
+      ],
+      [
+        8,
+        404912
+      ],
+      [
+        9,
+        80847
+      ],
+      [
+        10,
+        17356
+      ],
+      [
+        11,
+        715
+      ],
+      [
+        12,
+        1050
+      ],
+      [
+        13,
+        593434
+      ],
+      [
+        14,
+        119446
+      ]
+    ]
+  },
+  "focus": {
+    "op": "IntegrateVelocityOp",
+    "calls": 1,
+    "accesses": 502,
+    "stack": 376,
+    "regions": [
+      {
+        "name": "JointVelocitySlot",
+        "sizes": {
+          "32": 84
+        },
+        "aligned": 84,
+        "loads": 42,
+        "stores": 42
+      },
+      {
+        "name": "JointAccelerationSlot",
+        "sizes": {
+          "32": 42
+        },
+        "aligned": 42,
+        "loads": 42,
+        "stores": 0
+      }
+    ]
+  }
+}
