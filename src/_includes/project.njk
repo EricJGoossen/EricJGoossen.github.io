@@ -17,7 +17,7 @@ layout: base.njk
     {% endif %}
     <div class="overview">{{ content | safe }}</div>
     {% if hero %}
-    <img class="hero" src="{{ hero }}" alt="{{ heroAlt or title }}">
+    {% media hero, heroAlt or title, { className: "hero", poster: heroPoster } %}
     {% else %}
     {% placeholder "Hero image" %}
     {% endif %}

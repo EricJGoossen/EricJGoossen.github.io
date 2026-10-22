@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import { checkSite } from "./lib/checks.js";
+import { isVideo, media, mediaUrl, tileMedia, videoShortcode, youtubeShortcode } from "./lib/media.js";
 
 export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets");
@@ -102,6 +103,15 @@ export default function (eleventyConfig) {
     // A skill no highlight uses yet has nowhere to link, so it waits off the page.
     .filter((skill) => skill.best)
   );
+
+  // Images and videos (see lib/media.js). In Markdown:
+  //   {% video "images/clip.mp4", "What it shows" %}   {% youtube "VIDEO_ID", "Title" %}
+  eleventyConfig.addShortcode("media", media);
+  eleventyConfig.addShortcode("tileMedia", tileMedia);
+  eleventyConfig.addShortcode("video", videoShortcode);
+  eleventyConfig.addShortcode("youtube", youtubeShortcode);
+  eleventyConfig.addFilter("isVideo", isVideo);
+  eleventyConfig.addFilter("mediaUrl", (src, base) => mediaUrl(base, src));
 
   // Gray box standing in for an image that hasn't been added yet.
   eleventyConfig.addShortcode(

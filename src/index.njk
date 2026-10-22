@@ -53,7 +53,7 @@ scripts: ["/assets/js/skills.js"]
     <a class="tile" href="{{ project.url }}">
       <div class="tile-media">
         {% if project.data.cover %}
-        <img src="{{ project.url }}{{ project.data.cover }}" alt="" loading="lazy">
+        {% tileMedia project.data.cover | mediaUrl(project.url), { poster: (project.data.coverPoster | mediaUrl(project.url)) if project.data.coverPoster, title: project.data.title } %}
         {% else %}
         {#- Until there's a cover image, show the title so the tile is identifiable -#}
         <div class="ph" aria-hidden="true"><span>{{ project.data.title }}</span></div>

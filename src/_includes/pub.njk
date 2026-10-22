@@ -2,7 +2,7 @@
 <article class="pub">
   <div class="pub-media">
     {% if pub.image %}
-    <img src="{{ pub.image }}" alt="Teaser figure for {{ pub.title }}" loading="lazy">
+    {% media pub.image, "Teaser for " + pub.title, { poster: pub.poster } %}
     {% else %}
     {% placeholder "Teaser figure" %}
     {% endif %}

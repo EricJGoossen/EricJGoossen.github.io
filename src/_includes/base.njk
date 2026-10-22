@@ -11,8 +11,9 @@
   <meta property="og:description" content="{{ pageDescription }}">
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{ site.url }}{{ page.url }}">
-  {#- Link preview image: a project's cover, else the site-wide one from site.json -#}
-  {% set ogImage = (page.url + cover) if cover else site.ogImage %}
+  {#- Link preview image: a project's cover (or its poster, if the cover is a video), else site.json's -#}
+  {% set ogStill = coverPoster if (cover | isVideo) else cover %}
+  {% set ogImage = (ogStill | mediaUrl(page.url)) if ogStill else site.ogImage %}
   {% if ogImage %}
   <meta property="og:image" content="{{ site.url }}{{ ogImage }}">
   <meta name="twitter:card" content="summary_large_image">
