@@ -11,12 +11,12 @@ Made in a cloud container while finishing the Achilles page, from Achilles `main
 | SIMD | `simd-lanes.svg` | `scripts/make_simd_lanes_chart.py` from `data/simd_lanes_cloud.json`: `achilles_bench throughput` on `claude/perf-vs-mujoco` (355a392), seven-link arm, Euler, 2 ms, built three ways from that branch with flags only (default SSE2; `-mavx2 -mfma`), xsimd 13.0.0, one core of a cloud Xeon @ 2.8 GHz, best of 2 × 9 trials. 1 robot 3.06 µs/step, 4 robots (SSE2) 4.26 µs, 8 robots (AVX2) 4.27 µs. A scalar (no-SIMD) build was tried through xsimd's `emulated<32>` backend, but xsimd 13 can't compile this code that way (its integer ops instantiate a 1-lane double register), so "1 robot" is the default build with three lanes idle |
 | SIMD (second) | `simd-throughput.svg` | `scripts/make_simd_chart.py` from `bench-vs-mujoco/throughput_summary.md` (seven-link arm, Euler, f32 AVX2 and f32 SSE2 columns) |
 | Viewer, home tile | `eight-pendulums.mp4` | `scenes/eight_pendulums.arow`: eight copies of the demo arm hung off a zero-DOF root, released 0.002 rad apart |
-| MuJoCo | `speed-vs-mujoco.svg` | `scripts/make_perf_charts.py` from `bench-vs-mujoco/throughput_summary.md` (V3, N = 1 and N = 64, Euler) and `v2-revival/REVIVAL_README.md` (V2) |
-| MuJoCo | `achilles-vs-mujoco-error.svg` | `scripts/make_sbs_error_chart.py` from `data/dp_results.json` (`tip_err_achilles_rk4_vs_mujoco_rk4`), converted to mm: under 0.04 mm for 4 s, under 1 mm until about 6 s, 13 mm at 8 s |
+| MuJoCo | `speed-vs-mujoco.svg` | `scripts/make_perf_charts.py` from `bench-vs-mujoco/throughput_summary.md` (V3, N = 1 and N = 64, Euler), `v2-revival/REVIVAL_README.md` (V2) and, for V3 at one link only, `data/speed_vs_mujoco_cloud.json`: measured on a cloud Xeon core, not Eric's laptop (2.79× at 1 robot, 2.75× at 64; `scenes/one_joint_arm.arow`). The same run's 2/3/7-link ratios are within about 15% of the laptop's (1.88/1.45/1.03× at 1 robot, 3.0/3.4/4.3× at 64), so rerun the 1-link points on the laptop |
+| (retired 2026-10-22, now `charts/`) | `achilles-vs-mujoco-error.svg` | `scripts/make_sbs_error_chart.py` from `data/dp_results.json` (`tip_err_achilles_rk4_vs_mujoco_rk4`), converted to mm: under 0.04 mm for 4 s, under 1 mm until about 6 s, 13 mm at 8 s |
 | MuJoCo | `achilles-vs-mujoco.mp4` | Same raised scene in the Achilles viewer and in MuJoCo 3.15's renderer (`scripts/mj_render.py`, same camera), both RK4 at 2 ms, cut at 8 s |
 | Dynamics | `dp-accel-error.svg` | `scripts/make_accel_chart.py` from `data/dp_results.json` (Achilles vs closed form only; the MuJoCo-vs-closed-form line was dropped, since it only shows float64 vs float32) |
-| Dynamics | `dp-energy.svg` | `scripts/analyze_dp.py` + `scripts/make_dp_charts.py` (below) |
-| Collision detection | `collision-detection.mp4` | Formerly `media/collisions.mp4` (see below), back on the site as the detection clip |
+| Integrators | `dp-energy.svg` | `scripts/analyze_dp.py` + `scripts/make_dp_charts.py` (below) |
+| Collision detection | `collision-detection.mp4` | The `media/collisions.mp4` scene (see below) re-recorded closer in (`ACHILLES_CAM="0.3 0.18 2.8 0 0 2.05"`) at 125 fps of sim time (4 steps of 2 ms per frame), sim 1.6–5.4 s, played at 31.25 fps: 1/4 speed, 15 s |
 | Collision response | `domino-amplifier.mp4`, `domino-timing.svg` | See "Dominoes" below |
 | (retired 2026-10-22) | `contact-solver.mp4` | Eric's `EricG/collision-resolution` branch at `223af7c`, unmodified Release build, run exactly as `scripts/run-robot-demo.sh` runs it (Euler, 4 ms). Screen-captured at 60 fps under Xvfb with `x11grab -draw_mouse 0`; the camera was zoomed and orbited with the viewer's own mouse controls via `xdotool` while the process was paused (`scripts/rec_robot.sh 6 -50 -150 7`). Played at half speed, first 8 s |
 | Collisions | `collision-vs-exact.svg` | `scripts/collide_vs_mujoco.py` + `scripts/collide_truth.py` + `scripts/make_coll_chart.py` (below) |
@@ -60,6 +60,8 @@ Free-floating plain boxes on a ground slab, in the format of Eric's `robot_on_pl
 - MuJoCo 3.15 vs exact: exact to 1e-16 for sphere and capsule pairs; more than 1e-4 off on 62 separated box–box pairs (up to 0.12) and 24 deeply overlapping capsule–box pairs (up to 0.28).
 
 ## Findings for the Achilles repo
+
+0. **No scalar build (note for later).** Eric wants the engine to support a single lane with no SIMD at all, so the SIMD chart's "1 robot" bar can be a true no-SIMD baseline. Today xsimd 13's `emulated<32>` backend can't compile it (see the SIMD row above).
 
 1. **Gravity sign in the example config.** `base_acceleration` is −gravity (Featherstone), so `examples/sim_config.yaml`'s `linear: [0, 0, -9.8]` is *upward* gravity, and the README's snippet says the same. The benchmark's MuJoCo converter also negated it, so the MuJoCo comparison was consistent (both pendulums "hung" upward), but the viewer showed arms falling up.
 2. **Viewer was Y-up**, the simulation Z-up: the grid lay in the XZ plane, so gravity pointed along the floor.
