@@ -55,7 +55,7 @@ Each paragraph sits beside its own image or video (below it on phones):
 A paragraph in Markdown.
 {% endrow %}
 
-Images and videos go in the project's images/ folder. On their own:
+Add `more: [{ src: "images/chart.svg", alt: "..." }]` to stack more media under the first. Images and videos go in the project's images/ folder. On their own:
 
 ![What the image shows](images/my-photo.jpg)
 

@@ -25,7 +25,7 @@ Single scrolling page, in this order (a compact intro, then skills and projects 
 1. **Header.** Title, lab/org · timeline · tools, then the bracketed links, one-paragraph overview, hero image.
 2. **Highlights.** Chips of 1 to 2 words naming the most impressive parts (e.g. *Sim comparison*, *SIMD optimization*, *Matrix library*). Each one jumps to the spot in the log where that work is explained, so it's read in context.
 3. **Publication.** The related publication card, if there is one. (Links like `[GitHub] [Paper] [Video] [Demo]` sit in the header, under the metadata line.)
-4. **Progress log.** Blog-style entries, newest first, each paragraph beside its own image or video (stacked on phones) with a thin line between them; rows rise into view as you scroll (CSS only, off with reduced motion). Each entry: date, title, text, any number of images. Entries tied to a highlight get an anchor so the highlight chips (and the home page skill dropdowns) can link straight to them.
+4. **Progress log.** Blog-style entries, newest first, each paragraph beside its own image or video (stacked on phones) with a thin line between them; rows rise into view as you scroll, text first and media sliding in from the right (CSS only, off with reduced motion). A project with a `hero` opens with its intro (title, metadata, links, overview, highlights) laid over that footage. Each entry: date, title, text, any number of images. Entries tied to a highlight get an anchor so the highlight chips (and the home page skill dropdowns) can link straight to them.
 5. **Back to all projects** link.
 
 ### Also

@@ -285,12 +285,86 @@ main:focus { outline: none; }
 .hero { margin-bottom: 1rem; }
 
 .highlights h2, .log > h2 { margin-bottom: 1rem; }
+
+/* Project intro over its hero image or video. The panel is always dark (a
+   gradient over the footage), so its text uses fixed light colors in both
+   themes. */
+.project-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  min-height: min(82vh, 44rem);
+  margin: 0.25rem 0 3rem;
+  overflow: hidden;
+  border-radius: calc(var(--radius) * 1.6);
+  background: #0f1114;
+  color: #f3f2f0;
+}
+.hero-bg { position: absolute; inset: 0; z-index: -2; }
+.hero-bg video, .hero-bg img {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border-radius: 0;
+  object-fit: cover;
+  object-position: 12% 40%;
+  background: #0f1114;
+}
+.hero-bg .still { display: none; }
+.project-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgb(11 12 15 / 0.94) 0%, rgb(11 12 15 / 0.82) 34%, rgb(11 12 15 / 0.3) 66%, rgb(11 12 15 / 0) 100%),
+    linear-gradient(0deg, rgb(11 12 15 / 0.7) 0%, rgb(11 12 15 / 0) 50%);
+}
+.hero-content { max-width: 40rem; padding: clamp(1.5rem, 4.5vw, 3.25rem); }
+.project-hero h1 { margin-bottom: 0.4rem; font-size: clamp(2.75rem, 8vw, 4.75rem); letter-spacing: -0.035em; line-height: 1; }
+.project-hero .meta { color: rgb(243 242 240 / 0.74); }
+.project-hero a { color: #b7cbff; }
+.project-hero .bracket-links a::before, .project-hero .bracket-links a::after { color: rgb(243 242 240 / 0.55); }
+.project-hero .overview { margin: 1.1rem 0 0; color: rgb(243 242 240 / 0.92); }
+.project-hero .overview > :last-child { margin-bottom: 0; }
+.project-hero .highlights { margin: 0; }
+.project-hero .highlights h2 {
+  margin: 1.6rem 0 0.65rem;
+  color: rgb(243 242 240 / 0.66);
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.project-hero .chip {
+  border-color: rgb(255 255 255 / 0.3);
+  background: rgb(255 255 255 / 0.1);
+  color: #fff;
+  backdrop-filter: blur(6px);
+}
+.project-hero .chip:hover, .project-hero .chip:focus-visible { border-color: #fff; background: rgb(255 255 255 / 0.22); color: #fff; }
+.project-hero :focus-visible { outline-color: #fff; }
+@media (max-width: 640px) {
+  /* Phones: the footage is a band across the top that fades into the panel,
+     and the text starts below it. */
+  .project-hero { min-height: 0; padding-top: 12.5rem; }
+  .hero-bg { bottom: auto; height: 19rem; }
+  .hero-bg video, .hero-bg img { object-position: 45% 30%; }
+  .project-hero::before {
+    background: linear-gradient(180deg, rgb(11 12 15 / 0) 0, rgb(11 12 15 / 0.2) 7rem, rgb(11 12 15 / 0.94) 15rem, #0b0c0f 19rem);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg video { display: none; }
+  .hero-bg .still { display: block; }
+}
 .project-links { margin: 0.4rem 0 0; }
 
 /* Project pages get a wider column so a paragraph and its media fit side by
    side; the header, highlights and nav keep the reading width. */
 main.wrap:has(> .project) { --wrap: 72rem; }
-.project > :not(.log) { max-width: 52rem; margin-inline: auto; }
+.project > :not(.log):not(.project-hero) { max-width: 52rem; margin-inline: auto; }
 
 .entry { padding: 2rem 0; border-top: 1px solid var(--border); }
 .entry:first-of-type { border-top: 0; padding-top: 0.5rem; }
@@ -312,27 +386,35 @@ main.wrap:has(> .project) { --wrap: 72rem; }
 }
 .row + .row { border-top: 1px solid var(--border); }
 .row-text > :last-child { margin-bottom: 0; }
-.entry .row-media { margin: 0; }
+.row-media { display: grid; gap: 1.5rem; }
+.entry .row-media figure { margin: 0; }
 .entry .row-media img, .row-media video { width: 100%; margin: 0; }
 @media (max-width: 800px) {
   .row { grid-template-columns: minmax(0, 1fr); gap: 1rem; padding: 1.25rem 0; }
 }
 
-/* Each row rises into place as it scrolls into view. CSS only (no script), and
-   only where the browser supports scroll-driven animation; otherwise, and with
-   reduced motion, rows are simply there. */
+/* As each row scrolls into view its text rises in and its media slides in from
+   the right, a beat behind. CSS only (no script), and only where the browser
+   supports scroll-driven animation; otherwise, and with reduced motion, rows
+   are simply there. The log clips sideways overflow from the slide. */
+.log { overflow-x: clip; }
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
-    .row {
-      animation: row-in linear both;
+    .row-text, .row-media, .entry > time, .entry > h3, .entry > .entry-skills {
+      animation: rise-in linear both;
       animation-timeline: view();
-      animation-range: entry 5% entry 60%;
+      animation-range: entry 0% entry 75%;
     }
+    .row-media { animation-name: slide-in; animation-range: entry 15% entry 95%; }
   }
 }
-@keyframes row-in {
-  from { opacity: 0; translate: 0 2.5rem; }
+@keyframes rise-in {
+  from { opacity: 0; translate: 0 3.5rem; }
   to { opacity: 1; translate: 0 0; }
+}
+@keyframes slide-in {
+  from { opacity: 0; translate: 5rem 2rem; scale: 0.94; }
+  to { opacity: 1; translate: 0 0; scale: 1; }
 }
 
 /* {% video %} and {% youtube %} */

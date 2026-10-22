@@ -5,31 +5,20 @@ layout: base.njk
 <article class="project">
   <a class="back" href="/#projects">← All projects</a>
 
-  <header class="project-header">
-    <h1>{{ title }}</h1>
-    <p class="meta">
-      {% for item in [org, timeline, (tools | join(", ")) if tools] %}{% if item %}<span>{{ item }}</span>{% endif %}{% endfor %}
-    </p>
-    {% if links.length %}
-    <p class="bracket-links project-links">
-      {% for link in links %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}
-    </p>
-    {% endif %}
-    <div class="overview">{{ content | safe }}</div>
-    {% if hero %}
-    {% media hero, heroAlt or title, { className: "hero", poster: heroPoster } %}
-    {% else %}
-    {% placeholder "Hero image" %}
-    {% endif %}
+  {% if hero %}
+  {#- The intro sits over the hero image or video, which loops in the background
+      (the still image instead, with reduced motion). -#}
+  <header class="project-hero">
+    <div class="hero-bg" aria-hidden="true">{% tileMedia hero, { poster: heroPoster, title: title } %}</div>
+    <div class="hero-content">
+      {% include "project-intro.njk" %}
+    </div>
   </header>
-
-  {% if highlights.length %}
-  <section class="highlights" aria-labelledby="highlights-title">
-    <h2 id="highlights-title">Highlights</h2>
-    <nav class="chips" aria-labelledby="highlights-title">
-      {% for h in highlights %}<a class="chip" href="#{{ h.entry }}">{{ h.label }}</a>{% endfor %}
-    </nav>
-  </section>
+  {% else %}
+  <header class="project-header">
+    {% include "project-intro.njk" %}
+    {% placeholder "Hero image" %}
+  </header>
   {% endif %}
 
   {% set projectPubs = [] %}

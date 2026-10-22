@@ -59,7 +59,7 @@ src/assets/resume.pdf        resume (the Resume links stay hidden until this fil
 | `order` | no | Number. Lower comes first on the home page. Leave gaps (10, 20, 30) if you like. |
 | `cover` | no | Tile image or video, relative to the project folder: `images/cover.jpg` or `images/cover.mp4` |
 | `coverPoster` | no | Still image for a video cover. Shown with reduced motion and used for link previews. |
-| `hero`, `heroAlt`, `heroPoster` | no | Big image or video at the top of the project page |
+| `hero`, `heroAlt`, `heroPoster` | no | Image or video behind the project intro: title, metadata, links, overview and highlight chips sit over it on a dark gradient (the poster replaces a video for reduced motion). Pick footage with its subject on the right and a dark background. Without a hero the intro is plain. |
 | `highlights` | no | List of `{ label, entry, skills: [...] }`. `entry` must match a log entry anchor, and every skill must be in `skills.json`. |
 | `links` | no | List of `{ label, url }`, shown as `[GitHub] [Paper] ...` |
 
@@ -95,7 +95,7 @@ src/assets/resume.pdf        resume (the Resume links stay hidden until this fil
   The paragraph, in Markdown.
   {% endrow %}
   ```
-  Videos work the same way (`{ poster: "images/still.jpg" }` for the still). The build stops if a row has no media or no alt text.
+  Videos work the same way (`{ poster: "images/still.jpg" }` for the still). To stack more media under the first (say a clip and the chart that backs it up), add `more: [{ src: "images/chart.svg", alt: "...", caption: "..." }]`. The build stops if any of them has no media or no alt text.
 - Image in a log entry: `![What the image shows](images/photo.jpg)`. Always write real alt text.
 - Short clip that loops like a GIF (muted, with pause controls): `{% video "images/clip.mp4", "What it shows" %}`
 - Longer video with sound (click to play): `{% video "images/talk.mp4", "What it shows", { play: true, poster: "images/talk.jpg" } %}`
