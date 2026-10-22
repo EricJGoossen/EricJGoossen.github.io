@@ -24,6 +24,9 @@ highlights:
   - label: Dynamics (ABA)
     entry: dynamics
     skills: [Rigid-body dynamics, Numerical methods, C++]
+  - label: Collisions
+    entry: collisions
+    skills: [Collision detection, SIMD, C++]
 links:
   - label: GitHub
     url: https://github.com/EricJGoossen/Achilles
