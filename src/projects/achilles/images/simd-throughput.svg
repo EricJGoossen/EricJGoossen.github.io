@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 400" role="img" aria-labelledby="t d">
+  <title id="t">Seven-link arm throughput by SIMD width</title>
+  <desc id="d">Robot-steps per second on one laptop core, by how many robots Achilles steps together, for a seven-link arm at a 2 ms step. With one robot, most SIMD lanes are padding: 0.75 million steps per second with 8-lane AVX2 and 0.94 million with 4-lane SSE. Filling the lanes multiplies throughput: at 64 robots, AVX2 reaches 5.45 million, 7.2 times its one-robot rate, and SSE reaches 3.56 million.</desc>
+  <style>
+    svg { --text:#1c1917; --muted:#6b6560; --grid:#e7e5e4; --axis:#a8a29e;
+          --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#6250d6; --ref:#78716c; }
+    @media (prefers-color-scheme: dark) {
+      svg { --text:#f2f1ef; --muted:#a39d97; --grid:#33312e; --axis:#57534e;
+            --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#9085e9; --ref:#a8a29e; }
+    }
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: var(--text); font-size: 13px; }
+    .m { fill: var(--muted); } .s { font-size: 12px; } .b { font-weight: 650; }
+    .e { text-anchor: end; } .c { text-anchor: middle; }
+    .grid { stroke: var(--grid); stroke-width: 1; }
+    .axis { stroke: var(--axis); stroke-width: 1; }
+    .ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+    .dash { stroke-dasharray: 6 4; }
+    .guide { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+  </style>
+  <line class="grid" x1="64" x2="656" y1="348.0" y2="348.0"/>
+  <text class="s m e" x="56" y="352.0">0</text>
+  <line class="grid" x1="64" x2="656" y1="301.7" y2="301.7"/>
+  <text class="s m e" x="56" y="305.7">1M</text>
+  <line class="grid" x1="64" x2="656" y1="255.3" y2="255.3"/>
+  <text class="s m e" x="56" y="259.3">2M</text>
+  <line class="grid" x1="64" x2="656" y1="209.0" y2="209.0"/>
+  <text class="s m e" x="56" y="213.0">3M</text>
+  <line class="grid" x1="64" x2="656" y1="162.7" y2="162.7"/>
+  <text class="s m e" x="56" y="166.7">4M</text>
+  <line class="grid" x1="64" x2="656" y1="116.3" y2="116.3"/>
+  <text class="s m e" x="56" y="120.3">5M</text>
+  <line class="grid" x1="64" x2="656" y1="70.0" y2="70.0"/>
+  <text class="s m e" x="56" y="74.0">6M</text>
+  <line class="axis" x1="64" x2="656" y1="348" y2="348"/>
+  <text class="s m c" x="64.0" y="366">1</text>
+  <text class="s m c" x="162.7" y="366">4</text>
+  <text class="s m c" x="261.3" y="366">16</text>
+  <text class="s m c" x="360.0" y="366">64</text>
+  <text class="s m c" x="458.7" y="366">256</text>
+  <text class="s m c" x="557.3" y="366">1,024</text>
+  <text class="s m c" x="656.0" y="366">4,096</text>
+  <text class="s m c" x="360" y="388">robots stepped together (log scale)</text>
+  <text class="s m" x="56" y="56" text-anchor="start">robot-steps per second</text>
+  <polyline class="ln" style="stroke:var(--s2)" stroke-width="2.25" points="64.0,304.4 162.7,219.8 261.3,189.7 360.0,183.1 458.7,182.4 557.3,190.7 656.0,230.0"/>
+  <polyline class="ln" style="stroke:var(--s1)" stroke-width="2.5" points="64.0,313.1 162.7,251.4 261.3,120.4 360.0,95.6 458.7,102.7 557.3,136.9 656.0,209.0"/>
+  <circle cx="64.0" cy="313.1" r="3.5" style="fill:var(--s1)"/>
+  <circle cx="64.0" cy="304.4" r="3.5" style="fill:var(--s2)"/>
+  <circle cx="162.7" cy="251.4" r="3.5" style="fill:var(--s1)"/>
+  <circle cx="162.7" cy="219.8" r="3.5" style="fill:var(--s2)"/>
+  <circle cx="261.3" cy="120.4" r="3.5" style="fill:var(--s1)"/>
+  <circle cx="261.3" cy="189.7" r="3.5" style="fill:var(--s2)"/>
+  <circle cx="360.0" cy="95.6" r="3.5" style="fill:var(--s1)"/>
+  <circle cx="360.0" cy="183.1" r="3.5" style="fill:var(--s2)"/>
+  <circle cx="458.7" cy="102.7" r="3.5" style="fill:var(--s1)"/>
+  <circle cx="458.7" cy="182.4" r="3.5" style="fill:var(--s2)"/>
+  <circle cx="557.3" cy="136.9" r="3.5" style="fill:var(--s1)"/>
+  <circle cx="557.3" cy="190.7" r="3.5" style="fill:var(--s2)"/>
+  <circle cx="656.0" cy="209.0" r="3.5" style="fill:var(--s1)"/>
+  <circle cx="656.0" cy="230.0" r="3.5" style="fill:var(--s2)"/>
+  <text class="s b" x="360.0" y="83.6" text-anchor="middle">5.45M: 7.2× one robot</text>
+  <text class="s m" x="74.0" y="334.1" text-anchor="start">1 robot: lanes mostly padding</text>
+  <line x1="64" x2="84" y1="18" y2="18" style="stroke:var(--s1)" stroke-width="2.5" stroke-linecap="round"/>
+  <text class="s" x="90" y="22">AVX2, 8 lanes</text>
+  <line x1="191.60000000000002" x2="211.60000000000002" y1="18" y2="18" style="stroke:var(--s2)" stroke-width="2.5" stroke-linecap="round"/>
+  <text class="s" x="217.60000000000002" y="22">SSE2, 4 lanes (default build)</text>
+</svg>

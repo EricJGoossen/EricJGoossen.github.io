@@ -7,16 +7,20 @@ Made in a cloud container while finishing the Achilles page, from Achilles `main
 | Entry | Media | How it was made |
 |---|---|---|
 | Page hero | `double-pendulum.mp4` | Achilles viewer, `examples/two_joint_arm.arow` with the pivot raised to z = 2.2 (`scenes/two_joint_arm_raised.arow`), RK4 at 2 ms, Xvfb + Mesa software GL, frames read back with `glReadPixels` |
-| SIMD | `simd-explainer.mp4` | `explainer/simd-soa-explainer.html`, 8-lane mode, at 1/1.3 speed on a fake clock (`scripts/rec_explainer.py`); the register-spill step is skipped |
-| SIMD | `simd-memtrace.mp4` | `memviz/report-avx2.html`, all 400 frames of the recorded step at 1× (`scripts/rec_memviz.py`), cropped to the headline numbers, ticker and shared-state blocks |
+| SIMD | `simd-throughput.svg` | `scripts/make_simd_chart.py` from `bench-vs-mujoco/throughput_summary.md` (seven-link arm, Euler, f32 AVX2 and f32 SSE2 columns) |
 | Viewer, home tile | `eight-pendulums.mp4` | `scenes/eight_pendulums.arow`: eight copies of the demo arm hung off a zero-DOF root, released 0.002 rad apart |
 | MuJoCo | `speed-vs-mujoco.svg` | `scripts/make_perf_charts.py` from `bench-vs-mujoco/throughput_summary.md` (V3, N = 1 and N = 64, Euler) and `v2-revival/REVIVAL_README.md` (V2) |
 | MuJoCo | `achilles-vs-mujoco.mp4` | Same raised scene in the Achilles viewer and in MuJoCo 3.15's renderer (`scripts/mj_render.py`, same camera), both RK4 at 2 ms, cut at 8 s |
-| Dynamics | `dp-accel-error.svg`, `dp-energy.svg` | `scripts/analyze_dp.py` + `scripts/make_dp_charts.py` (below) |
-| Collisions | `collisions.mp4` | `scenes/two_arms_collide.arow`, Euler at 2 ms (the only integrator that runs the collision passes), half speed, with collision shapes and live narrow-phase contacts drawn on top |
+| Dynamics | `dp-accel-error.svg` | `scripts/make_accel_chart.py` from `data/dp_results.json` (Achilles vs closed form only; the MuJoCo-vs-closed-form line was dropped, since it only shows float64 vs float32) |
+| Dynamics | `dp-energy.svg` | `scripts/analyze_dp.py` + `scripts/make_dp_charts.py` (below) |
+| Collisions | `contact-solver.mp4` | Eric's `EricG/collision-resolution` branch at `223af7c`, unmodified Release build, run exactly as `scripts/run-robot-demo.sh` runs it (Euler, 4 ms). Screen-captured at 60 fps under Xvfb with `x11grab -draw_mouse 0`; the camera was zoomed and orbited with the viewer's own mouse controls via `xdotool` while the process was paused (`scripts/rec_robot.sh 6 -50 -150 7`). Played at half speed, first 8 s |
 | Collisions | `collision-vs-exact.svg` | `scripts/collide_vs_mujoco.py` + `scripts/collide_truth.py` + `scripts/make_coll_chart.py` (below) |
 
 ## Not on the site (here if wanted)
+
+- `media/simd-explainer.mp4`, `media/simd-memtrace.mp4` (+ posters): the explainer and memory-trace clips, replaced on the site by the throughput chart. Made with `scripts/rec_explainer.py` and `scripts/rec_memviz.py`.
+- `media/collisions.mp4` (+ poster): two pendulums passing through each other with collision shapes and live contacts drawn on top, from before the contact solver; made with the recording tools patch.
+- `charts/dp-accuracy-small-swing.svg`: outer-link error against the closed form for a 30° swing over 20 s. Euler: Achilles and MuJoCo identical (0.06–0.25 % of reach). RK4: MuJoCo (float64) near 1e-8 %, Achilles (float32) 2e-4 to 4.7e-3 % (about 65 µm on the 1.4 m arm), which is float32 round-off.
 
 - `charts/dp-trajectory-error.svg`: outer-link position error against the closed form for the four integrators over 10 s. RK4 starts near 1e-6 % of reach, midpoint 1e-5 %, Verlet and Euler 1e-2 %; all saturate once chaos takes over (about 6–8 s).
 - `charts/throughput-seven-link.svg`: robot-steps/s against N for the seven-link arm (Achilles f32 and f64 AVX2, MuJoCo best mode), from `throughput_summary.md`.
