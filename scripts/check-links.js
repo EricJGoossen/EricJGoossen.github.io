@@ -1,6 +1,9 @@
-// Checks every internal link, image/video source and #anchor in the built site.
-// Usage: node scripts/check-links.js [_site]   (run after a build; `npm run check` does both)
-// Exits 1 if anything points at a missing page, file or anchor.
+// Checks the built site before it can go live:
+//  - every internal link, image/video source and #anchor resolves
+//  - no visible page still has filler: "Placeholder" text, gray placeholder
+//    boxes, or "#" links (unfinished things belong in `draft: true` items)
+// Usage: node scripts/check-links.js [_site]   (`npm run build` and `npm run check` run it)
+// Exits 1 if anything is broken or unfinished.
 import fs from "node:fs";
 import path from "node:path";
 
@@ -35,16 +38,19 @@ function targetFile(urlPath) {
 }
 
 let checked = 0;
-let placeholders = 0;
 const broken = [];
+const filler = [];
 for (const page of pages) {
   const html = fs.readFileSync(page, "utf8");
   const pageUrl = "/" + path.relative(root, page).replace(/index\.html$/, "");
+  const text = html.replace(/<(script|style)[\s\S]*?<\/\1>/g, "").replace(/<[^>]+>/g, " ");
+  if (/placeholder/i.test(text)) filler.push(`${pageUrl}: "${text.match(/[^.\n]{0,40}placeholder[^.\n]{0,40}/i)[0].trim()}"`);
+  if (html.includes('aria-label="Placeholder:')) filler.push(`${pageUrl}: gray placeholder image box`);
   for (const [, url] of html.matchAll(/\s(?:href|src|poster)="([^"]*)"/g)) {
     if (/^(https?:|mailto:|tel:|data:)/.test(url)) continue;
     checked++;
     if (url === "#") {
-      placeholders++;
+      filler.push(`${pageUrl}: a link that goes nowhere ("#")`);
       continue;
     }
     const [urlPath, hash] = url.split("#");
@@ -57,7 +63,7 @@ for (const page of pages) {
 }
 
 for (const line of broken) console.log(`BROKEN  ${line}`);
-console.log(
-  `${checked} internal links checked: ${broken.length} broken, ${placeholders} placeholder "#" links (see npm run todo)`
-);
-process.exit(broken.length ? 1 : 0);
+for (const line of [...new Set(filler)]) console.log(`UNFINISHED  ${line}`);
+if (filler.length) console.log('Fill these in, or mark the project/entry/publication `draft: true` to keep it off the site.');
+console.log(`${checked} internal links checked: ${broken.length} broken, ${new Set(filler).size} unfinished`);
+process.exit(broken.length || filler.length ? 1 : 0);

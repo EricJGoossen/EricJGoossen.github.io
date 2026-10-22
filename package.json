@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "eleventy",
+    "build": "eleventy && node scripts/check-links.js _site",
     "start": "eleventy --serve --port 8080",
-    "check": "eleventy && node scripts/check-links.js _site",
+    "check": "npm run build",
     "test": "npm run check",
     "todo": "node scripts/todo.js",
     "new:project": "node scripts/new-project.js",
