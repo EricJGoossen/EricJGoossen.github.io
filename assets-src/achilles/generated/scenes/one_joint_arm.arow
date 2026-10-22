@@ -1,0 +1,19 @@
+archetype: arm1
+joints:
+- name: shoulder
+  parent: null
+  fields:
+    joint_subspace: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    joint_activation_mask: [1]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [1.0, 0, 0.3, 0, 0.18083, 0.015, 0.18083, 0, 0, 0]
+    joint_position:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.15, 0.5, 0.15]
+    visual_color: [0.85, 0.3, 0.2]

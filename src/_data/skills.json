@@ -3,7 +3,7 @@
   {"name": "SIMD", "best": "achilles/simd"},
   {"name": "Performance engineering", "best": "achilles/mujoco-comparison"},
   {"name": "Rigid-body dynamics", "best": "achilles/dynamics"},
-  {"name": "Numerical methods", "best": "achilles/dynamics"},
+  {"name": "Numerical methods", "best": "achilles/integrators"},
   {"name": "Collision detection", "best": "achilles/collisions"},
   {"name": "OpenGL", "best": "achilles/renderer"},
   {"name": "Python", "best": "hil-cap/highlight-one"},

@@ -1,0 +1,69 @@
+{
+ "note": "Measured on one cloud Xeon core, not Eric's laptop. achilles_bench throughput (claude/perf-vs-mujoco, 355a392), -mavx2 -mfma build, float, Euler, 2 ms, 200000 steps, best of 9. MuJoCo 3.15, best of merged/rollout (bench/mujoco_throughput.py). The 1-link scene is scenes/one_joint_arm.arow (the first link of examples/two_joint_arm.arow). Only the 1-link rows are on the site; the 2/3/7-link rows are a cross-check against the laptop table.",
+ "rows": [
+  {
+   "links": 1,
+   "robots": 1,
+   "achilles": 1987167,
+   "mujoco_merged": 713274,
+   "mujoco_rollout": 670372,
+   "speedup": 2.786
+  },
+  {
+   "links": 1,
+   "robots": 64,
+   "achilles": 14117823,
+   "mujoco_merged": 5141998,
+   "mujoco_rollout": 626478,
+   "speedup": 2.746
+  },
+  {
+   "links": 2,
+   "robots": 1,
+   "achilles": 1132786,
+   "mujoco_merged": 604261,
+   "mujoco_rollout": 572941,
+   "speedup": 1.875
+  },
+  {
+   "links": 2,
+   "robots": 64,
+   "achilles": 8051412,
+   "mujoco_merged": 2674219,
+   "mujoco_rollout": 549360,
+   "speedup": 3.011
+  },
+  {
+   "links": 3,
+   "robots": 1,
+   "achilles": 780712,
+   "mujoco_merged": 537989,
+   "mujoco_rollout": 520199,
+   "speedup": 1.451
+  },
+  {
+   "links": 3,
+   "robots": 64,
+   "achilles": 5518217,
+   "mujoco_merged": 1620370,
+   "mujoco_rollout": 470483,
+   "speedup": 3.406
+  },
+  {
+   "links": 7,
+   "robots": 1,
+   "achilles": 360689,
+   "mujoco_merged": 349175,
+   "mujoco_rollout": 344831,
+   "speedup": 1.033
+  },
+  {
+   "links": 7,
+   "robots": 64,
+   "achilles": 2645365,
+   "mujoco_merged": 619471,
+   "mujoco_rollout": 334404,
+   "speedup": 4.27
+  }
+ ]
+}

@@ -21,12 +21,18 @@ for scene, links in (("two_joint_arm", 2), ("three_joint_arm", 3), ("seven_joint
     rows = {int(r[0]): r for r in tables[(scene, "euler")]}
     v3_single[links] = rows[1][6]
     v3_batch[links] = rows[64][6]
+# 1 link: no V3 laptop run, so the cloud ratios from data/speed_vs_mujoco_cloud.json
+import json, os
+cloud = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "speed_vs_mujoco_cloud.json")))
+for r in cloud["rows"]:
+    if r["links"] == 1:
+        (v3_single if r["robots"] == 1 else v3_batch)[1] = r["speedup"]
 print("v2", v2, "v3 single", v3_single, "v3 N=64", v3_batch)
 c = Chart("Achilles V2 and V3 speed relative to MuJoCo",
-          "Simulation speed as a multiple of single-threaded MuJoCo on the same laptop, by number of links in the arm. "
+          "Simulation speed as a multiple of single-threaded MuJoCo on the same machine, by number of links in the arm. "
           "V2, one robot at a time: 1.1 times MuJoCo's speed at one link, falling to 0.8 at two links and 0.48 at eight. "
-          "V3 with one robot: 2.1 times at two links, 1.6 at three, 0.97 at seven. "
-          "V3 with 64 robots batched across SIMD lanes: 2.6, 3.0 and 3.3 times at two, three and seven links.", h=400, mt=70)
+          "V3 with one robot: 2.8 times at one link, 2.1 at two, 1.6 at three, 0.97 at seven. "
+          "V3 with 64 robots batched across SIMD lanes: 2.7, 2.6, 3.0 and 3.3 times at one, two, three and seven links.", h=400, mt=70)
 c.xscale(1, 8, log=True); c.yscale(0, 3.5)
 c.axes([1, 2, 3, 4, 7, 8], [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5], "links in the arm (log scale)", "speed relative to MuJoCo (× faster)",
        xfmt=lambda v: f"{v:g}", yfmt=lambda v: f"{v:g}×")

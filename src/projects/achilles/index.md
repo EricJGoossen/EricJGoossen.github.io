@@ -23,7 +23,10 @@ highlights:
     skills: [Performance engineering, MuJoCo, C++]
   - label: Dynamics (ABA)
     entry: dynamics
-    skills: [Rigid-body dynamics, Numerical methods, C++]
+    skills: [Rigid-body dynamics, C++]
+  - label: Integrators
+    entry: integrators
+    skills: [Numerical methods, C++]
   - label: Collisions
     entry: collisions
     skills: [Collision detection, SIMD, C++]

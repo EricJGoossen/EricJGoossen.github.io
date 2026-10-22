@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 400" role="img" aria-labelledby="t d">
   <title id="t">Achilles V2 and V3 speed relative to MuJoCo</title>
-  <desc id="d">Simulation speed as a multiple of single-threaded MuJoCo on the same laptop, by number of links in the arm. V2, one robot at a time: 1.1 times MuJoCo&#x27;s speed at one link, falling to 0.8 at two links and 0.48 at eight. V3 with one robot: 2.1 times at two links, 1.6 at three, 0.97 at seven. V3 with 64 robots batched across SIMD lanes: 2.6, 3.0 and 3.3 times at two, three and seven links.</desc>
+  <desc id="d">Simulation speed as a multiple of single-threaded MuJoCo on the same machine, by number of links in the arm. V2, one robot at a time: 1.1 times MuJoCo&#x27;s speed at one link, falling to 0.8 at two links and 0.48 at eight. V3 with one robot: 2.8 times at one link, 2.1 at two, 1.6 at three, 0.97 at seven. V3 with 64 robots batched across SIMD lanes: 2.7, 2.6, 3.0 and 3.3 times at one, two, three and seven links.</desc>
   <style>
     svg { --text:#1c1917; --muted:#6b6560; --grid:#e7e5e4; --axis:#a8a29e;
           --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#6250d6; --ref:#78716c; }
@@ -50,11 +50,13 @@
   <circle cx="261.3" cy="283.9" r="4.5" style="fill:var(--s2)" stroke="var(--surface, #fff)" stroke-width="0"/>
   <circle cx="458.7" cy="291.6" r="4.5" style="fill:var(--s2)" stroke="var(--surface, #fff)" stroke-width="0"/>
   <circle cx="656.0" cy="310.2" r="4.5" style="fill:var(--s2)" stroke="var(--surface, #fff)" stroke-width="0"/>
-  <polyline class="ln" style="stroke:var(--s3)" stroke-width="2" points="261.3,184.4 376.8,219.3 618.0,271.0"/>
+  <polyline class="ln" style="stroke:var(--s3)" stroke-width="2" points="64.0,126.7 261.3,184.4 376.8,219.3 618.0,271.0"/>
+  <circle cx="64.0" cy="126.7" r="4.5" style="fill:var(--s3)" stroke="var(--surface, #fff)" stroke-width="0"/>
   <circle cx="261.3" cy="184.4" r="4.5" style="fill:var(--s3)" stroke="var(--surface, #fff)" stroke-width="0"/>
   <circle cx="376.8" cy="219.3" r="4.5" style="fill:var(--s3)" stroke="var(--surface, #fff)" stroke-width="0"/>
   <circle cx="618.0" cy="271.0" r="4.5" style="fill:var(--s3)" stroke="var(--surface, #fff)" stroke-width="0"/>
-  <polyline class="ln" style="stroke:var(--s1)" stroke-width="2" points="261.3,141.5 376.8,110.5 618.0,86.7"/>
+  <polyline class="ln" style="stroke:var(--s1)" stroke-width="2" points="64.0,129.9 261.3,141.5 376.8,110.5 618.0,86.7"/>
+  <circle cx="64.0" cy="129.9" r="4.5" style="fill:var(--s1)" stroke="var(--surface, #fff)" stroke-width="0"/>
   <circle cx="261.3" cy="141.5" r="4.5" style="fill:var(--s1)" stroke="var(--surface, #fff)" stroke-width="0"/>
   <circle cx="376.8" cy="110.5" r="4.5" style="fill:var(--s1)" stroke="var(--surface, #fff)" stroke-width="0"/>
   <circle cx="618.0" cy="86.7" r="4.5" style="fill:var(--s1)" stroke="var(--surface, #fff)" stroke-width="0"/>
