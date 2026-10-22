@@ -1,20 +1,23 @@
 [
   {
-    "title": "Placeholder: Human-in-the-Loop Feedback for Code as Policies",
-    "authors": ["Placeholder Author", "Eric J. Goossen", "Placeholder Author", "Placeholder Advisor"],
-    "venue": "Placeholder Venue",
+    "title": "A Few Words Go a Long Way",
+    "authors": [
+      "D. Chen",
+      "A. R. Jain",
+      "E. Goossen",
+      "E. Romig",
+      "M. Murray",
+      "N. Walker",
+      "M. Cakmak"
+    ],
+    "venue": "",
     "year": 2026,
-    "status": "In submission",
+    "status": "In preparation for IEEE RA-L",
     "award": "",
     "lab": "Human Centered Robotics Lab",
     "project": "hil-cap",
     "image": "",
-    "tldr": "Placeholder one or two sentence summary of the paper's contribution and headline result.",
-    "links": [
-      { "label": "Paper", "url": "#" },
-      { "label": "arXiv", "url": "#" },
-      { "label": "Video", "url": "#" },
-      { "label": "Code", "url": "#" }
-    ]
+    "tldr": "Tests whether human feedback helps LLM-written robot code beat vision-language-action models: human feedback lifts Code-as-Policies 1.75× over base VLAs, solving tasks VLAs failed completely.",
+    "links": []
   }
 ]

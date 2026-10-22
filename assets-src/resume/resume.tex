@@ -1,0 +1,118 @@
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}            % Times
+\usepackage[left=0.75in,right=0.75in,top=0.5in,bottom=0.5in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+% Section headings: normal weight, rule underneath
+\titleformat{\section}{\large}{}{0pt}{}[\vspace{-12pt}\rule{\textwidth}{0.6pt}]
+\titlespacing*{\section}{0pt}{6pt}{3pt}
+
+% Bullets
+\setlist[itemize]{leftmargin=0.22in,label=\textbullet,itemsep=0pt,parsep=0pt,topsep=1pt,partopsep=0pt}
+
+% Role / project heading: \role{Title}{Org}{Dates}{separator}
+\newcommand{\role}[4]{\textbf{#1} #4 \textbf{\textit{#2}} (#3)}
+
+\begin{document}
+
+%-------------------- Header --------------------
+\begin{center}
+  {\fontsize{17}{20}\selectfont\textbf{Eric Goossen}}\\[2pt]
+  \small
+  \href{mailto:ericjgoossen@gmail.com}{ericjgoossen@gmail.com} $|$
+  \href{https://github.com/EricJGoossen}{github.com/EricJGoossen} $|$
+  \href{https://linkedin.com/in/ericjgoossen}{linkedin.com/in/ericjgoossen}
+\end{center}
+\vspace{-8pt}
+
+\small
+
+%-------------------- Education --------------------
+\section{Education}
+\textbf{University of Washington, Seattle,} Computer Engineering BS (Jun 2028 expected), GPA: 3.88
+
+%-------------------- Skills --------------------
+\section{Technical Skills}
+\textbf{Languages:} C++, Python, Rust \;$|$\; \textbf{Tools:} ROS2, Isaac Sim, MuJoCo, Pinocchio, Docker, Git, Linux\\
+\textbf{Robotics:} Kinematics \& Dynamics, Motion Planning, Impedance Control, LQR, Kalman Filtering, SLAM\\
+\textbf{Hardware:} Jetson Orin/Thor, Franka, OpenArm, CAN-FD, LiDAR, ESP32, oscilloscope
+
+%-------------------- Experience --------------------
+\section{Experience}
+\role{Undergraduate Research Intern}{UW Human Centered Robotics Lab}{Apr 2026 -- Present}{--}
+\begin{itemize}
+  \item Co-authored research testing whether human feedback helps LLM-written robot code beat vision-language-action models
+  \item Showed human feedback lifts Code-as-Policies 1.75x over base VLAs, solving tasks VLAs failed completely
+  \item Sole author of the paper's open-source VLA eval framework, deploying chunked actions to a Franka via DROID
+  \item Built one policy interface over WebSocket, ZMQ, and HTTP so any VLA can be evaluated with no custom code
+  \item Benchmarked $\pi$0, $\pi$0.5, GR00T N1.7, and MolmoAct2 on 12 real-world manipulation tasks with automated logging
+  \item Built Oculus teleop demo collection for each task, then fine-tuned $\pi$0, $\pi$0.5, and MolmoAct2 on the demos
+\end{itemize}
+
+\role{Undergraduate Research Intern}{UW Personal Robotics Lab}{Oct 2025 -- Present}{--}
+\begin{itemize}
+  \item Lead 4-person undergrad team building the software stack for an NVIDIA-granted bimanual holonomic robot
+  \item Own base navigation, localization, and arm control, built in MuJoCo and Gazebo, then deployed to hardware
+  \item Robot navigates point to point autonomously; both arms move in 3D under autonomous and teleop control
+  \item Extended MuJoCo planner to dual-arm with cross-arm collision checking, 125Hz retiming, and parallel execution
+  \item Fixed and upstreamed open-source inverse kinematics solver bug, from failing to 50/50 on library test cases
+  \item Prototyped three impedance controllers; shipped 500Hz gravity comp (Pinocchio RNEA) feeding motor controllers
+  \item Built sim-to-real tuning pipeline ($\sim$5 mm accuracy) and 8-stage operator-gated hardware validation suite
+  \item Integrated ROS2 Nav2 with LiDAR SLAM for autonomous navigation in unknown, dynamic environments
+  \item Built WebXR/Meta Quest teleop from scratch for sim and real hardware with Cartesian speed limits
+\end{itemize}
+
+\role{Control Systems Programmer}{Advanced Robotics at UW}{Oct 2025 -- Present}{-}
+\begin{itemize}
+  \item Implemented Kalman-filter odometry for sensor fusion, with data-driven tuning on physical competition robots
+  \item Led path-tracking rewrite on embedded RTOS, replacing pure pursuit with LQR that models robot dynamics
+  \item Built sensor-agnostic mocap pipeline to characterize lidar-inertial localization, from guided data collection to fitting
+  \item Fit Gauss-Markov error model validated by Monte Carlo on held-out data: 5.1 cm horizontal, 0.6 cm vertical, $<$0.5$^\circ$
+\end{itemize}
+
+\role{Student Advocate}{Swerve Robotics}{Jan 2024 -- Aug 2025}{-}
+\begin{itemize}
+  \item Led campaign to raise \$50,000+ for a Botswana robotics advocacy trip; built curriculum and taught 50+ students
+  \item Presented on Botswana national TV; worked with U.S. Embassy to lobby ministers for reduced STEM kit tariffs
+\end{itemize}
+
+%-------------------- Projects --------------------
+\section{Projects}
+\role{Achilles}{Rigid-Body Simulator}{2026 -- Present}{--}
+\begin{itemize}
+  \item Developing C++ rigid-body simulator that batches robot instances across SIMD lanes to speed up RL training
+  \item Cut dynamics from O(n\textsuperscript{3}) to O(n) with an Articulated Body Algorithm engine, validated to 1e-4 rad
+  \item Replaced Eigen with custom xsimd spatial algebra and a depth-sorted layout that keeps tree dynamics SIMD-safe
+  \item Cut max energy error by over half using substepped Euler, Verlet, and implicit midpoint integrators
+  \item Architected compile-time, data-oriented engine so new algorithms need no engine changes; CI enforces death tests
+  \item Building branchless SIMD broad-phase collision that tests each body against a full lane group, packing hits into bitmasks
+  \item Unified spheres, capsules, and boxes as one sphere-swept-box shape, with MuJoCo-style margins and parent/child filtering
+  \item 1.65M robot-steps/s single-threaded (4$\times$ via batching), 2$\times$ MuJoCo's per-robot rate, matching its dynamics to $\sim$1e-8 error
+\end{itemize}
+
+\role{Live View}{Computer Vision Pre-Processing}{2024 -- 2025}{--}
+\begin{itemize}
+  \item Converted camera frames into braille-pixel representations engineered to fit FTC bitmap rules
+  \item Applied image dithering and color encoding to compress frames while staying within FTC bandwidth restrictions
+\end{itemize}
+
+\role{SKIDADDLE}{Trajectory Planning Library}{2023 -- 2025}{--}
+\begin{itemize}
+  \item Published real-time B\'ezier path traversal library for FTC, with a derived optimal-path and convergence model
+\end{itemize}
+
+%-------------------- Publications --------------------
+\section{Publications}
+\textbf{``A Few Words Go a Long Way,''} D. Chen, A. R. Jain, \textbf{E. Goossen}, E. Romig, M. Murray, N. Walker, M. Cakmak\\
+(\textit{in preparation for IEEE RA-L}), 2026.
+
+\end{document}

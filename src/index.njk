@@ -101,6 +101,13 @@ scripts: ["/assets/js/skills.js"]
     {% endfor %}
   </ul>
   {% endif %}
+
+  {% if resume.skills.length %}
+  <h3>Technical skills</h3>
+  <div class="resume-skills">
+    {% for group in resume.skills %}<p><strong>{{ group.label }}:</strong> {{ group.items }}</p>{% endfor %}
+  </div>
+  {% endif %}
 </section>
 {% endif %}
 
