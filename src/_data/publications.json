@@ -18,6 +18,11 @@
     "project": "hil-cap",
     "image": "",
     "tldr": "Tests whether human feedback helps LLM-written robot code beat vision-language-action models: human feedback lifts Code-as-Policies 1.75× over base VLAs, solving tasks VLAs failed completely.",
-    "links": []
+    "links": [
+      {
+        "label": "arXiv",
+        "url": "https://arxiv.org/abs/2607.23784"
+      }
+    ]
   }
 ]
