@@ -7,9 +7,9 @@ tools: [C++20, xsimd (SIMD), CMake, GoogleTest, OpenGL/GLFW, Valgrind, MuJoCo (b
 order: 5
 cover: images/eight-pendulums.mp4
 coverPoster: images/eight-pendulums.jpg
-hero: images/double-pendulum.mp4
+hero: images/hero-pendulum.mp4
 heroAlt: A red and blue double pendulum swinging chaotically under gravity in the Achilles viewer
-heroPoster: images/double-pendulum.jpg
+heroPoster: images/hero-pendulum.jpg
 summary: A C++20 rigid-body simulator that steps 8 robots per SIMD instruction, about 3× MuJoCo's single-threaded throughput.
 highlights:
   - label: SIMD batching
@@ -27,6 +27,9 @@ highlights:
   - label: Collisions
     entry: collisions
     skills: [Collision detection, SIMD, C++]
+  - label: Contact solver
+    entry: collision-response
+    skills: [Rigid-body dynamics, Numerical methods, C++]
 links:
   - label: GitHub
     url: https://github.com/EricJGoossen/Achilles

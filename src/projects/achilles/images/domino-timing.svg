@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 340" role="img" aria-labelledby="t d">
+  <title id="t">Domino amplifier: when each domino tipped, Achilles and MuJoCo</title>
+  <desc id="d">Time at which each of the ten dominoes tipped past 45 degrees, simulated by Achilles and by MuJoCo 3.15 from the same scene. Each domino is 1.2 times the size of the one before, so the last weighs 137 times the first. The two engines agree to within 56 milliseconds on every domino; the last one falls at 4.77 s in Achilles and 4.83 s in MuJoCo.</desc>
+  <style>
+    svg { --text:#1c1917; --muted:#6b6560; --grid:#e7e5e4; --axis:#a8a29e;
+          --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#6250d6; --ref:#78716c; }
+    @media (prefers-color-scheme: dark) {
+      svg { --text:#f2f1ef; --muted:#a39d97; --grid:#33312e; --axis:#57534e;
+            --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#9085e9; --ref:#a8a29e; }
+    }
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: var(--text); font-size: 13px; }
+    .m { fill: var(--muted); } .s { font-size: 12px; } .b { font-weight: 650; }
+    .e { text-anchor: end; } .c { text-anchor: middle; }
+    .grid { stroke: var(--grid); stroke-width: 1; }
+    .axis { stroke: var(--axis); stroke-width: 1; }
+    .ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+    .dash { stroke-dasharray: 6 4; }
+    .guide { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+  </style>
+  <line class="grid" x1="64" x2="656" y1="274.0" y2="274.0"/>
+  <text class="s m e" x="56" y="278.0">0</text>
+  <line class="grid" x1="64" x2="656" y1="235.1" y2="235.1"/>
+  <text class="s m e" x="56" y="239.1">1</text>
+  <line class="grid" x1="64" x2="656" y1="196.2" y2="196.2"/>
+  <text class="s m e" x="56" y="200.2">2</text>
+  <line class="grid" x1="64" x2="656" y1="157.3" y2="157.3"/>
+  <text class="s m e" x="56" y="161.3">3</text>
+  <line class="grid" x1="64" x2="656" y1="118.4" y2="118.4"/>
+  <text class="s m e" x="56" y="122.4">4</text>
+  <line class="grid" x1="64" x2="656" y1="79.5" y2="79.5"/>
+  <text class="s m e" x="56" y="83.5">5</text>
+  <line class="axis" x1="64" x2="656" y1="274" y2="274"/>
+  <text class="s m c" x="93.6" y="292">1</text>
+  <text class="s m c" x="152.8" y="292">2</text>
+  <text class="s m c" x="212.0" y="292">3</text>
+  <text class="s m c" x="271.2" y="292">4</text>
+  <text class="s m c" x="330.4" y="292">5</text>
+  <text class="s m c" x="389.6" y="292">6</text>
+  <text class="s m c" x="448.8" y="292">7</text>
+  <text class="s m c" x="508.0" y="292">8</text>
+  <text class="s m c" x="567.2" y="292">9</text>
+  <text class="s m c" x="626.4" y="292">10</text>
+  <text class="s m c" x="360" y="328">domino (each 1.2× the last)</text>
+  <text class="s m" x="56" y="46" text-anchor="start">time it tipped past 45° (s)</text>
+  <text class="s m" x="93.6" y="310.0" text-anchor="middle">0.3 kg</text>
+  <text class="s m" x="626.4" y="310.0" text-anchor="middle">41 kg</text>
+  <polyline class="ln" style="stroke:var(--s1)" stroke-width="2" points="93.6,227.2 152.8,212.5 212.0,196.8 271.2,179.4 330.4,161.3 389.6,141.1 448.8,119.1 508.0,99.5 567.2,92.2 626.4,88.3"/>
+  <circle cx="93.6" cy="227.5" r="6.5" fill="none" style="stroke:var(--s2)" stroke-width="2"/>
+  <circle cx="93.6" cy="227.2" r="3.5" style="fill:var(--s1)"/>
+  <circle cx="152.8" cy="212.8" r="6.5" fill="none" style="stroke:var(--s2)" stroke-width="2"/>
+  <circle cx="152.8" cy="212.5" r="3.5" style="fill:var(--s1)"/>
+  <circle cx="212.0" cy="196.8" r="6.5" fill="none" style="stroke:var(--s2)" stroke-width="2"/>
+  <circle cx="212.0" cy="196.8" r="3.5" style="fill:var(--s1)"/>
+  <circle cx="271.2" cy="179.5" r="6.5" fill="none" style="stroke:var(--s2)" stroke-width="2"/>
+  <circle cx="271.2" cy="179.4" r="3.5" style="fill:var(--s1)"/>
+  <circle cx="330.4" cy="160.7" r="6.5" fill="none" style="stroke:var(--s2)" stroke-width="2"/>
+  <circle cx="330.4" cy="161.3" r="3.5" style="fill:var(--s1)"/>
+  <circle cx="389.6" cy="140.2" r="6.5" fill="none" style="stroke:var(--s2)" stroke-width="2"/>
+  <circle cx="389.6" cy="141.1" r="3.5" style="fill:var(--s1)"/>
+  <circle cx="448.8" cy="117.7" r="6.5" fill="none" style="stroke:var(--s2)" stroke-width="2"/>
+  <circle cx="448.8" cy="119.1" r="3.5" style="fill:var(--s1)"/>
+  <circle cx="508.0" cy="97.7" r="6.5" fill="none" style="stroke:var(--s2)" stroke-width="2"/>
+  <circle cx="508.0" cy="99.5" r="3.5" style="fill:var(--s1)"/>
+  <circle cx="567.2" cy="90.2" r="6.5" fill="none" style="stroke:var(--s2)" stroke-width="2"/>
+  <circle cx="567.2" cy="92.2" r="3.5" style="fill:var(--s1)"/>
+  <circle cx="626.4" cy="86.1" r="6.5" fill="none" style="stroke:var(--s2)" stroke-width="2"/>
+  <circle cx="626.4" cy="88.3" r="3.5" style="fill:var(--s1)"/>
+  <line x1="64" x2="84" y1="18" y2="18" style="stroke:var(--s1)" stroke-width="2.5" stroke-linecap="round"/>
+  <text class="s" x="90" y="22">Achilles</text>
+  <line x1="155.6" x2="175.6" y1="18" y2="18" style="stroke:var(--s2)" stroke-width="2.5" stroke-linecap="round"/>
+  <text class="s" x="181.6" y="22">MuJoCo 3.15 (ring)</text>
+</svg>

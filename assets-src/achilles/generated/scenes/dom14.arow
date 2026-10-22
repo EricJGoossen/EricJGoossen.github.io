@@ -1,0 +1,402 @@
+archetype: dominoes
+joints:
+- name: world
+  parent: null
+  fields:
+    joint_subspace: &id001 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    joint_activation_mask: [0]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [1, 0, 0, 0, 0.1, 0.1, 0.1, 0, 0, 0]
+    joint_position:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0, 0, 0]
+    visual_color: [0, 0, 0]
+    collision_pose:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0, 0, 0]
+    collision_radius: [0]
+    collision_margin: [0]
+    collision_group: [0]
+    collision_mask: [0]
+- name: ground
+  parent: world
+  fields:
+    joint_subspace: *id001
+    joint_activation_mask: [0]
+    fixed_joint_transform:
+      translation: [0, -0.2, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [1, 0, 0, 0, 0.1, 0.1, 0.1, 0, 0, 0]
+    joint_position:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [6, 0.1, 6]
+    visual_color: [0.35, 0.38, 0.35]
+    collision_pose:
+      translation: [0, 0.1, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [6, 0.1, 6]
+    collision_radius: [0]
+    collision_margin: [0.005]
+    collision_group: [1]
+    collision_mask: [2]
+- name: d0
+  parent: world
+  fields:
+    joint_subspace: &id002 [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+      0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1]
+    joint_activation_mask: [63]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [0.5, 0, 0.21, 0, 0.12299999999999998, 0.005666666666666666,
+      0.11786666666666665, 0, 0, 0]
+    joint_position:
+      translation: [-1.7587142861588965, 0.0005, 2.0880191712866534]
+      rotation: [0.9067021802217339, 0, 0.42177145041023634, 0]
+    joint_velocity: [0, 0, -1.6, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.04, 0.42, 0.18]
+    visual_color: [0.16, 0.47, 0.84]
+    collision_pose:
+      translation: [0, 0.42, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.04, 0.42, 0.18]
+    collision_radius: [0.0]
+    collision_margin: [0.005]
+    collision_group: [2]
+    collision_mask: [3]
+- name: d1
+  parent: world
+  fields:
+    joint_subspace: *id002
+    joint_activation_mask: [63]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [0.5, 0, 0.21, 0, 0.12299999999999998, 0.005666666666666666,
+      0.11786666666666665, 0, 0, 0]
+    joint_position:
+      translation: [-1.4881428575190663, 0.0005, 1.7667854526271682]
+      rotation: [0.9067021802217339, 0, 0.42177145041023634, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.04, 0.42, 0.18]
+    visual_color: [0.92, 0.41, 0.2]
+    collision_pose:
+      translation: [0, 0.42, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.04, 0.42, 0.18]
+    collision_radius: [0.0]
+    collision_margin: [0.005]
+    collision_group: [2]
+    collision_mask: [3]
+- name: d2
+  parent: world
+  fields:
+    joint_subspace: *id002
+    joint_activation_mask: [63]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [0.5, 0, 0.21, 0, 0.12299999999999998, 0.005666666666666666,
+      0.11786666666666665, 0, 0, 0]
+    joint_position:
+      translation: [-1.217571428879236, 0.0005, 1.445551733967683]
+      rotation: [0.9067021802217339, 0, 0.42177145041023634, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.04, 0.42, 0.18]
+    visual_color: [0.11, 0.69, 0.48]
+    collision_pose:
+      translation: [0, 0.42, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.04, 0.42, 0.18]
+    collision_radius: [0.0]
+    collision_margin: [0.005]
+    collision_group: [2]
+    collision_mask: [3]
+- name: d3
+  parent: world
+  fields:
+    joint_subspace: *id002
+    joint_activation_mask: [63]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [0.5, 0, 0.21, 0, 0.12299999999999998, 0.005666666666666666,
+      0.11786666666666665, 0, 0, 0]
+    joint_position:
+      translation: [-0.9470000002394059, 0.0005, 1.124318015308198]
+      rotation: [0.9067021802217339, 0, 0.42177145041023634, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.04, 0.42, 0.18]
+    visual_color: [0.93, 0.63, 0.0]
+    collision_pose:
+      translation: [0, 0.42, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.04, 0.42, 0.18]
+    collision_radius: [0.0]
+    collision_margin: [0.005]
+    collision_group: [2]
+    collision_mask: [3]
+- name: d4
+  parent: world
+  fields:
+    joint_subspace: *id002
+    joint_activation_mask: [63]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [0.5, 0, 0.21, 0, 0.12299999999999998, 0.005666666666666666,
+      0.11786666666666665, 0, 0, 0]
+    joint_position:
+      translation: [-0.6764285715995757, 0.0005, 0.8030842966487131]
+      rotation: [0.9067021802217339, 0, 0.42177145041023634, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.04, 0.42, 0.18]
+    visual_color: [0.91, 0.48, 0.64]
+    collision_pose:
+      translation: [0, 0.42, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.04, 0.42, 0.18]
+    collision_radius: [0.0]
+    collision_margin: [0.005]
+    collision_group: [2]
+    collision_mask: [3]
+- name: d5
+  parent: world
+  fields:
+    joint_subspace: *id002
+    joint_activation_mask: [63]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [0.5, 0, 0.21, 0, 0.12299999999999998, 0.005666666666666666,
+      0.11786666666666665, 0, 0, 0]
+    joint_position:
+      translation: [-0.40585714295974556, 0.0005, 0.4818505779892279]
+      rotation: [0.9067021802217339, 0, 0.42177145041023634, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.04, 0.42, 0.18]
+    visual_color: [0.38, 0.31, 0.84]
+    collision_pose:
+      translation: [0, 0.42, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.04, 0.42, 0.18]
+    collision_radius: [0.0]
+    collision_margin: [0.005]
+    collision_group: [2]
+    collision_mask: [3]
+- name: d6
+  parent: world
+  fields:
+    joint_subspace: *id002
+    joint_activation_mask: [63]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [0.5, 0, 0.21, 0, 0.12299999999999998, 0.005666666666666666,
+      0.11786666666666665, 0, 0, 0]
+    joint_position:
+      translation: [-0.13528571431991535, 0.0005, 0.16061685932974282]
+      rotation: [0.9067021802217339, 0, 0.42177145041023634, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.04, 0.42, 0.18]
+    visual_color: [0.16, 0.47, 0.84]
+    collision_pose:
+      translation: [0, 0.42, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.04, 0.42, 0.18]
+    collision_radius: [0.0]
+    collision_margin: [0.005]
+    collision_group: [2]
+    collision_mask: [3]
+- name: d7
+  parent: world
+  fields:
+    joint_subspace: *id002
+    joint_activation_mask: [63]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [0.5, 0, 0.21, 0, 0.12299999999999998, 0.005666666666666666,
+      0.11786666666666665, 0, 0, 0]
+    joint_position:
+      translation: [0.13528571431991487, 0.0005, -0.1606168593297423]
+      rotation: [0.9067021802217339, 0, 0.42177145041023634, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.04, 0.42, 0.18]
+    visual_color: [0.92, 0.41, 0.2]
+    collision_pose:
+      translation: [0, 0.42, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.04, 0.42, 0.18]
+    collision_radius: [0.0]
+    collision_margin: [0.005]
+    collision_group: [2]
+    collision_mask: [3]
+- name: d8
+  parent: world
+  fields:
+    joint_subspace: *id002
+    joint_activation_mask: [63]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [0.5, 0, 0.21, 0, 0.12299999999999998, 0.005666666666666666,
+      0.11786666666666665, 0, 0, 0]
+    joint_position:
+      translation: [0.4058571429597451, 0.0005, -0.4818505779892274]
+      rotation: [0.9067021802217339, 0, 0.42177145041023634, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.04, 0.42, 0.18]
+    visual_color: [0.11, 0.69, 0.48]
+    collision_pose:
+      translation: [0, 0.42, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.04, 0.42, 0.18]
+    collision_radius: [0.0]
+    collision_margin: [0.005]
+    collision_group: [2]
+    collision_mask: [3]
+- name: d9
+  parent: world
+  fields:
+    joint_subspace: *id002
+    joint_activation_mask: [63]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [0.5, 0, 0.21, 0, 0.12299999999999998, 0.005666666666666666,
+      0.11786666666666665, 0, 0, 0]
+    joint_position:
+      translation: [0.6764285715995753, 0.0005, -0.8030842966487125]
+      rotation: [0.9067021802217339, 0, 0.42177145041023634, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.04, 0.42, 0.18]
+    visual_color: [0.93, 0.63, 0.0]
+    collision_pose:
+      translation: [0, 0.42, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.04, 0.42, 0.18]
+    collision_radius: [0.0]
+    collision_margin: [0.005]
+    collision_group: [2]
+    collision_mask: [3]
+- name: d10
+  parent: world
+  fields:
+    joint_subspace: *id002
+    joint_activation_mask: [63]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [0.5, 0, 0.21, 0, 0.12299999999999998, 0.005666666666666666,
+      0.11786666666666665, 0, 0, 0]
+    joint_position:
+      translation: [0.9470000002394054, 0.0005, -1.1243180153081975]
+      rotation: [0.9067021802217339, 0, 0.42177145041023634, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.04, 0.42, 0.18]
+    visual_color: [0.91, 0.48, 0.64]
+    collision_pose:
+      translation: [0, 0.42, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.04, 0.42, 0.18]
+    collision_radius: [0.0]
+    collision_margin: [0.005]
+    collision_group: [2]
+    collision_mask: [3]
+- name: d11
+  parent: world
+  fields:
+    joint_subspace: *id002
+    joint_activation_mask: [63]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [0.5, 0, 0.21, 0, 0.12299999999999998, 0.005666666666666666,
+      0.11786666666666665, 0, 0, 0]
+    joint_position:
+      translation: [1.2175714288792356, 0.0005, -1.4455517339676827]
+      rotation: [0.9067021802217339, 0, 0.42177145041023634, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.04, 0.42, 0.18]
+    visual_color: [0.38, 0.31, 0.84]
+    collision_pose:
+      translation: [0, 0.42, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.04, 0.42, 0.18]
+    collision_radius: [0.0]
+    collision_margin: [0.005]
+    collision_group: [2]
+    collision_mask: [3]
+- name: d12
+  parent: world
+  fields:
+    joint_subspace: *id002
+    joint_activation_mask: [63]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [0.5, 0, 0.21, 0, 0.12299999999999998, 0.005666666666666666,
+      0.11786666666666665, 0, 0, 0]
+    joint_position:
+      translation: [1.488142857519066, 0.0005, -1.7667854526271678]
+      rotation: [0.9067021802217339, 0, 0.42177145041023634, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.04, 0.42, 0.18]
+    visual_color: [0.16, 0.47, 0.84]
+    collision_pose:
+      translation: [0, 0.42, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.04, 0.42, 0.18]
+    collision_radius: [0.0]
+    collision_margin: [0.005]
+    collision_group: [2]
+    collision_mask: [3]
+- name: d13
+  parent: world
+  fields:
+    joint_subspace: *id002
+    joint_activation_mask: [63]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [0.5, 0, 0.21, 0, 0.12299999999999998, 0.005666666666666666,
+      0.11786666666666665, 0, 0, 0]
+    joint_position:
+      translation: [1.7587142861588962, 0.0005, -2.088019171286653]
+      rotation: [0.9067021802217339, 0, 0.42177145041023634, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.04, 0.42, 0.18]
+    visual_color: [0.92, 0.41, 0.2]
+    collision_pose:
+      translation: [0, 0.42, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.04, 0.42, 0.18]
+    collision_radius: [0.0]
+    collision_margin: [0.005]
+    collision_group: [2]
+    collision_mask: [3]

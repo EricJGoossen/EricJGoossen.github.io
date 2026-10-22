@@ -1,0 +1,9 @@
+{
+  "note": "achilles_bench throughput, claude/perf-vs-mujoco (355a392), bench/scenes/seven_joint_arm.arow, euler, dt 0.002, Release, xsimd 13.0.0, clang 18; one core of a cloud Intel Xeon @ 2.80GHz. Best of 2 x 9 trials of 400,000 steps. N > 1 hangs the arms off a zero-DOF bench_world root (one extra row); N = 1 runs the scene as-is.",
+  "runs": [
+    {"label": "1 robot", "build": "SSE2 (4 lanes)", "flags": "default", "robots": 1, "lanes": 4, "us_per_step": [3.058, 3.213]},
+    {"label": "4 robots", "build": "SSE2 (4 lanes)", "flags": "default", "robots": 4, "lanes": 4, "us_per_step": [4.453, 4.257]},
+    {"label": "1 robot", "build": "AVX2 (8 lanes)", "flags": "-mavx2 -mfma", "robots": 1, "lanes": 8, "us_per_step": [2.869]},
+    {"label": "8 robots", "build": "AVX2 (8 lanes)", "flags": "-mavx2 -mfma", "robots": 8, "lanes": 8, "us_per_step": [4.265, 4.715]}
+  ]
+}

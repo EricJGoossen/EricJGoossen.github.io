@@ -6,17 +6,35 @@ Made in a cloud container while finishing the Achilles page, from Achilles `main
 
 | Entry | Media | How it was made |
 |---|---|---|
-| Page hero | `double-pendulum.mp4` | Achilles viewer, `examples/two_joint_arm.arow` with the pivot raised to z = 2.2 (`scenes/two_joint_arm_raised.arow`), RK4 at 2 ms, Xvfb + Mesa software GL, frames read back with `glReadPixels` |
-| SIMD | `simd-throughput.svg` | `scripts/make_simd_chart.py` from `bench-vs-mujoco/throughput_summary.md` (seven-link arm, Euler, f32 AVX2 and f32 SSE2 columns) |
+| Page hero (until 2026-10-22) | `media/double-pendulum.mp4` | Achilles viewer, `examples/two_joint_arm.arow` with the pivot raised to z = 2.2 (`scenes/two_joint_arm_raised.arow`), RK4 at 2 ms, Xvfb + Mesa software GL, frames read back with `glReadPixels` |
+| Page hero | `hero-pendulum.mp4` | The same raw frames as `double-pendulum.mp4`, re-cropped (941×529 from the left edge, scaled to 1280×720) so the pivot sits at about two-thirds across, leaving the left side dark for the intro text |
+| SIMD | `simd-lanes.svg` | `scripts/make_simd_lanes_chart.py` from `data/simd_lanes_cloud.json`: `achilles_bench throughput` on `claude/perf-vs-mujoco` (355a392), seven-link arm, Euler, 2 ms, built three ways from that branch with flags only (default SSE2; `-mavx2 -mfma`), xsimd 13.0.0, one core of a cloud Xeon @ 2.8 GHz, best of 2 × 9 trials. 1 robot 3.06 µs/step, 4 robots (SSE2) 4.26 µs, 8 robots (AVX2) 4.27 µs. A scalar (no-SIMD) build was tried through xsimd's `emulated<32>` backend, but xsimd 13 can't compile this code that way (its integer ops instantiate a 1-lane double register), so "1 robot" is the default build with three lanes idle |
+| SIMD (second) | `simd-throughput.svg` | `scripts/make_simd_chart.py` from `bench-vs-mujoco/throughput_summary.md` (seven-link arm, Euler, f32 AVX2 and f32 SSE2 columns) |
 | Viewer, home tile | `eight-pendulums.mp4` | `scenes/eight_pendulums.arow`: eight copies of the demo arm hung off a zero-DOF root, released 0.002 rad apart |
 | MuJoCo | `speed-vs-mujoco.svg` | `scripts/make_perf_charts.py` from `bench-vs-mujoco/throughput_summary.md` (V3, N = 1 and N = 64, Euler) and `v2-revival/REVIVAL_README.md` (V2) |
+| MuJoCo | `achilles-vs-mujoco-error.svg` | `scripts/make_sbs_error_chart.py` from `data/dp_results.json` (`tip_err_achilles_rk4_vs_mujoco_rk4`), converted to mm: under 0.04 mm for 4 s, under 1 mm until about 6 s, 13 mm at 8 s |
 | MuJoCo | `achilles-vs-mujoco.mp4` | Same raised scene in the Achilles viewer and in MuJoCo 3.15's renderer (`scripts/mj_render.py`, same camera), both RK4 at 2 ms, cut at 8 s |
 | Dynamics | `dp-accel-error.svg` | `scripts/make_accel_chart.py` from `data/dp_results.json` (Achilles vs closed form only; the MuJoCo-vs-closed-form line was dropped, since it only shows float64 vs float32) |
 | Dynamics | `dp-energy.svg` | `scripts/analyze_dp.py` + `scripts/make_dp_charts.py` (below) |
-| Collisions | `contact-solver.mp4` | Eric's `EricG/collision-resolution` branch at `223af7c`, unmodified Release build, run exactly as `scripts/run-robot-demo.sh` runs it (Euler, 4 ms). Screen-captured at 60 fps under Xvfb with `x11grab -draw_mouse 0`; the camera was zoomed and orbited with the viewer's own mouse controls via `xdotool` while the process was paused (`scripts/rec_robot.sh 6 -50 -150 7`). Played at half speed, first 8 s |
+| Collision detection | `collision-detection.mp4` | Formerly `media/collisions.mp4` (see below), back on the site as the detection clip |
+| Collision response | `domino-amplifier.mp4`, `domino-timing.svg` | See "Dominoes" below |
+| (retired 2026-10-22) | `contact-solver.mp4` | Eric's `EricG/collision-resolution` branch at `223af7c`, unmodified Release build, run exactly as `scripts/run-robot-demo.sh` runs it (Euler, 4 ms). Screen-captured at 60 fps under Xvfb with `x11grab -draw_mouse 0`; the camera was zoomed and orbited with the viewer's own mouse controls via `xdotool` while the process was paused (`scripts/rec_robot.sh 6 -50 -150 7`). Played at half speed, first 8 s |
 | Collisions | `collision-vs-exact.svg` | `scripts/collide_vs_mujoco.py` + `scripts/collide_truth.py` + `scripts/make_coll_chart.py` (below) |
 
+## Dominoes (`data/dominoes/`, `scenes/amp10.arow`, `scenes/dom14.arow`)
+
+Free-floating plain boxes on a ground slab, in the format of Eric's `robot_on_plane.arow` (Y-up, gravity −y, `scenes/sim_config_y_up.yaml`), made by `scenes/make_scenes.py`. Run on Eric's `EricG/collision-resolution` branch at `223af7c`, **unmodified**, through `scripts/rec_driver.cpp`: a standalone program linked against that branch's Release `libachilles_lib.a` that steps a fixed sim time per frame, renders through the library's own viewer (frames read back from the X server) and logs every body's pose. Semi-implicit Euler, 2 ms (the only integrator with collisions there). MuJoCo 3.15 runs the same scene from the same file (`scripts/arow_boxes_to_mjcf.py`, mapped to Z-up; same boxes, masses, start state, Euler at 2 ms, pyramidal cones, default solref/solimp, the same margins).
+
+- `amp10.arow`, the domino amplifier on the site: ten dominoes, each 1.2× the size of the last (0.3 kg to 41 kg, a 137× mass ratio). Tipping past 45° (250 Hz logs): Achilles and MuJoCo within 0–56 ms on every domino (1.204 vs 1.196 s for the first, 4.772 vs 4.828 s for the last). Resting angles at 7 s within 0.3°.
+- `dom14.arow`: 14 equal dominoes. Within 0–72 ms on every domino, resting angles within 0.2°.
+- Cost: this cloud core needs about 8 ms per step for the 14-domino scene (40 s of compute for 10 s of sim); MuJoCo runs it far faster. Not a number to publish.
+- `scripts/mj_render_boxes.py` renders MuJoCo with the viewer's default camera; its frames line up with Achilles' frame for frame (not used on the site).
+
+**Real-time recordings run slow.** Eric's viewer steps by wall-clock time, so a scene heavier than one core can simulate in real time plays back in slow motion. The retired `contact-solver.mp4` (robot_on_plane, screen-captured with `x11grab`) was labelled half speed but was slower than that; `rec_driver` avoids this.
+
 ## Not on the site (here if wanted)
+
+- `media/double-pendulum.mp4` (+ poster): the earlier page hero.
 
 - `media/simd-explainer.mp4`, `media/simd-memtrace.mp4` (+ posters): the explainer and memory-trace clips, replaced on the site by the throughput chart. Made with `scripts/rec_explainer.py` and `scripts/rec_memviz.py`.
 - `media/collisions.mp4` (+ poster): two pendulums passing through each other with collision shapes and live contacts drawn on top, from before the contact solver; made with the recording tools patch.
