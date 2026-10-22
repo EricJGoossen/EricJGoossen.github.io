@@ -47,9 +47,13 @@ layout: base.njk
     {% endfor %}
   </section>
 
+  {#- Previous and next follow the home page order; "All projects" is at the top. -#}
+  {% set prevProject = collections.projects | getPreviousCollectionItem(page) %}
   {% set nextProject = collections.projects | getNextCollectionItem(page) %}
+  {% if prevProject or nextProject %}
   <nav class="project-nav" aria-label="More projects">
-    <a class="back" href="/#projects">← All projects</a>
+    {% if prevProject %}<a class="prev" href="{{ prevProject.url }}">← Previous: {{ prevProject.data.title }}</a>{% endif %}
     {% if nextProject %}<a class="next" href="{{ nextProject.url }}">Next: {{ nextProject.data.title }} →</a>{% endif %}
   </nav>
+  {% endif %}
 </article>
