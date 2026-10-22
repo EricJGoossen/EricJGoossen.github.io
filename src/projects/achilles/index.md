@@ -26,7 +26,7 @@ highlights:
     skills: [Numerical methods, C++]
   - label: Contact solver
     entry: collision-response
-    skills: [Rigid-body dynamics, Collision detection, Numerical methods, C++]
+    skills: [Rigid-body dynamics, Numerical methods, C++]
 links:
   - label: GitHub
     url: https://github.com/EricJGoossen/Achilles
