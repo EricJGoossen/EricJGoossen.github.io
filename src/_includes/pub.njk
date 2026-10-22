@@ -3,7 +3,7 @@
 <article class="pub{% if not pub.image %} pub-text-only{% endif %}">
   {% if pub.image %}
   <div class="pub-media">
-    {% media pub.image, "Teaser for " + pub.title, { poster: pub.poster } %}
+    {% media pub.image, pub.imageAlt or ("Teaser for " + pub.title), { poster: pub.poster } %}
   </div>
   {% endif %}
   <div class="pub-body">
