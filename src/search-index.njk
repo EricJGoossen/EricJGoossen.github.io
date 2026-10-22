@@ -1,0 +1,8 @@
+---
+permalink: /search-index.json
+eleventyExcludeFromCollections: true
+# Rendered after these, so their text is ready to index
+eleventyImport:
+  collections: ["projects", "logEntries", "skillPages"]
+---
+{{ collections | searchIndex(site, publications) | dump | safe }}

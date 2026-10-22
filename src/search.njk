@@ -1,0 +1,16 @@
+---
+layout: base.njk
+title: Search
+summary: Search Eric J. Goossen's projects, log entries, skills and publications.
+permalink: /search/
+scripts: ["/assets/js/search.js"]
+eleventyExcludeFromCollections: true
+---
+<section class="search">
+  <h1>Search</h1>
+  <label class="visually-hidden" for="search-input">Search the site</label>
+  <input class="search-input" id="search-input" type="search" autocomplete="off" spellcheck="false" placeholder="Projects, log entries, skills, papers">
+  <p class="search-status muted" id="search-status" aria-live="polite"></p>
+  <ol class="search-results" id="search-results"></ol>
+  <noscript><p>Search needs JavaScript. Every project is listed on the <a href="/#projects">home page</a>.</p></noscript>
+</section>

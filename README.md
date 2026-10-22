@@ -34,7 +34,7 @@ AI agents working on the site follow `AGENTS.md`, which has step-by-step recipes
 | Link preview image (LinkedIn/Slack) | `ogImage` in `site.json` for the home page, e.g. `"/assets/og.jpg"`. Project pages use their `cover` automatically. |
 | Resume section | PDF at `src/assets/resume.pdf` and an image of its first page at `src/assets/resume.png` (paths in `src/_data/resume.json`) |
 | Hide something that isn't ready | add `draft: true` to a project's `index.md`, a log entry, or a publication in `publications.json` |
-| Skills and each one's best example | `src/_data/skills.json` |
+| Skills and each one's best example | `src/_data/skills.json` (each skill gets a page listing every entry tagged with it; tag an entry that isn't a highlight with `skillTags: [...]` in its front matter) |
 | Publications | `src/_data/publications.json` (see below) |
 | A project's overview, highlights, links | `src/projects/<name>/index.md` |
 | A project's progress log | `src/projects/<name>/log/*.md` |

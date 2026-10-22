@@ -93,7 +93,7 @@ main:focus { outline: none; }
 .site-header { padding: 1.25rem 0; }
 .site-header .wrap { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
 .site-name { color: var(--text); font-weight: 650; }
-.site-header nav { display: flex; gap: 1.25rem; }
+.site-header nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
 .site-header nav a { color: var(--muted); }
 .site-header nav a:hover { color: var(--text); }
 
@@ -161,33 +161,8 @@ main:focus { outline: none; }
 }
 .chip:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
 
-/* Skill dropdowns */
-.skill { position: relative; }
-.skill summary { list-style: none; }
-.skill summary::-webkit-details-marker { display: none; }
-.skill summary::after { content: " ▾"; color: var(--muted); font-size: 0.8em; }
-.skill[open] summary { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
-
-.skill-menu {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  z-index: 10;
-  width: max-content;
-  min-width: 15rem;
-  max-width: min(24rem, calc(100vw - 32px));
-  padding: 0.75rem 1rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: 0 8px 24px rgb(0 0 0 / 0.12);
-  font-size: 0.95rem;
-}
-.skill-menu ul { list-style: none; padding: 0; margin: 0; }
-.skill-menu li { margin: 0.2rem 0; }
-.menu-label { margin: 0 0 0.2rem; color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; }
-.menu-label:not(:first-child) { margin-top: 0.75rem; }
-.menu-best { font-weight: 600; }
+.chip-count { margin-left: 0.15rem; color: var(--muted); font-size: 0.8em; font-variant-numeric: tabular-nums; }
+.chip:hover .chip-count { color: inherit; }
 
 /* ---------- Project tiles ---------- */
 /* Big image tiles. Title, org and summary sit in an overlay that appears on
@@ -373,16 +348,18 @@ main:focus { outline: none; }
 
 /* Project pages get a wider column so a paragraph and its media fit side by
    side; the header, highlights and nav keep the reading width. */
-main.wrap:has(> .project) { --wrap: 72rem; }
-.project > :not(.log):not(.project-hero) { max-width: 52rem; margin-inline: auto; }
+main.wrap:has(> .project, > .skill-page) { --wrap: 72rem; }
+.project > :not(.log):not(.project-hero), .skill-page > :not(.log) { max-width: 52rem; margin-inline: auto; }
 
 .entry { padding: 2rem 0; border-top: 1px solid var(--border); }
 .entry:first-of-type { border-top: 0; padding-top: 0.5rem; }
 .entry time { color: var(--muted); font-size: 0.9rem; }
-.entry h3 { font-size: 1.3rem; margin-top: 0.15rem; }
-.entry h3 a { color: inherit; }
+.entry h3, .entry > h2 { font-size: 1.3rem; margin-top: 0.15rem; }
+.entry h3 a, .entry > h2 a { color: inherit; }
 .entry-skills { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; font-size: 0.85rem; }
 .tag { padding: 0.05rem 0.55rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.entry-skills a.tag { text-decoration: none; }
+.entry-skills a.tag:hover { box-shadow: inset 0 0 0 1px var(--accent); }
 .entry img, .entry .ph, .entry figure { margin: 1.25rem 0; }
 
 /* {% row %}: a paragraph with its image or video to the right, a thin line
@@ -410,7 +387,7 @@ main.wrap:has(> .project) { --wrap: 72rem; }
 .log { overflow-x: clip; }
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
-    .row-text, .row-media, .entry > time, .entry > h3, .entry > .entry-skills {
+    .row-text, .row-media, .entry > time, .entry > h3, .entry > h2, .entry > .entry-source, .entry > .entry-skills {
       animation: rise-in linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 75%;
@@ -481,14 +458,10 @@ figcaption { margin-top: 0.4rem; color: var(--muted); font-size: 0.9rem; }
   .pub { grid-template-columns: 1fr; gap: 1rem; padding: 1rem; }
   .site-header { padding: 0.9rem 0 0.25rem; }
   .site-header .wrap { gap: 0.15rem 1rem; }
-  .site-header nav { gap: 1.1rem; }
+  .site-header nav { gap: 0.1rem 0.65rem; font-size: 0.95rem; }
   .meta { flex-direction: column; }
   .resume-row { flex-direction: column; gap: 0; }
   .resume-row .muted { font-size: 0.9rem; }
-  /* Skill menus span the chip row (just below the tapped chip) so they never run off screen */
-  #skills .chips { position: relative; }
-  .skill { position: static; }
-  .skill-menu { top: auto; left: 0; right: 0; width: auto; min-width: 0; max-width: none; margin-top: 6px; }
   .meta span:not(:last-child)::after { content: none; }
 }
 
@@ -503,3 +476,38 @@ figcaption { margin-top: 0.4rem; color: var(--muted); font-size: 0.9rem; }
 
 /* An image with a caption in a log entry: the figure carries the spacing. */
 .entry figure > img { margin: 0; }
+
+/* ---------- Skill pages ---------- */
+/* Every log entry that shows one skill, in full, under a short header. */
+.skill-header { padding-bottom: 1.5rem; }
+.skill-page > .back { margin-bottom: 0.5rem; }
+.eyebrow { margin: 0 0 0.25rem; color: var(--muted); font-size: 0.8rem; font-weight: 650; letter-spacing: 0.12em; text-transform: uppercase; }
+.skill-header .meta { margin-bottom: 1rem; }
+.skill-page .log { border-top: 1px solid var(--border); }
+.skill-page .entry:first-of-type { padding-top: 2rem; }
+.entry-source { display: flex; flex-wrap: wrap; align-items: center; gap: 0.2rem 0.5rem; margin: 0; color: var(--muted); font-size: 0.9rem; }
+.skill-page .entry-source a { font-weight: 600; text-decoration: none; }
+.skill-page > .back { display: block; width: 100%; }
+.entry-source .badge { margin-left: 0.25rem; }
+
+/* ---------- Search ---------- */
+.search { padding-top: 1.5rem; }
+.search-input {
+  width: 100%;
+  margin: 0.5rem 0 0.75rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.1rem;
+}
+.search-input:focus { border-color: var(--accent); outline: 2px solid var(--accent-soft); outline-offset: 0; }
+.search-status { min-height: 1.65em; margin-bottom: 0.5rem; font-size: 0.95rem; }
+.search-results { list-style: none; padding: 0; margin: 0; }
+.search-results li { padding: 1rem 0; border-top: 1px solid var(--border); }
+.result-meta { margin: 0; color: var(--muted); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.result-title { font-size: 1.15rem; font-weight: 600; }
+.result-snippet { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.95rem; }
+.result-snippet mark { background: var(--accent-soft); color: var(--text); border-radius: 3px; padding: 0 0.1em; }

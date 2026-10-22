@@ -5,7 +5,7 @@ Eric J. Goossen's portfolio: Markdown + Eleventy, built into plain static HTML i
 ## Rules
 
 1. **Branch.** Work on `phase-1`, or whatever branch Eric names. **Never merge into or push to `main`.** `main` is the live site and only Eric decides when it changes. Pushing other branches is fine (Cloudflare builds a private preview).
-2. **Keep it static.** No server code, frameworks, databases, logins, analytics, trackers, third-party scripts or web fonts. The only JavaScript is `src/assets/js/skills.js`. If Eric approves something that loads from another domain, also add that domain to `src/_headers` (the Content-Security-Policy), or browsers will block it.
+2. **Keep it static.** No server code, frameworks, databases, logins, analytics, trackers, third-party scripts or web fonts. The only JavaScript is `src/assets/js/search.js` (the search page, which reads `search-index.json`, built with the site). If Eric approves something that loads from another domain, also add that domain to `src/_headers` (the Content-Security-Policy), or browsers will block it.
 3. **Eric's machine.** Node runs only in Docker (`compose.yaml`, preview on port 8090). Don't change that setup. Don't install anything without asking. If something does get installed (including a Docker image), add it to `INSTALLED.md` with an uninstall command.
 4. **Never invent facts about Eric.** Use only what Eric provides. Anything not provided yet stays as text starting with `Placeholder` (or a `"#"` link), so `npm run todo` can find it. That includes dates, numbers, results, co-authors, venues and awards.
 5. **Nothing unfinished is visible.** A project, log entry or publication that isn't ready gets `draft: true` in its front matter (or its object in `publications.json`), which leaves it out of the built site entirely. The build fails if any visible page still has `Placeholder` text, a gray placeholder box or a `#` link.
@@ -46,10 +46,12 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
 - **Highlights** live in a project's `index.md`. Each one names a log entry and the skills it shows. From those, the site builds:
   - the highlight chips on the project page
   - the skill tags on that log entry
-  - the home page skill dropdowns ("Best example" and "Also used in")
+  - a page per skill (`/skills/<name>/`, from `src/skill.njk`) showing every entry tagged with it in full, best example first; the home page skill chips link there
 
   Add a highlight in one place and it shows up everywhere it should.
-- **Skills** in `skills.json` set the chip order and each skill's `best` example (`"<folder>/<entry id>"`). A skill no highlight uses yet is hidden (the build prints a warning).
+- **Entries that aren't highlights** can still be tagged: add `skillTags: [C++, SIMD]` to the entry's front matter. (Not `skills:`, which is taken by `skills.json`.) An entry's tags are its highlight's skills plus its `skillTags`.
+- **Skills** in `skills.json` set the chip order and each skill's `best` example (`"<folder>/<entry id>"`), which leads its skill page. A skill no entry is tagged with yet has no page and is hidden (the build prints a warning).
+- **Search** (`/search/`) covers the intro, projects, log entries, skill pages and publications, from `search-index.json` (`src/search-index.njk`, `searchIndex` in `lib/skills.js`). Only published things are in it, and it updates itself with every build.
 
 ### Project front matter (`src/projects/<folder>/index.md`)
 
@@ -90,7 +92,7 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
 **Add or change a skill**
 - New skill: add `{ "name": "SIMD", "best": "opendubs/simd-optimization" }` to `skills.json`, at the position where its chip should appear. Then tag highlights with exactly the same spelling.
 - Renaming a skill means renaming it in `skills.json` **and** in every highlight that uses it. The build lists any you miss.
-- `best` must be a highlight that lists this skill. Without `best`, the first project in `order` that uses the skill wins.
+- `best` must be an entry tagged with this skill (by its highlight or its `skillTags`). Without `best`, the skill page starts with the newest tagged entry.
 
 **Add images and videos** (put the files in the project's `images/` folder)
 - A paragraph with its image or video beside it (the usual way to write a log entry). The blank-line rules of Markdown apply inside, so keep the paragraph unindented:
@@ -143,8 +145,9 @@ Add an object to `publications.json`:
 `lib/checks.js` runs on every build. A real build (`npm run build`, `npm run check`, Cloudflare) **stops** on any of these. The live preview shows them in a red banner instead.
 - A highlight points at a log entry that doesn't exist.
 - A highlight uses a skill that's not in `skills.json`.
-- A skill's `best` isn't a highlight, or that highlight doesn't list the skill.
-- A skill name is listed twice.
+- A skill's `best` isn't an entry tagged with that skill.
+- A skill name is listed twice, or two skills would share a page URL (e.g. "C++" and "Cpp").
+- An entry's `skillTags` isn't a list, or names a skill that's not in `skills.json`.
 - A log file doesn't start with a date, or two entries in one project share an anchor.
 - A project is missing `title` or `summary`, or its `order` isn't a number.
 - A `cover`, `hero`, poster, publication `image`, `photo` or `ogImage` file doesn't exist.
@@ -170,7 +173,7 @@ The checks can't judge content quality. Read what you wrote, and keep `Placehold
 - After a visual change, check:
   - light mode, dark mode, and a ~375px-wide phone
   - hover and keyboard focus on project tiles
-  - a skill dropdown near the right edge
+  - a skill page and the search page
   - no horizontal scrolling
 - Keep it accessible: real alt text, visible focus outlines, 4.5:1 text contrast, and nothing that only works on hover.
 - If you add a new kind of data, add a check for it in `lib/checks.js` so mistakes fail loudly.

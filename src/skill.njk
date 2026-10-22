@@ -1,0 +1,39 @@
+---
+layout: base.njk
+pagination:
+  data: collections.skillPages
+  size: 1
+  alias: skill
+permalink: "/skills/{{ skill.slug }}/"
+eleventyExcludeFromCollections: true
+eleventyComputed:
+  title: "{{ skill.name }}"
+  summary: "Every project log entry where {{ site.name }} used {{ skill.name }}."
+---
+{#- One page per skill: every log entry tagged with it, shown in full. Tags come
+    from each entry's highlight and its own `skillTags:` list (lib/skills.js). -#}
+<article class="skill-page">
+  <a class="back" href="/#skills">← All skills</a>
+  <header class="skill-header">
+    <p class="eyebrow">Skill</p>
+    <h1>{{ skill.name }}</h1>
+    <p class="meta"><span>{{ skill.uses.length }} log {{ "entry" if skill.uses.length == 1 else "entries" }}</span><span>{{ skill.projectCount }} {{ "project" if skill.projectCount == 1 else "projects" }}</span></p>
+    <nav class="chips" aria-label="Entries on this page">
+      {% for use in skill.uses %}<a class="chip" href="#{{ use.key | replace('/', '-') }}">{{ use.label }}</a>{% endfor %}
+    </nav>
+  </header>
+
+  <section class="log" aria-label="Log entries">
+    {% for use in skill.uses %}
+    {% set id = use.entry | entryId %}
+    <article class="entry" id="{{ use.key | replace('/', '-') }}">
+      <p class="entry-source"><a href="{{ use.project.url }}">{{ use.project.data.title }}</a><span aria-hidden="true">·</span><time datetime="{{ use.entry.date.toISOString() }}">{{ use.entry.date | readableDate }}</time>{% if use.best %}<span class="badge">Best example</span>{% endif %}</p>
+      <h2><a href="{{ use.project.url }}#{{ id }}">{{ use.entry.data.title }}</a></h2>
+      {% if use.otherSkills.length %}
+      <p class="entry-skills"><span class="muted">Also shows:</span> {% for s in use.otherSkills %}<a class="tag" href="/skills/{{ s | skillSlug }}/">{{ s }}</a>{% endfor %}</p>
+      {% endif %}
+      {{ use.entry.templateContent | rebase(use.project.url) | safe }}
+    </article>
+    {% endfor %}
+  </section>
+</article>

@@ -1,7 +1,6 @@
 ---
 layout: base.njk
 permalink: /
-scripts: ["/assets/js/skills.js"]
 ---
 {#- Each section only renders when its data file has something in it. -#}
 <section class="intro">
@@ -16,28 +15,13 @@ scripts: ["/assets/js/skills.js"]
   </div>
 </section>
 
-{% set skillList = skills | skillIndex(collections.projects) %}
-{% if skillList.length %}
+{% if collections.skillPages.length %}
 <section id="skills">
   <h2>Skills</h2>
-  <p class="muted">Pick a skill to jump to where I used it.</p>
-  <div class="chips">
-    {% for skill in skillList %}
-    <details class="skill" name="skill">
-      <summary class="chip">{{ skill.name }}</summary>
-      <div class="skill-menu">
-        <p class="menu-label">Best example</p>
-        <a class="menu-best" href="{{ skill.best.url }}">{{ skill.best.project }} → {{ skill.best.label }}</a>
-        {% if skill.others.length %}
-        <p class="menu-label">Also used in</p>
-        <ul>
-          {% for use in skill.others %}<li><a href="{{ use.url }}">{{ use.project }} → {{ use.label }}</a></li>{% endfor %}
-        </ul>
-        {% endif %}
-      </div>
-    </details>
-    {% endfor %}
-  </div>
+  <p class="muted">Pick a skill to see every log entry that shows it.</p>
+  <nav class="chips" aria-label="Skills">
+    {% for skill in collections.skillPages %}<a class="chip" href="/skills/{{ skill.slug }}/">{{ skill.name }} <span class="chip-count">{{ skill.uses.length }}</span></a>{% endfor %}
+  </nav>
 </section>
 {% endif %}
 

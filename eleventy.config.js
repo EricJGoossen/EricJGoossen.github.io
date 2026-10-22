@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import { checkSite } from "./lib/checks.js";
 import { isVideo, media, mediaUrl, rowShortcode, tileMedia, videoShortcode, youtubeShortcode } from "./lib/media.js";
+import { entryId, entrySkills, rebase, searchIndex, skillPages, skillSlug } from "./lib/skills.js";
 
 export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets");
@@ -23,12 +24,12 @@ export default function (eleventyConfig) {
   // left out of the built site entirely until the line is removed.
 
   // Published project pages, in the order set by `order` in each index.md.
-  eleventyConfig.addCollection("projects", (api) =>
+  const publishedProjects = (api) =>
     api
       .getFilteredByGlob("src/projects/*/index.md")
       .filter((p) => !p.data.draft)
-      .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
-  );
+      .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+  eleventyConfig.addCollection("projects", publishedProjects);
 
   // Not a real collection: runs lib/checks.js on every build. A real build
   // (npm run build, Cloudflare) stops with the list of problems. The local
@@ -56,11 +57,17 @@ export default function (eleventyConfig) {
 
   // Progress log entries across all projects, newest first. A `date:` with a
   // time in an entry's front matter orders entries from the same day.
-  eleventyConfig.addCollection("logEntries", (api) =>
+  const publishedEntries = (api) =>
     api
       .getFilteredByGlob("src/projects/*/log/*.md")
       .filter((e) => !e.data.draft)
-      .sort((a, b) => b.date - a.date)
+      .sort((a, b) => b.date - a.date);
+  eleventyConfig.addCollection("logEntries", publishedEntries);
+
+  // One page per skill (src/skill.njk), composed from every entry whose
+  // highlight lists it. See lib/skills.js.
+  eleventyConfig.addCollection("skillPages", (api) =>
+    skillPages(api.getAll()[0]?.data.skills ?? [], publishedProjects(api), publishedEntries(api))
   );
 
   eleventyConfig.addFilter("published", (list = []) => list.filter((item) => !item.draft));
@@ -77,12 +84,22 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("fileReady", fileReady);
   eleventyConfig.addFilter("readyLinks", (links = []) => links.filter((link) => fileReady(link.url)));
 
-  eleventyConfig.addFilter("entryId", (entry) => entry.data.id ?? entry.fileSlug);
-
-  // The highlight (if any) that points at a log entry, for its skill tags.
-  eleventyConfig.addFilter("highlightFor", (highlights, id) =>
-    (highlights ?? []).find((h) => h.entry === id)
+  eleventyConfig.addFilter("entryId", entryId);
+  eleventyConfig.addFilter("skillSlug", skillSlug);
+  eleventyConfig.addFilter("rebase", rebase);
+  eleventyConfig.addFilter("searchIndex", (collections, site, publications) =>
+    searchIndex({
+      site,
+      projects: collections.projects,
+      entries: collections.logEntries,
+      skills: collections.skillPages,
+      publications,
+    })
   );
+
+  // An entry's skill tags (its highlight's plus its own `skillTags:` list).
+  eleventyConfig.addFilter("entrySkills", entrySkills);
+  eleventyConfig.addFilter("projectFor", (projects, slug) => projects.find((p) => p.fileSlug === slug));
 
   eleventyConfig.addFilter("readableDate", (date) =>
     new Date(date).toLocaleDateString("en-US", {
@@ -91,30 +108,6 @@ export default function (eleventyConfig) {
       day: "numeric",
       timeZone: "UTC",
     })
-  );
-
-  // For each skill: its best example plus every other highlight that uses it.
-  // Built from the `skills` lists on each project's highlights, so nothing is duplicated.
-  // Mismatches (unknown skill, bad `best`) are reported by the build checks.
-  eleventyConfig.addFilter("skillIndex", (skills, projects) =>
-    skills.map((skill) => {
-      const uses = [];
-      for (const project of projects) {
-        for (const h of project.data.highlights ?? []) {
-          if (!(h.skills ?? []).includes(skill.name)) continue;
-          uses.push({
-            key: `${project.fileSlug}/${h.entry}`,
-            project: project.data.title,
-            label: h.label,
-            url: `${project.url}#${h.entry}`,
-          });
-        }
-      }
-      const best = uses.find((u) => u.key === skill.best) ?? uses[0];
-      return { name: skill.name, best, others: uses.filter((u) => u !== best) };
-    })
-    // A skill no highlight uses yet has nowhere to link, so it waits off the page.
-    .filter((skill) => skill.best)
   );
 
   // Images and videos (see lib/media.js). In Markdown:

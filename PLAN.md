@@ -13,9 +13,7 @@ An overview of Eric: who he is, what he can do, and what he's built, with a page
 Single scrolling page, in this order (a compact intro, then skills and projects right away so they're visible on load):
 
 1. **Intro / bio.** Name, one-line headline (role + what you're looking for), short bio paragraph, photo (optional), links: GitHub, LinkedIn, email, resume PDF.
-2. **Skills.** A row of skill chips (e.g. C++, MuJoCo, RL). Clicking a chip opens a small dropdown:
-   - **Best example** first: a direct link to the exact section of the project that shows the skill most (e.g. *OpenDubs → SIMD optimization*).
-   - **Also used in:** the other projects/sections that use it.
+2. **Skills.** A row of skill chips (e.g. C++, MuJoCo, RL), each with a count. Clicking one opens that skill's page (`/skills/<name>/`): every log entry tagged with the skill, across all projects, shown in full. The **best example** comes first (marked), the rest newest first, each linking back to its place in the project log.
 3. **Projects.** Large image tiles, two per row (one on phones), in the style of timothypan.com. Title, lab/org and one-line summary appear over the image on hover or keyboard focus, and below the image on touch screens. The whole tile is the link to the project page.
 4. **Resume.** The PDF itself, shown as an image of its first page that opens it, plus a "Download PDF" button.
 5. **Publications.** One card per paper, like mateoguaman.com: teaser image, venue/status/award badges, title, authors (Eric in bold), a one-line TL;DR, and `[Paper] [arXiv] [Video] [Code] [Project page]`. The same card also appears on the related project page.
@@ -25,7 +23,7 @@ Single scrolling page, in this order (a compact intro, then skills and projects 
 1. **Header.** Title, lab/org · timeline · tools, then the bracketed links, one-paragraph overview, hero image.
 2. **Highlights.** Chips of 1 to 2 words naming the most impressive parts (e.g. *Sim comparison*, *SIMD optimization*, *Matrix library*). Each one jumps to the spot in the log where that work is explained, so it's read in context.
 3. **Publication.** The related publication card, if there is one. (Links like `[GitHub] [Paper] [Video] [Demo]` sit in the header, under the metadata line.)
-4. **Progress log.** Blog-style entries, newest first, each paragraph beside its own image or video (stacked on phones) with a thin line between them; rows rise into view as you scroll, text first and media sliding in from the right (CSS only, off with reduced motion). A project with a `hero` opens with its intro (title, metadata, links, overview, highlights) laid over that footage. Each entry: date, title, text, any number of images. Entries tied to a highlight get an anchor so the highlight chips (and the home page skill dropdowns) can link straight to them.
+4. **Progress log.** Blog-style entries, newest first, each paragraph beside its own image or video (stacked on phones) with a thin line between them; rows rise into view as you scroll, text first and media sliding in from the right (CSS only, off with reduced motion). A project with a `hero` opens with its intro (title, metadata, links, overview, highlights) laid over that footage. Each entry: date, title, text, any number of images. Entries tied to a highlight get an anchor so the highlight chips can link straight to them. An entry's skill tags link to the skill pages.
 5. **Back to all projects** link.
 
 ### Also
@@ -57,13 +55,13 @@ highlights:
     skills: [C++, SIMD]
 ```
 
-`skills.json` lists each skill and which highlight is its best example:
+`skills.json` lists each skill and which entry is its best example:
 
 ```json
 { "name": "C++", "best": "opendubs/simd-optimization" }
 ```
 
-The site builds everything else from these: the "Also used in" lists, the highlight chips, and the anchor links. Add a highlight in one place and it shows up everywhere it should.
+Entries that aren't highlights can be tagged too, with `skillTags: [C++, SIMD]` in their front matter. The site builds everything else from these: the skill pages, the highlight chips, the entry tags and the anchor links. Add a highlight in one place and it shows up everywhere it should.
 
 ## How content gets written
 
@@ -71,7 +69,7 @@ The site builds everything else from these: the "Also used in" lists, the highli
 
 - Each project is a folder. The overview is one Markdown file with a header block (title, org, summary, cover image, highlights, links). Each log entry is its own Markdown file with a date. Adding an update = drop in a new `.md` file and images, `git push`.
 - Bio, resume, and skills live in small data files, so the home page builds itself from them.
-- Output is still plain static HTML, so security is unchanged. No server, no database, no login. The only JavaScript is the skill dropdown.
+- Output is still plain static HTML, so security is unchanged. No server, no database, no login. The only JavaScript is the search page.
 - **Node runs in Docker**, not on the machine. `docker compose up` starts a live-reloading preview at localhost:8090. Cloudflare runs the same build itself on each push.
 
 ## Folder layout
@@ -79,6 +77,9 @@ The site builds everything else from these: the "Also used in" lists, the highli
 ```
 src/
   index.njk                  home page template
+  skill.njk                  one page per skill (/skills/<name>/)
+  search.njk                 the search page (/search/)
+  search-index.njk           search-index.json, what the search page searches
   _data/
     site.json                name, headline, bio, photo, links
     skills.json              skill list + best example for each
@@ -94,12 +95,13 @@ src/
     ...
   assets/
     css/style.css
-    js/skills.js             the skill dropdown, the only JavaScript
+    js/search.js             the search page, the only JavaScript
     resume.pdf
   _headers                   security headers, read by Cloudflare
 lib/
   checks.js                  build-time content checks
   media.js                   image/video/YouTube markup
+  skills.js                  skill pages and the search index
 scripts/                     check-links, todo, new-project, new-entry
 _site/                       build output, what Cloudflare serves
 compose.yaml                 Node toolchain for local preview (Docker)
@@ -145,7 +147,7 @@ From the reference sites (mateoguaman.com, mnats, timothypan.com): one clean cen
    - print styles for a one-page resume
    - a table of contents for long project logs
 
-**Not planned:** contact form (needs a server or a third-party service), site search, comments, a CMS, JS frameworks.
+**Not planned:** contact form (needs a server or a third-party service), comments, a CMS, JS frameworks. (Site search is done without a server: a JSON index built with the site and one small script.)
 
 ## Still open
 
