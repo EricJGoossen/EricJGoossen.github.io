@@ -3,8 +3,13 @@ layout: base.njk
 permalink: /
 scripts: ["/assets/js/skills.js"]
 ---
+{#- Each section only renders when its data file has something in it. -#}
 <section class="intro">
+  {% if site.photo %}
+  <img src="{{ site.photo }}" alt="Photo of {{ site.name }}">
+  {% else %}
   {% placeholder "Photo" %}
+  {% endif %}
   <div class="intro-text">
     <h1>{{ site.name }}</h1>
     <p class="headline">{{ site.headline }}</p>
@@ -15,6 +20,32 @@ scripts: ["/assets/js/skills.js"]
   </div>
 </section>
 
+{% set skillList = skills | skillIndex(collections.projects) %}
+{% if skillList.length %}
+<section id="skills">
+  <h2>Skills</h2>
+  <p class="muted">Pick a skill to jump to where I used it.</p>
+  <div class="chips">
+    {% for skill in skillList %}
+    <details class="skill" name="skill">
+      <summary class="chip">{{ skill.name }}</summary>
+      <div class="skill-menu">
+        <p class="menu-label">Best example</p>
+        <a class="menu-best" href="{{ skill.best.url }}">{{ skill.best.project }} → {{ skill.best.label }}</a>
+        {% if skill.others.length %}
+        <p class="menu-label">Also used in</p>
+        <ul>
+          {% for use in skill.others %}<li><a href="{{ use.url }}">{{ use.project }} → {{ use.label }}</a></li>{% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+    </details>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if collections.projects.length %}
 <section id="projects">
   <h2>Projects</h2>
   <div class="tiles">
@@ -37,37 +68,16 @@ scripts: ["/assets/js/skills.js"]
     {% endfor %}
   </div>
 </section>
+{% endif %}
 
-<section id="skills">
-  <h2>Skills</h2>
-  <p class="muted">Click a skill to jump to where I used it.</p>
-  <div class="chips">
-    {% for skill in skills | skillIndex(collections.projects) %}
-    <details class="skill" name="skill">
-      <summary class="chip">{{ skill.name }}</summary>
-      <div class="skill-menu">
-        {% if skill.best %}
-        <p class="menu-label">Best example</p>
-        <a class="menu-best" href="{{ skill.best.url }}">{{ skill.best.project }} → {{ skill.best.label }}</a>
-        {% endif %}
-        {% if skill.others.length %}
-        <p class="menu-label">Also used in</p>
-        <ul>
-          {% for use in skill.others %}<li><a href="{{ use.url }}">{{ use.project }} → {{ use.label }}</a></li>{% endfor %}
-        </ul>
-        {% endif %}
-      </div>
-    </details>
-    {% endfor %}
-  </div>
-</section>
-
+{% if resume.experience.length or resume.education.length %}
 <section id="resume">
   <div class="section-head">
     <h2>Resume</h2>
     <a class="button" href="{{ resume.pdf }}">Download PDF</a>
   </div>
 
+  {% if resume.experience.length %}
   <h3>Experience</h3>
   <ul class="resume-list">
     {% for job in resume.experience %}
@@ -76,11 +86,13 @@ scripts: ["/assets/js/skills.js"]
         <span><strong>{{ job.role }}</strong>, {{ job.org }}</span>
         <span class="muted">{{ job.dates }}</span>
       </div>
-      <ul>{% for point in job.points %}<li>{{ point }}</li>{% endfor %}</ul>
+      {% if job.points.length %}<ul>{% for point in job.points %}<li>{{ point }}</li>{% endfor %}</ul>{% endif %}
     </li>
     {% endfor %}
   </ul>
+  {% endif %}
 
+  {% if resume.education.length %}
   <h3>Education</h3>
   <ul class="resume-list">
     {% for ed in resume.education %}
@@ -92,9 +104,13 @@ scripts: ["/assets/js/skills.js"]
     </li>
     {% endfor %}
   </ul>
+  {% endif %}
 </section>
+{% endif %}
 
+{% if publications.length %}
 <section id="publications">
   <h2>Publications</h2>
   {% for pub in publications %}{% include "pub.njk" %}{% endfor %}
 </section>
+{% endif %}

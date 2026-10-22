@@ -10,13 +10,13 @@ An overview of Eric: who he is, what he can do, and what he's built, with a page
 
 ### Home (`/`)
 
-Single scrolling page, in this order (projects come right after a compact intro so they're visible on load):
+Single scrolling page, in this order (a compact intro, then skills and projects right away so they're visible on load):
 
 1. **Intro / bio.** Name, one-line headline (role + what you're looking for), short bio paragraph, photo (optional), links: GitHub, LinkedIn, email, resume PDF.
-2. **Projects.** Large image tiles, two per row (one on phones), in the style of timothypan.com. Title, lab/org and one-line summary appear over the image on hover or keyboard focus, and below the image on touch screens. The whole tile is the link to the project page.
-3. **Skills.** A row of skill chips (e.g. C++, MuJoCo, RL). Clicking a chip opens a small dropdown:
+2. **Skills.** A row of skill chips (e.g. C++, MuJoCo, RL). Clicking a chip opens a small dropdown:
    - **Best example** first: a direct link to the exact section of the project that shows the skill most (e.g. *OpenDubs → SIMD optimization*).
    - **Also used in:** the other projects/sections that use it.
+3. **Projects.** Large image tiles, two per row (one on phones), in the style of timothypan.com. Title, lab/org and one-line summary appear over the image on hover or keyboard focus, and below the image on touch screens. The whole tile is the link to the project page.
 4. **Resume.** Condensed version on the page (experience, education) plus a "Download PDF" button.
 5. **Publications.** One card per paper, like mateoguaman.com: teaser image, venue/status/award badges, title, authors (Eric in bold), a one-line TL;DR, and `[Paper] [arXiv] [Video] [Code] [Project page]`. The same card also appears on the related project page.
 

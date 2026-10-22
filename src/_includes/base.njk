@@ -27,10 +27,11 @@
     <div class="wrap">
       <a class="site-name" href="/">{{ site.name }}</a>
       <nav aria-label="Main">
-        <a href="/#projects">Projects</a>
-        <a href="/#skills">Skills</a>
-        <a href="/#resume">Resume</a>
-        <a href="/#publications">Publications</a>
+        {#- Same order and conditions as the sections in index.njk -#}
+        {% if (skills | skillIndex(collections.projects)).length %}<a href="/#skills">Skills</a>{% endif %}
+        {% if collections.projects.length %}<a href="/#projects">Projects</a>{% endif %}
+        {% if resume.experience.length or resume.education.length %}<a href="/#resume">Resume</a>{% endif %}
+        {% if publications.length %}<a href="/#publications">Publications</a>{% endif %}
       </nav>
     </div>
   </header>

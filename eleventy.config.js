@@ -48,6 +48,7 @@ export default function (eleventyConfig) {
 
   // For each skill: its best example plus every other highlight that uses it.
   // Built from the `skills` lists on each project's highlights, so nothing is duplicated.
+  // Mismatches (unknown skill, bad `best`) are reported by the build checks.
   eleventyConfig.addFilter("skillIndex", (skills, projects) =>
     skills.map((skill) => {
       const uses = [];
@@ -63,11 +64,10 @@ export default function (eleventyConfig) {
         }
       }
       const best = uses.find((u) => u.key === skill.best) ?? uses[0];
-      if (skill.best && best?.key !== skill.best) {
-        console.warn(`[skills] "${skill.name}": best "${skill.best}" isn't a highlight tagged with this skill`);
-      }
       return { name: skill.name, best, others: uses.filter((u) => u !== best) };
     })
+    // A skill no highlight uses yet has nowhere to link, so it waits off the page.
+    .filter((skill) => skill.best)
   );
 
   // Gray box standing in for an image that hasn't been added yet.
