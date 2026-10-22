@@ -34,7 +34,7 @@ fs.writeFileSync(
   `---
 title: ${JSON.stringify(title)}
 ---
-What you did, what was hard, and how it turned out.
+Placeholder: what you did, what was hard, and how it turned out.
 
 {#- Images and videos go in the project's images/ folder. Usually each paragraph
 gets one, beside it:

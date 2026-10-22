@@ -37,6 +37,7 @@ fs.writeFileSync(
   path.join(dir, "index.md"),
   `---
 layout: project.njk
+draft: true   # hidden from the site until this line is removed
 title: ${q(title)}
 org: ${q(org)}
 timeline: Placeholder timeline
@@ -66,6 +67,6 @@ Placeholder log entry. What the problem was and how you planned to attack it.
 `
 );
 
-console.log(`Created ${dir}/ (order ${order}, shown last on the home page).
+console.log(`Created ${dir}/ as a draft (order ${order}). Remove "draft: true" from index.md to publish it.
 Next: fill in ${dir}/index.md, add images to ${dir}/images/, and add log entries with
   npm run new:entry -- ${slug} "What happened"`);

@@ -33,7 +33,7 @@
         {% if (skills | skillIndex(collections.projects)).length %}<a href="/#skills">Skills</a>{% endif %}
         {% if collections.projects.length %}<a href="/#projects">Projects</a>{% endif %}
         {% if resume.experience.length or resume.education.length %}<a href="/#resume">Resume</a>{% endif %}
-        {% if publications.length %}<a href="/#publications">Publications</a>{% endif %}
+        {% if (publications | published).length %}<a href="/#publications">Publications</a>{% endif %}
       </nav>
     </div>
   </header>

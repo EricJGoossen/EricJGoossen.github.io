@@ -1,12 +1,11 @@
-{#- One publication card. Expects `pub` in scope. -#}
-<article class="pub">
+{#- One publication card. Expects `pub` in scope. Without a teaser image it's a text-only card. -#}
+{% set projectLink = pub.project | projectUrl(collections.projects) if page.fileSlug != pub.project else "" %}
+<article class="pub{% if not pub.image %} pub-text-only{% endif %}">
+  {% if pub.image %}
   <div class="pub-media">
-    {% if pub.image %}
     {% media pub.image, "Teaser for " + pub.title, { poster: pub.poster } %}
-    {% else %}
-    {% placeholder "Teaser figure" %}
-    {% endif %}
   </div>
+  {% endif %}
   <div class="pub-body">
     <p class="pub-badges">
       {% if pub.venue %}<span class="badge">{{ pub.venue }} {{ pub.year }}</span>{% endif %}
@@ -21,9 +20,11 @@
     </p>
     {% if pub.lab %}<p class="pub-lab">{{ pub.lab }}</p>{% endif %}
     {% if pub.tldr %}<p class="pub-tldr"><span class="pub-tldr-label">TL;DR</span> {{ pub.tldr }}</p>{% endif %}
+    {% if pub.links.length or projectLink %}
     <p class="bracket-links">
       {% for link in pub.links %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}
-      {% if pub.project and page.fileSlug != pub.project %}<a href="/projects/{{ pub.project }}/">Project page</a>{% endif %}
+      {% if projectLink %}<a href="{{ projectLink }}">Project page</a>{% endif %}
     </p>
+    {% endif %}
   </div>
 </article>

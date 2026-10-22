@@ -19,10 +19,14 @@ export default function (eleventyConfig) {
     };
   });
 
-  // Project overview pages, in the order set by `order` in each index.md.
+  // Anything marked `draft: true` (a project, log entry or publication) is
+  // left out of the built site entirely until the line is removed.
+
+  // Published project pages, in the order set by `order` in each index.md.
   eleventyConfig.addCollection("projects", (api) =>
     api
       .getFilteredByGlob("src/projects/*/index.md")
+      .filter((p) => !p.data.draft)
       .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
   );
 
@@ -53,8 +57,15 @@ export default function (eleventyConfig) {
   // Progress log entries across all projects, newest first. A `date:` with a
   // time in an entry's front matter orders entries from the same day.
   eleventyConfig.addCollection("logEntries", (api) =>
-    api.getFilteredByGlob("src/projects/*/log/*.md").sort((a, b) => b.date - a.date)
+    api
+      .getFilteredByGlob("src/projects/*/log/*.md")
+      .filter((e) => !e.data.draft)
+      .sort((a, b) => b.date - a.date)
   );
+
+  eleventyConfig.addFilter("published", (list = []) => list.filter((item) => !item.draft));
+  // URL of a published project page, or "" if it's a draft or doesn't exist.
+  eleventyConfig.addFilter("projectUrl", (slug, projects = []) => projects.find((p) => p.fileSlug === slug)?.url ?? "");
 
   eleventyConfig.addFilter("entriesFor", (entries, slug) =>
     entries.filter((e) => e.inputPath.includes(`/projects/${slug}/log/`))

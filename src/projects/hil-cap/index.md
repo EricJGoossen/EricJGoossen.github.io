@@ -1,5 +1,6 @@
 ---
 layout: project.njk
+draft: true   # hidden from the site until this line is removed
 title: HiL Feedback on CaP
 org: "Human Centered Robotics Lab"
 timeline: Placeholder timeline

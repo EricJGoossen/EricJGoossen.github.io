@@ -5,11 +5,7 @@ scripts: ["/assets/js/skills.js"]
 ---
 {#- Each section only renders when its data file has something in it. -#}
 <section class="intro">
-  {% if site.photo %}
-  <img src="{{ site.photo }}" alt="Photo of {{ site.name }}">
-  {% else %}
-  {% placeholder "Photo" %}
-  {% endif %}
+  {% if site.photo %}<img src="{{ site.photo }}" alt="Photo of {{ site.name }}">{% endif %}
   <div class="intro-text">
     <h1>{{ site.name }}</h1>
     <p class="headline">{{ site.headline }}</p>
@@ -108,9 +104,10 @@ scripts: ["/assets/js/skills.js"]
 </section>
 {% endif %}
 
-{% if publications.length %}
+{% set pubs = publications | published %}
+{% if pubs.length %}
 <section id="publications">
   <h2>Publications</h2>
-  {% for pub in publications %}{% include "pub.njk" %}{% endfor %}
+  {% for pub in pubs %}{% include "pub.njk" %}{% endfor %}
 </section>
 {% endif %}

@@ -1,5 +1,6 @@
 ---
 layout: project.njk
+draft: true   # hidden from the site until this line is removed
 title: Advanced Robotics at UW
 org: "University of Washington"
 timeline: Placeholder timeline

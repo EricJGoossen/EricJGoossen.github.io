@@ -122,7 +122,8 @@ main:focus { outline: none; }
 /* ---------- Intro ---------- */
 /* Kept short so the project tiles are visible on load */
 .intro { display: grid; grid-template-columns: 7.5rem 1fr; gap: 1.75rem; align-items: start; padding: 1rem 0 2rem; }
-.intro > .ph, .intro > img { aspect-ratio: 1; border-radius: 50%; margin: 0; }
+.intro > .ph, .intro > img { aspect-ratio: 1; border-radius: 50%; margin: 0; object-fit: cover; }
+.intro:not(:has(> img)) { grid-template-columns: 1fr; }
 .intro h1 { margin-bottom: 0.25rem; }
 .intro p { margin-bottom: 0.6rem; }
 .headline { font-size: 1.15rem; color: var(--muted); }
@@ -272,6 +273,8 @@ main:focus { outline: none; }
 .pub-tldr { font-size: 0.95rem; margin-bottom: 0.75rem; }
 .pub-tldr-label { margin-right: 0.25rem; color: var(--muted); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; }
 .pub .bracket-links { margin: 0; font-size: 0.95rem; }
+.pub-text-only { grid-template-columns: 1fr; }
+.pub-body > :last-child { margin-bottom: 0; }
 
 /* ---------- Project page ---------- */
 .back { display: inline-block; margin: 1rem 0; color: var(--muted); }
@@ -470,6 +473,7 @@ figcaption { margin-top: 0.4rem; color: var(--muted); font-size: 0.9rem; }
   .intro-text { display: contents; }
   .intro-text > * { grid-column: 1 / -1; }
   .intro h1, .intro .headline { grid-column: 2; }
+  .intro:not(:has(> img)) .intro-text > * { grid-column: 1 / -1; }
   .intro h1 { font-size: 1.75rem; margin: 0; }
   .intro .headline { font-size: 1rem; margin-bottom: 0.9rem; line-height: 1.45; }
   section { padding: 1.5rem 0; }
