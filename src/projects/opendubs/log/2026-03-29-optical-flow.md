@@ -1,0 +1,16 @@
+---
+title: Optical flow odometry, checked against mocap
+date: 2026-03-29 00:58:00
+---
+{# Placeholder: Eric to confirm. Sources: EricJGoossen/M5_stack_sensor_transfer (OTOS over micro-ROS, Mar 6), EricJGoossen/open_dubs_mocap (Feb–Apr), rajitzg/opendubs-core branches EricG/AddOdomToTf2 and EricG/OtosTesting, the "fixes and rosbag" commit 391e3ec (the bag behind the chart), and the Aug 26 backup commit 43aa829 (LED brightness node, flow-quality plot, evo analysis script). Which sensor feeds ArduPilot's flow input (FLOW_TYPE 5, MAVLink) — the OTOS, or a separate flow sensor with its own rangefinder? What was the "gain tuning", and what accuracy did the tuned system reach against mocap? The cause of the runaway in the chart is not established here. The CAD render is from the lab's build guide. #}
+{% row "images/otos-housing-cad.jpg", "A CAD render of a black 3D-printed housing that holds a small optical tracking sensor facing the floor", { caption: "The housing that holds the optical tracking sensor just above the floor. CAD render from the lab's build guide." } %}
+The base needed to know where it was before it could navigate, and the first source was optical flow: a camera-like sensor that looks at the floor and measures how fast it slides past. I first brought up SparkFun's Optical Tracking Odometry Sensor on an M5Stack board, publishing its pose into ROS over micro-ROS, and then moved the flow input into ArduPilot, whose EKF fuses it with the Pixhawk's IMU. A launch script waits for MAVROS to come up and loads the flight controller's parameters, including where the sensor sits on the robot, and ArduPilot's estimate is published as the robot's `odom → base_link` transform.
+{% endrow %}
+
+{% row "images/flow-ekf-vs-mocap.svg", "Log-scale line chart over 200 seconds of the distance between ArduPilot's position estimate and motion capture. It sits near 0.1 m while the robot is parked, stays under 0.74 m while it drives 5.5 meters, and after the robot spins in place it climbs past 100 m to a peak of 155 m", { caption: "One recorded run from March 29: ArduPilot's estimate against motion capture, after fitting the two frames together over the first two minutes." } %}
+To know how good that estimate was, I compared it against the lab's motion capture system. I wrote the ROS package that reads mocap over VRPN, converts the room's y-up frame to the robot's z-up one, offsets the marker frame to the robot's center and publishes odometry with filtered velocity, so the two could be logged side by side in one bag. The first recordings showed exactly why that comparison mattered. **While the robot drove 5.5 meters, the estimate stayed within 0.74 m of the truth, but when it spun in place, the estimate ran away to 155 m** while the robot itself moved less than half a meter.
+{% endrow %}
+
+{% placeholder "Flow quality and error against mocap after tuning" %}
+
+From there the work was tuning against that ground truth. I added a node that sets the brightness of an LED lighting the floor under the sensor, a script that plots the sensor's reported quality and height over a run, and an analysis script that runs absolute and relative pose error against mocap with evo for any recorded bag. {# Placeholder: what was tuned, and the final numbers #}

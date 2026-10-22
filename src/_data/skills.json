@@ -6,11 +6,16 @@
   {"name": "Numerical methods", "best": "achilles/integrators"},
   {"name": "Collision detection", "best": "achilles/collisions"},
   {"name": "OpenGL", "best": "achilles/renderer"},
+  {"name": "ROS 2", "best": "opendubs/lidar"},
+  {"name": "State estimation", "best": "opendubs/optical-flow"},
+  {"name": "Motion planning", "best": "opendubs/arm-group"},
+  {"name": "Impedance control", "best": "opendubs/impedance-control"},
+  {"name": "Teleoperation", "best": "opendubs/teleop"},
+  {"name": "Docker", "best": "opendubs/bringup"},
   {"name": "Python", "best": "hil-cap/highlight-one"},
   {"name": "PyTorch", "best": "hil-cap/highlight-one"},
   {"name": "Reinforcement learning", "best": "fleet-rl/highlight-one"},
   {"name": "MuJoCo", "best": "fleet-rl/highlight-two"},
-  {"name": "ROS 2", "best": "opendubs/highlight-two"},
   {"name": "Embedded C", "best": "aruw/highlight-one"},
   {"name": "CAD", "best": "aruw/highlight-two"}
 ]
