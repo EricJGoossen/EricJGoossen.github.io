@@ -36,7 +36,12 @@ title: ${JSON.stringify(title)}
 ---
 What you did, what was hard, and how it turned out.
 
-{#- Images and videos go in the project's images/ folder. Examples:
+{#- Images and videos go in the project's images/ folder. Usually each paragraph
+gets one, beside it:
+{% row "images/my-chart.svg", "What the image shows", { caption: "Optional" } %}
+The paragraph.
+{% endrow %}
+Other examples:
 ![What the image shows](images/my-photo.jpg)
 {% video "images/my-clip.mp4", "What the clip shows" %}
 {% youtube "VIDEO_ID", "What the video shows" %}

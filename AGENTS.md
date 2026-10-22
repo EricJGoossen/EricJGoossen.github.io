@@ -34,7 +34,7 @@ src/_data/resume.json        experience, education, pdf path
 src/_data/publications.json  papers; `project` ties one to a project page
 src/projects/<folder>/
   index.md                   project front matter + one-paragraph overview
-  log/YYYY-MM-DD-<id>.md     progress log entries, oldest first; <id> is the anchor
+  log/YYYY-MM-DD-<id>.md     progress log entries, shown newest first; <id> is the anchor
   images/                    that project's images and videos
 src/assets/resume.pdf        resume (the Resume links stay hidden until this file exists)
 ```
@@ -73,8 +73,9 @@ src/assets/resume.pdf        resume (the Resume links stay hidden until this fil
 
 **Add a progress log entry**
 1. Run `npm run new:entry -- <folder> "What happened" [date]`. Use the date the work happened, not today, if Eric gives one.
-2. Write the text in Markdown, and delete the template comment.
-3. To feature it, add a highlight to the project's `index.md`:
+2. Write the text in Markdown, and delete the template comment. Give each paragraph its own image or video with `{% row %}` (next recipe): the paragraph sits on the left, the media on the right (below it on phones), with a thin line between rows.
+3. Entries show newest first. Two entries on the same day are ordered by a time in the front matter, e.g. `date: 2026-09-19 11:02:53` (the time is only used for ordering; the page shows the date).
+4. To feature it, add a highlight to the project's `index.md`:
    ```yaml
    highlights:
      - label: SIMD optimization     # 1 to 3 words
@@ -88,6 +89,13 @@ src/assets/resume.pdf        resume (the Resume links stay hidden until this fil
 - `best` must be a highlight that lists this skill. Without `best`, the first project in `order` that uses the skill wins.
 
 **Add images and videos** (put the files in the project's `images/` folder)
+- A paragraph with its image or video beside it (the usual way to write a log entry). The blank-line rules of Markdown apply inside, so keep the paragraph unindented:
+  ```
+  {% row "images/chart.svg", "What the image shows", { caption: "..." } %}
+  The paragraph, in Markdown.
+  {% endrow %}
+  ```
+  Videos work the same way (`{ poster: "images/still.jpg" }` for the still). The build stops if a row has no media or no alt text.
 - Image in a log entry: `![What the image shows](images/photo.jpg)`. Always write real alt text.
 - Short clip that loops like a GIF (muted, with pause controls): `{% video "images/clip.mp4", "What it shows" %}`
 - Longer video with sound (click to play): `{% video "images/talk.mp4", "What it shows", { play: true, poster: "images/talk.jpg" } %}`

@@ -49,7 +49,13 @@ Run `npm run new:entry -- <project> "What happened"`, or create `src/projects/<n
 ---
 title: What happened
 ---
-Text in Markdown. Images and videos go in the project's images/ folder:
+Each paragraph sits beside its own image or video (below it on phones):
+
+{% row "images/my-chart.svg", "What the image shows", { caption: "Optional caption" } %}
+A paragraph in Markdown.
+{% endrow %}
+
+Images and videos go in the project's images/ folder. On their own:
 
 ![What the image shows](images/my-photo.jpg)
 
@@ -58,7 +64,7 @@ Text in Markdown. Images and videos go in the project's images/ folder:
 {% youtube "VIDEO_ID", "What the video shows" %}
 ```
 
-The part of the filename after the date (`short-name`) is the entry's anchor. To make it a highlight, add it to `highlights` in the project's `index.md` with `entry: short-name` and the skills it shows.
+Entries show newest first; add a time to the front matter (`date: 2026-09-19 11:02:53`) to order two entries from the same day. The part of the filename after the date (`short-name`) is the entry's anchor. To make it a highlight, add it to `highlights` in the project's `index.md` with `entry: short-name` and the skills it shows.
 
 Clips added with `{% video %}` loop silently like a GIF, with controls to pause. Add `{ play: true }` for a normal video with sound. Covers and hero images can be `.mp4` files too. Keep videos small (under ~5 MB); Cloudflare rejects files over 25 MB.
 

@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import { checkSite } from "./lib/checks.js";
-import { isVideo, media, mediaUrl, tileMedia, videoShortcode, youtubeShortcode } from "./lib/media.js";
+import { isVideo, media, mediaUrl, rowShortcode, tileMedia, videoShortcode, youtubeShortcode } from "./lib/media.js";
 
 export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets");
@@ -50,9 +50,10 @@ export default function (eleventyConfig) {
       : ""
   );
 
-  // Progress log entries across all projects, oldest first.
+  // Progress log entries across all projects, newest first. A `date:` with a
+  // time in an entry's front matter orders entries from the same day.
   eleventyConfig.addCollection("logEntries", (api) =>
-    api.getFilteredByGlob("src/projects/*/log/*.md").sort((a, b) => a.date - b.date)
+    api.getFilteredByGlob("src/projects/*/log/*.md").sort((a, b) => b.date - a.date)
   );
 
   eleventyConfig.addFilter("entriesFor", (entries, slug) =>
@@ -107,10 +108,12 @@ export default function (eleventyConfig) {
 
   // Images and videos (see lib/media.js). In Markdown:
   //   {% video "images/clip.mp4", "What it shows" %}   {% youtube "VIDEO_ID", "Title" %}
+  //   {% row "images/chart.svg", "What it shows" %} A paragraph. {% endrow %}
   eleventyConfig.addShortcode("media", media);
   eleventyConfig.addShortcode("tileMedia", tileMedia);
   eleventyConfig.addShortcode("video", videoShortcode);
   eleventyConfig.addShortcode("youtube", youtubeShortcode);
+  eleventyConfig.addPairedShortcode("row", rowShortcode);
   eleventyConfig.addFilter("isVideo", isVideo);
   eleventyConfig.addFilter("mediaUrl", (src, base) => mediaUrl(base, src));
 
