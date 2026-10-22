@@ -51,4 +51,10 @@ Add an entry to `src/_data/publications.json`. It shows at the bottom of the hom
 
 ## Deploying
 
-Pushing to `main` deploys. Cloudflare runs `npx wrangler deploy`, which runs `npm run build` (set in `wrangler.jsonc`) and serves `_site/`.
+Pushing to `main` deploys. Cloudflare runs `npx wrangler deploy`, which first runs `npm run build` (the `build.command` in `wrangler.jsonc`) and then uploads `_site/`.
+
+Checked against Wrangler 4.151's source: for a static-assets-only Worker, `wrangler deploy` runs the custom build before it checks that `_site/` exists, so a fresh clone works. Still to confirm in the Cloudflare dashboard (any `phase-1` preview build log shows it): that Workers Builds installs npm dependencies before the deploy command. If the log shows `eleventy: not found`, set the build command to `npm ci` (or `npm run build`) in the dashboard.
+
+The build stops on content problems (see `lib/checks.js`), so a broken change can't replace the live site; the previous version stays up.
+
+Security headers (Content-Security-Policy and friends) live in `src/_headers`, which Cloudflare reads at deploy time.

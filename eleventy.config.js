@@ -4,6 +4,7 @@ import { isVideo, media, mediaUrl, tileMedia, videoShortcode, youtubeShortcode }
 
 export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets");
+  eleventyConfig.addPassthroughCopy("src/_headers"); // security headers, read by Cloudflare
   // Each project's images/ folder. Copied as a directory (not a glob) so images
   // added while the preview is running show up without a restart.
   eleventyConfig.addPassthroughCopy({ "src/projects": "projects" }, { filter: ["*/images/**", "!**/.gitkeep"] });
