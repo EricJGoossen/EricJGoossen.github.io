@@ -19,7 +19,7 @@ Run with `docker compose run --rm site <command>` (or `docker compose exec site 
 
 | Command | What it does |
 |---|---|
-| `npm run check` | Build and check every link and #anchor |
+| `npm run check` | Build and check every link and #anchor, and that no visible page has placeholder text |
 | `npm run todo` | List everything that's still placeholder |
 | `npm run new:project -- <folder> "Title" ["Org"]` | Start a new project page |
 | `npm run new:entry -- <folder> "What happened" [YYYY-MM-DD]` | Add a progress log entry |
@@ -32,7 +32,8 @@ AI agents working on the site follow `AGENTS.md`, which has step-by-step recipes
 |---|---|
 | Name, headline, bio, photo, top links | `src/_data/site.json` |
 | Link preview image (LinkedIn/Slack) | `ogImage` in `site.json` for the home page, e.g. `"/assets/og.jpg"`. Project pages use their `cover` automatically. |
-| Resume section | `src/_data/resume.json`, PDF at `src/assets/resume.pdf` (Resume links appear once the PDF exists) |
+| Resume section | `src/_data/resume.json`, PDF at `src/assets/resume.pdf` (compiled from `assets-src/resume/resume.tex`) |
+| Hide something that isn't ready | add `draft: true` to a project's `index.md`, a log entry, or a publication in `publications.json` |
 | Skills and each one's best example | `src/_data/skills.json` |
 | Publications | `src/_data/publications.json` (see below) |
 | A project's overview, highlights, links | `src/projects/<name>/index.md` |

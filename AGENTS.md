@@ -8,9 +8,10 @@ Eric J. Goossen's portfolio: Markdown + Eleventy, built into plain static HTML i
 2. **Keep it static.** No server code, frameworks, databases, logins, analytics, trackers, third-party scripts or web fonts. The only JavaScript is `src/assets/js/skills.js`. If Eric approves something that loads from another domain, also add that domain to `src/_headers` (the Content-Security-Policy), or browsers will block it.
 3. **Eric's machine.** Node runs only in Docker (`compose.yaml`, preview on port 8090). Don't change that setup. Don't install anything without asking. If something does get installed (including a Docker image), add it to `INSTALLED.md` with an uninstall command.
 4. **Never invent facts about Eric.** Use only what Eric provides. Anything not provided yet stays as text starting with `Placeholder` (or a `"#"` link), so `npm run todo` can find it. That includes dates, numbers, results, co-authors, venues and awards.
-5. **Pronouns.** Use they/them for anyone whose pronouns aren't stated.
-6. **Commits.** Make small, focused commits with a message that says what and why. Push to the working branch as you go. `npm run check` must pass before every commit.
-7. **Finish with a handoff.** Say what changed, what you checked, and what still needs Eric's content (summarize `npm run todo`).
+5. **Nothing unfinished is visible.** A project, log entry or publication that isn't ready gets `draft: true` in its front matter (or its object in `publications.json`), which leaves it out of the built site entirely. The build fails if any visible page still has `Placeholder` text, a gray placeholder box or a `#` link.
+6. **Pronouns.** Use they/them for anyone whose pronouns aren't stated.
+7. **Commits.** Make small, focused commits with a message that says what and why. Push to the working branch as you go. `npm run check` must pass before every commit.
+8. **Finish with a handoff.** Say what changed, what you checked, and what still needs Eric's content (summarize `npm run todo`).
 
 ## Commands
 
@@ -22,7 +23,7 @@ Run these in the repo root. In a cloud/CI environment with Node 22, run them dir
 | `npm start` | Live preview on port 8080 (8090 on Eric's machine via Docker). Content problems show in a red banner at the top of every page. |
 | `npm run check` | Builds the site and checks every link and #anchor. **Must pass before you commit.** |
 | `npm run todo` | Lists every placeholder, `#` link and missing file still to fill in |
-| `npm run new:project -- <folder> "Title" ["Org"]` | Creates a project page with a first log entry |
+| `npm run new:project -- <folder> "Title" ["Org"]` | Creates a project page (as a draft) with a first log entry |
 | `npm run new:entry -- <folder> "Entry title" [YYYY-MM-DD]` | Adds a dated log entry and prints its anchor |
 
 ## How the content fits together
@@ -37,6 +38,7 @@ src/projects/<folder>/
   log/YYYY-MM-DD-<id>.md     progress log entries, shown newest first; <id> is the anchor
   images/                    that project's images and videos
 src/assets/resume.pdf        resume (the Resume links stay hidden until this file exists)
+assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.pdf is compiled from it
 ```
 
 - **The folder name is the URL**: `src/projects/fleet-rl/` becomes `/projects/fleet-rl/`.
@@ -54,6 +56,7 @@ src/assets/resume.pdf        resume (the Resume links stay hidden until this fil
 | Field | Required | Notes |
 |---|---|---|
 | `layout` | yes | Always `project.njk` |
+| `draft` | no | `true` keeps the whole project (page, tile, skill links) off the site. New projects start as drafts. |
 | `title`, `summary` | yes | `summary` is the one-liner on the home page tile |
 | `org`, `timeline`, `tools` | no | Shown as the metadata line. `tools` is a list. |
 | `order` | no | Number. Lower comes first on the home page. Leave gaps (10, 20, 30) if you like. |
@@ -69,11 +72,12 @@ src/assets/resume.pdf        resume (the Resume links stay hidden until this fil
 1. Run `npm run new:project -- <folder> "Title" "Org"`. Use a short lowercase folder name with dashes (it becomes the URL).
 2. Fill in `index.md`: summary, org, timeline, tools, the overview paragraph, and `cover` once there's an image.
 3. Add log entries (next recipe), then highlights.
-4. Run `npm run check`, commit, push.
+4. When nothing on it is placeholder any more, delete the `draft: true` line to publish it.
+5. Run `npm run check`, commit, push.
 
 **Add a progress log entry**
 1. Run `npm run new:entry -- <folder> "What happened" [date]`. Use the date the work happened, not today, if Eric gives one.
-2. Write the text in Markdown, and delete the template comment. Give each paragraph its own image or video with `{% row %}` (next recipe): the paragraph sits on the left, the media on the right (below it on phones), with a thin line between rows.
+2. Replace the `Placeholder:` text with the real write-up, and delete the template comment. (Add `draft: true` to its front matter to keep a half-written entry off the site.) Give each paragraph its own image or video with `{% row %}` (next recipe): the paragraph sits on the left, the media on the right (below it on phones), with a thin line between rows.
 3. Entries show newest first. Two entries on the same day are ordered by a time in the front matter, e.g. `date: 2026-09-19 11:02:53` (the time is only used for ordering; the page shows the date).
 4. To feature it, add a highlight to the project's `index.md`:
    ```yaml
@@ -120,12 +124,13 @@ Add an object to `publications.json`:
 - `image` (and the optional `poster`) start at `src/`.
 - Names listed in `site.json` `authorNames` are shown in bold.
 - Empty badge fields are hidden.
-- `project` must be an existing project folder. The card then also appears on that project page.
+- `project` must be an existing project folder. The card then also appears on that project page, and gets a `[Project page]` link once that project is published.
+- Without an `image` the card is text-only. `"draft": true` keeps a paper off the site.
 
 **Bio, photo, links, resume**
 - Bio, headline, photo and links go in `site.json`. `photo` and `ogImage` paths start at `src/`, e.g. `/assets/photo.jpg`.
 - The resume PDF goes at `src/assets/resume.pdf`. The Resume links appear automatically once it exists.
-- Condensed resume entries go in `resume.json`.
+- To update the resume, edit `assets-src/resume/resume.tex` and recompile it (`pdflatex resume.tex` in a TeX Live environment; Eric's machine has no TeX, so do this in a cloud session or ask), copy the PDF to `src/assets/resume.pdf`, then update `resume.json` to match. `resume.json` is the condensed version: a few bullets per role, copied from the PDF, plus the technical-skills lines.
 
 **Reorder, rename or remove**
 - Reorder projects by changing their `order` numbers.
@@ -145,7 +150,7 @@ Add an object to `publications.json`:
 - A publication's `project` doesn't exist, or it has no `title` or `authors`.
 - A file is over 25 MB (files over 5 MB get a warning).
 
-`scripts/check-links.js` (part of `npm run check`) then checks every internal link, image/video source and #anchor in `_site/`.
+`scripts/check-links.js` (part of `npm run build` and `npm run check`) then checks every internal link, image/video source and #anchor in `_site/`, and fails if a visible page has `Placeholder` text, a gray placeholder box or a `#` link. Fix the content or mark the item `draft: true`.
 
 The checks can't judge content quality. Read what you wrote, and keep `Placeholder` markers on anything not confirmed by Eric.
 

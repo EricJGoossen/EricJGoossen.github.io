@@ -132,9 +132,11 @@ From the reference sites (mateoguaman.com, mnats, timothypan.com): one clean cen
 
 **Done (phase-1 branch):** Phase 1 bones, the design pass, publications, video support, build-time content checks, `npm run check` / `todo` / `new:project` / `new:entry`, security headers, and `AGENTS.md`.
 
+**MVP (publishable now):** real intro, bio, resume (page + PDF), the "A Few Words Go a Long Way" publication, and the Achilles project. The other six projects are `draft: true` (hidden), and the build refuses to publish any visible placeholder text, so the live site only shows what's real.
+
 **Next, in order:**
 
-1. **Backfill real content** (Phase 2 above). This is the biggest improvement left. `npm run todo` is the checklist.
+1. **Backfill the other projects** one at a time (Phase 2 above), removing `draft: true` from each when it's done. `npm run todo` is the checklist.
 2. **Automatic image resizing.** `@11ty/eleventy-img` would make phone-sized WebP/AVIF copies with width/height at build time, so full-size photos don't slow the site down. One dependency, inside Docker only.
 3. **Confirm the Cloudflare build** before merging to `main`: a `phase-1` preview build log should show `npm run build` succeeding (see README, Deploying).
 4. **Nice to have, when wanted:**
