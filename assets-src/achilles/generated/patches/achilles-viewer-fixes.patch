@@ -1,0 +1,149 @@
+From 1a7c99be823838d082f0bf0a81699cbd80e4116f Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Thu, 22 Oct 2026 14:42:04 +0000
+Subject: [PATCH 1/3] Viewer: make the camera and ground grid Z-up to match the
+ simulation
+
+---
+ src/render/camera.cpp         | 8 +++++---
+ src/render/scene_renderer.cpp | 8 +++++---
+ 2 files changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/src/render/camera.cpp b/src/render/camera.cpp
+index fb2ebc2..c1ad78f 100644
+--- a/src/render/camera.cpp
++++ b/src/render/camera.cpp
+@@ -33,16 +33,18 @@ void Camera::Zoom(float scroll_delta) {
+ 
+ Vec3 Camera::Eye() const {
+   float cos_pitch = std::cos(pitch_);
++  // Z-up, matching the simulation (sim_config.yaml's gravity is along -Z):
++  // yaw turns about +Z and pitch lifts the eye toward +Z.
+   Vec3 offset(
+       distance_ * cos_pitch * std::cos(yaw_),
+-      distance_ * std::sin(pitch_),
+-      distance_ * cos_pitch * std::sin(yaw_)
++      distance_ * cos_pitch * std::sin(yaw_),
++      distance_ * std::sin(pitch_)
+   );
+   return target_ + offset;
+ }
+ 
+ Mat4 Camera::View() const {
+-  return LookAt(Eye(), target_, Vec3(0.0F, 1.0F, 0.0F));
++  return LookAt(Eye(), target_, Vec3(0.0F, 0.0F, 1.0F));
+ }
+ 
+ Mat4 Camera::Projection(float aspect) {
+diff --git a/src/render/scene_renderer.cpp b/src/render/scene_renderer.cpp
+index 49121c2..d8ce306 100644
+--- a/src/render/scene_renderer.cpp
++++ b/src/render/scene_renderer.cpp
+@@ -124,13 +124,15 @@ Vec3 FallbackColor(std::size_t row) {
+   }
+ }
+ 
++// The ground grid lies in the world XY plane (z = 0): the simulation is
++// Z-up, so that is the plane gravity is normal to.
+ std::vector<float> BuildGridLines(float half_extent, float step) {
+   std::vector<float> verts;
+   for (float x = -half_extent; x <= half_extent + 1e-4F; x += step) {
+-    verts.insert(verts.end(), {x, 0.0F, -half_extent, x, 0.0F, half_extent});
++    verts.insert(verts.end(), {x, -half_extent, 0.0F, x, half_extent, 0.0F});
+   }
+-  for (float z = -half_extent; z <= half_extent + 1e-4F; z += step) {
+-    verts.insert(verts.end(), {-half_extent, 0.0F, z, half_extent, 0.0F, z});
++  for (float y = -half_extent; y <= half_extent + 1e-4F; y += step) {
++    verts.insert(verts.end(), {-half_extent, y, 0.0F, half_extent, y, 0.0F});
+   }
+   return verts;
+ }
+-- 
+2.43.0
+
+
+From 3b84f883e573c38386abeee443a7f75570d138ee Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Thu, 22 Oct 2026 14:44:38 +0000
+Subject: [PATCH 2/3] Example config: base_acceleration is -gravity, so +9.8 on
+ Z for downward gravity
+
+---
+ README.md                | 4 ++--
+ examples/sim_config.yaml | 5 +++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/README.md b/README.md
+index d59f0db..87acdaa 100644
+--- a/README.md
++++ b/README.md
+@@ -97,12 +97,12 @@ field. The loader is in
+ 
+ `sim_config.yaml` holds global parameters. For now that's
+ `base_acceleration`. For ordinary gravity on a fixed base, set it to
+-negative gravity:
++negative gravity. Gravity points down -Z, so that's +9.8 on Z:
+ 
+ ```yaml
+ base_acceleration:
+   angular: [0, 0, 0]
+-  linear: [0, 0, -9.8]
++  linear: [0, 0, 9.8]
+ ```
+ 
+ ## Architecture
+diff --git a/examples/sim_config.yaml b/examples/sim_config.yaml
+index 683e71c..ff40174 100644
+--- a/examples/sim_config.yaml
++++ b/examples/sim_config.yaml
+@@ -1,6 +1,7 @@
+ # Paired with two_joint_arm.arow for achilles_viewer -- ordinary downward
+ # gravity as a fixed-base acceleration (see algorithms::SimConfig's own
+-# comment on base_acceleration typically being -gravity).
++# comment on base_acceleration typically being -gravity). Gravity is
++# (0, 0, -9.8), so base_acceleration is (0, 0, +9.8).
+ base_acceleration:
+   angular: [0, 0, 0]
+-  linear: [0, 0, -9.8]
++  linear: [0, 0, 9.8]
+-- 
+2.43.0
+
+
+From 80a859f7888b6adf729c113ce3e0d13e6c264a3a Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Thu, 22 Oct 2026 15:09:11 +0000
+Subject: [PATCH 3/3] Example arm: center each collision shape on its link, not
+ on its joint
+
+---
+ examples/two_joint_arm.arow | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/examples/two_joint_arm.arow b/examples/two_joint_arm.arow
+index 69cc39d..051cb46 100644
+--- a/examples/two_joint_arm.arow
++++ b/examples/two_joint_arm.arow
+@@ -65,7 +65,9 @@ joints:
+       # sphere, one nonzero extent a capsule, zero radius a plain box. Here a
+       # rounded box whose outer size matches the visual box.
+       collision_pose:
+-        translation: [0, 0, 0]
++        # Half the link length up local Y, so the shape covers the drawn box
++        # (the viewer draws each box from the joint outward, not centered on it).
++        translation: [0, 0.5, 0]
+         rotation: [1, 0, 0, 0]
+       collision_extents: [0.1, 0.45, 0.1]
+       collision_radius: [0.05]
+@@ -111,7 +113,7 @@ joints:
+       joint_torque: [0, 0, 0, 0, 0, 0]
+       visual_extents: [0.12, 0.4, 0.12]
+       collision_pose:
+-        translation: [0, 0, 0]
++        translation: [0, 0.4, 0]
+         rotation: [1, 0, 0, 0]
+       collision_extents: [0.08, 0.36, 0.08]
+       collision_radius: [0.04]
+-- 
+2.43.0
+

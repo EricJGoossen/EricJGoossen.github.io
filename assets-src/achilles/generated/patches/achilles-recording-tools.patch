@@ -1,0 +1,466 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index fc97084..956dfd2 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -91,6 +91,10 @@ target_link_libraries(achilles_lib ${ACHILLES_LIB_TYPE} yaml-cpp::yaml-cpp glfw
+ 
+ add_executable(achilles "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
+ target_link_libraries(achilles PRIVATE achilles_lib)
++add_executable(achilles_trace "${CMAKE_CURRENT_SOURCE_DIR}/tools/achilles_trace.cpp")
++target_link_libraries(achilles_trace PRIVATE achilles_lib)
++add_executable(collision_probe "${CMAKE_CURRENT_SOURCE_DIR}/tools/collision_probe.cpp")
++target_link_libraries(collision_probe PRIVATE achilles_lib)
+ 
+ option(BUILD_TESTS "Build test suite" ON)
+ if(BUILD_TESTS)
+diff --git a/include/render/camera.hpp b/include/render/camera.hpp
+index 9dbd238..31ac215 100644
+--- a/include/render/camera.hpp
++++ b/include/render/camera.hpp
+@@ -13,6 +13,7 @@ namespace achilles::render {
+ // here, and it's the one that needs no state beyond these three numbers.
+ class Camera {
+  public:
++  Camera();
+   // Orbit by (dyaw, dpitch) radians -- called with the drag delta while
+   // the left mouse button is held (see Window::CursorDelta). Pitch is
+   // clamped strictly inside (-pi/2, pi/2) so the camera can never flip
+diff --git a/include/render/scene_renderer.hpp b/include/render/scene_renderer.hpp
+index ddee087..177f7f9 100644
+--- a/include/render/scene_renderer.hpp
++++ b/include/render/scene_renderer.hpp
+@@ -1,4 +1,5 @@
+ #pragma once
++#include <vector>
+ 
+ #include <string_view>
+ 
+@@ -11,6 +12,11 @@
+ 
+ namespace achilles::render {
+ 
++// RECORDING HACK: extra world-space line segments drawn on top of the scene
++// (x0 y0 z0 x1 y1 z1 per segment): collision shapes and contacts.
++inline std::vector<float> g_overlay_shapes;
++inline std::vector<float> g_overlay_contacts;
++
+ // Ties every other piece of this module (Window, Camera, Shader, Mesh)
+ // into the one thing a caller actually wants: hand it a VizView plus the
+ // JointTopology it was resolved against (see viz_data.hpp/interface::
+@@ -57,6 +63,8 @@ class SceneRenderer {
+   LineMesh axis_y_;
+   LineMesh axis_z_;
+   LineMesh bones_;
++  LineMesh overlay_shapes_;
++  LineMesh overlay_contacts_;
+ };
+ 
+ }  // namespace achilles::render
+diff --git a/src/main.cpp b/src/main.cpp
+index 7784529..54e314b 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -7,6 +7,7 @@
+ // this file.
+ #include <algorithm>
+ #include <chrono>
++#include <cmath>
+ #include <cstdlib>
+ #include <iostream>
+ #include <optional>
+@@ -18,6 +19,11 @@
+ #include "algorithms/aba/aba_ops.hpp"
+ #include "algorithms/aba/aba_step.hpp"
+ #include "algorithms/conventions.hpp"
++#include "algorithms/broad_phase/broad_phase_data.hpp"
++#include "algorithms/broad_phase/broad_phase_step.hpp"
++#include "algorithms/narrow_phase/narrow_phase_data.hpp"
++#include "algorithms/narrow_phase/narrow_phase_ops.hpp"
++#include "render/scene_renderer.hpp"
+ #include "algorithms/integrators.hpp"
+ #include "algorithms/registry.hpp"
+ #include "algorithms/sim_config.hpp"
+@@ -62,6 +68,86 @@
+ 
+ namespace {
+ 
++// RECORDING HACK: rebuild the overlay from the broad phase's own world shape
++// poses, running the real narrow-phase contact Op on each body pair.
++void BuildCollisionOverlay(const achilles::interface::Simulation& sim) {
++  namespace alg = achilles::algorithms;
++  using alg::broad_phase::BroadPhaseField;
++  using F = alg::ScalarOperationT;
++  using STransform = achilles::domain::spatial::Transform<F>;
++  using SVec = achilles::domain::math::Vector3<F>;
++  using SQuat = achilles::domain::math::Quaternion<F>;
++  auto view = sim.ViewFor<alg::broad_phase::BroadPhaseAlgorithm>();
++  auto topo = sim.TopologyFor<achilles::engine::topology::TopologicalOrdering>();
++  auto& shapes = achilles::render::g_overlay_shapes;
++  auto& contacts = achilles::render::g_overlay_contacts;
++  shapes.clear();
++  contacts.clear();
++  auto world = [](const STransform& x, F a, F b, F c) {
++    return (x * STransform(SVec(a, b, c), SQuat::Identity())).Translation();
++  };
++  auto seg = [](std::vector<float>& v, const SVec& p, const SVec& q) {
++    v.insert(v.end(), {p.X(), p.Y(), p.Z(), q.X(), q.Y(), q.Z()});
++  };
++  struct Body { STransform x; SVec h; F r, m; std::size_t row; };
++  std::vector<Body> bodies;
++  for (std::size_t row = 0; row < topo.Size(); ++row) {
++    Body b{view.Load<BroadPhaseField::kWorldShapePose, F>(row),
++           view.Load<BroadPhaseField::kCollisionExtents, F>(row),
++           view.Load<BroadPhaseField::kCollisionRadius, F>(row).Value(),
++           view.Load<BroadPhaseField::kCollisionMargin, F>(row).Value(), row};
++    if (b.r <= 0 && b.h.X() == 0 && b.h.Y() == 0 && b.h.Z() == 0) continue;
++    bodies.push_back(b);
++    // Outline of the shape's outer box (inner half-extents + radius).
++    F e[3] = {b.h.X() + b.r, b.h.Y() + b.r, b.h.Z() + b.r};
++    for (int axis = 0; axis < 3; ++axis) {
++      for (int s1 = -1; s1 <= 1; s1 += 2) {
++        for (int s2 = -1; s2 <= 1; s2 += 2) {
++          F p[3], q[3];
++          int o1 = (axis + 1) % 3, o2 = (axis + 2) % 3;
++          p[axis] = -e[axis]; q[axis] = e[axis];
++          p[o1] = q[o1] = s1 * e[o1];
++          p[o2] = q[o2] = s2 * e[o2];
++          seg(shapes, world(b.x, p[0], p[1], p[2]), world(b.x, q[0], q[1], q[2]));
++        }
++      }
++    }
++  }
++  using B = alg::BatchOperationT;
++  auto batch = [](const Body& b) {
++    const auto& t = b.x.Translation();
++    const auto& q = b.x.Rotation();
++    return std::make_tuple(
++        alg::Transform(B(t.X()), B(t.Y()), B(t.Z()), B(q.W()), B(q.X()), B(q.Y()), B(q.Z())),
++        alg::Vector3(B(b.h.X()), B(b.h.Y()), B(b.h.Z())), alg::Scalar(B(b.r)), alg::Scalar(B(b.m)));
++  };
++  for (std::size_t i = 0; i < bodies.size(); ++i) {
++    for (std::size_t j = i + 1; j < bodies.size(); ++j) {
++      const Body& s = bodies[i];
++      const Body& t = bodies[j];
++      if (topo[s.row] == t.row || topo[t.row] == s.row) continue;  // parent/child
++      auto [xs, hs, rs, ms] = batch(s);
++      auto [xt, ht, rt, mt] = batch(t);
++      alg::Vector3 n;
++      alg::narrow_phase::ContactDistances d;
++      alg::narrow_phase::ContactPoints p;
++      alg::narrow_phase::ContactActiveMask active;
++      alg::narrow_phase::ComputeSweptBoxContactOp{}(
++          xt, ht, rt, mt, xs, hs, rs, ms, alg::LaneMask::Ones(), &n, &d, &p, &active);
++      for (std::size_t k = 0; k < alg::narrow_phase::kSweptBoxContactSlots; ++k) {
++        if (((active.AsStorage() >> (k * alg::kLanes)) & 1) == 0) continue;
++        SVec c(p(0, k).get(0), p(1, k).get(0), p(2, k).get(0));
++        SVec nn(n.X().get(0), n.Y().get(0), n.Z().get(0));
++        constexpr F kTick = 0.05F, kNormal = 0.3F;
++        seg(contacts, c - SVec(kTick, 0, 0), c + SVec(kTick, 0, 0));
++        seg(contacts, c - SVec(0, kTick, 0), c + SVec(0, kTick, 0));
++        seg(contacts, c - SVec(0, 0, kTick), c + SVec(0, 0, kTick));
++        seg(contacts, c, c + nn * kNormal);
++      }
++    }
++  }
++}
++
+ using Integrator = achilles::interface::Simulation::Integrator;
+ using achilles::algorithms::ScalarOperationT;
+ 
+@@ -193,6 +279,26 @@ int main(int argc, char** argv) {
+   auto last_time = std::chrono::steady_clock::now();
+ 
+   bool running = true;
++  // RECORDING HACK: ACHILLES_FPS=<fps> ACHILLES_SECONDS=<s> steps a fixed
++  // 1/fps of sim time per rendered frame instead of following the clock.
++  if (const char* fps_env = std::getenv("ACHILLES_FPS")) {
++    double fps = std::strtod(fps_env, nullptr);
++    const char* sec_env = std::getenv("ACHILLES_SECONDS");
++    double seconds = sec_env != nullptr ? std::strtod(sec_env, nullptr) : 10.0;
++    long frames = static_cast<long>(seconds * fps);
++    long steps_per_frame = std::lround(1.0 / (fps * static_cast<double>(dt)));
++    const bool contacts = std::getenv("ACHILLES_CONTACTS") != nullptr;
++    for (long f = 0; f < frames && running; ++f) {
++      if (contacts) {
++        BuildCollisionOverlay(sim);
++      }
++      running = sim.Render();
++      for (long s = 0; s < steps_per_frame && running; ++s) {
++        running = sim.Step(dt);
++      }
++    }
++    return 0;
++  }
+   while (running) {
+     auto now = std::chrono::steady_clock::now();
+     ScalarOperationT elapsed =
+diff --git a/src/render/camera.cpp b/src/render/camera.cpp
+index c1ad78f..598f222 100644
+--- a/src/render/camera.cpp
++++ b/src/render/camera.cpp
+@@ -3,6 +3,8 @@
+ #include <algorithm>
+ #include <cmath>
+ #include <numbers>
++#include <cstdio>
++#include <cstdlib>
+ 
+ #include "render/mat4.hpp"
+ 
+@@ -17,6 +19,15 @@ constexpr float kNear = 0.05F;
+ constexpr float kFar = 1000.0F;
+ }  // namespace
+ 
++Camera::Camera() {
++  // RECORDING HACK: ACHILLES_CAM="yaw pitch distance tx ty tz".
++  if (const char* env = std::getenv("ACHILLES_CAM")) {
++    float tx = 0, ty = 0, tz = 0;
++    std::sscanf(env, "%f %f %f %f %f %f", &yaw_, &pitch_, &distance_, &tx, &ty, &tz);
++    target_ = Vec3(tx, ty, tz);
++  }
++}
++
+ void Camera::Orbit(float dyaw, float dpitch) {
+   yaw_ += dyaw;
+   pitch_ = std::clamp(pitch_ + dpitch, -kPitchLimit, kPitchLimit);
+diff --git a/src/render/scene_renderer.cpp b/src/render/scene_renderer.cpp
+index d8ce306..d25e4a3 100644
+--- a/src/render/scene_renderer.cpp
++++ b/src/render/scene_renderer.cpp
+@@ -1,3 +1,5 @@
++#include <cstdio>
++#include <cstdlib>
+ #include "render/scene_renderer.hpp"
+ 
+ #include <cmath>
+@@ -243,8 +245,37 @@ void SceneRenderer::RenderFrame(
+   line_shader_.SetMat4("u_proj", proj);
+   line_shader_.SetVec3("u_color", 0.9F, 0.75F, 0.2F);
+   bones_.Draw();
++  if (!g_overlay_shapes.empty() || !g_overlay_contacts.empty()) {
++    glDisable(GL_DEPTH_TEST);
++    overlay_shapes_.Update(g_overlay_shapes);
++    line_shader_.SetVec3("u_color", 0.85F, 0.87F, 0.9F);
++    glLineWidth(1.0F);
++    overlay_shapes_.Draw();
++    overlay_contacts_.Update(g_overlay_contacts);
++    line_shader_.SetVec3("u_color", 1.0F, 0.2F, 0.75F);
++    glLineWidth(3.0F);
++    overlay_contacts_.Draw();
++    glLineWidth(1.0F);
++    glEnable(GL_DEPTH_TEST);
++  }
+ }
+ 
+-void SceneRenderer::SwapBuffers() { window_.SwapBuffers(); }
++void SceneRenderer::SwapBuffers() {
++  // RECORDING HACK: ACHILLES_RECORD=<path> appends each frame as raw RGB
++  // (bottom-up rows; flip with ffmpeg -vf vflip).
++  static std::FILE* out = [] {
++    const char* path = std::getenv("ACHILLES_RECORD");
++    return path != nullptr ? std::fopen(path, "wb") : nullptr;
++  }();
++  if (out != nullptr) {
++    auto [width, height] = window_.FramebufferSize();
++    std::vector<unsigned char> pixels(static_cast<std::size_t>(width) * height * 3);
++    glPixelStorei(GL_PACK_ALIGNMENT, 1);
++    glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels.data());
++    std::fwrite(pixels.data(), 1, pixels.size(), out);
++    std::fflush(out);
++  }
++  window_.SwapBuffers();
++}
+ 
+ }  // namespace achilles::render
+diff --git a/tools/achilles_trace.cpp b/tools/achilles_trace.cpp
+new file mode 100644
+index 0000000..7d64612
+--- /dev/null
++++ b/tools/achilles_trace.cpp
+@@ -0,0 +1,107 @@
++// LOCAL TOOL (not for upstream): trace one scene on current main, same CSV
++// format as bench/achilles_bench.cpp's `trace` mode.
++//   achilles_trace <scene.arow> <sim_config.yaml> <integrator> <dt> <steps> <out.csv>
++#include <cstdlib>
++#include <fstream>
++#include <iostream>
++#include <optional>
++#include <string_view>
++#include <vector>
++
++#include "algorithms/aba/aba_data.hpp"
++#include "algorithms/aba/aba_step.hpp"
++#include "algorithms/conventions.hpp"
++#include "algorithms/integrators.hpp"
++#include "domain/joint_topology.hpp"
++#include "engine/topology/ordering_policy.hpp"
++#include "interface/simulation.hpp"
++#include "util/tmp.hpp"
++
++namespace {
++using achilles::algorithms::ScalarOperationT;
++using achilles::algorithms::aba::ABAAlgorithm;
++using achilles::algorithms::aba::ABAField;
++using achilles::engine::topology::TopologicalOrdering;
++using achilles::interface::Simulation;
++
++// The real (non-padding) rows of a single-instance serial chain, root first.
++// Padding rows also resolve their parent to the base row, but never have
++// children, so the longest chain hanging off the base row is the real one.
++std::vector<std::size_t> ChainRows(const achilles::domain::JointTopology& t) {
++  std::size_t base = t.Size();
++  std::vector<std::size_t> best;
++  for (std::size_t root = 0; root < base; ++root) {
++    if (t[root] != base) {
++      continue;
++    }
++    std::vector<std::size_t> chain{root};
++    bool extended = true;
++    while (extended) {
++      extended = false;
++      for (std::size_t row = 0; row < base; ++row) {
++        if (row != chain.back() && t[row] == chain.back()) {
++          chain.push_back(row);
++          extended = true;
++          break;
++        }
++      }
++    }
++    if (chain.size() > best.size()) {
++      best = chain;
++    }
++  }
++  return best;
++}
++
++
++template <typename SixT>
++void WriteSix(std::ostream& out, const SixT& x) {
++  auto ang = x.Angular();
++  auto lin = x.Linear();
++  out << ',' << ang.X() << ',' << ang.Y() << ',' << ang.Z() << ',' << lin.X()
++      << ',' << lin.Y() << ',' << lin.Z();
++}
++}  // namespace
++
++int main(int argc, char** argv) {
++  if (argc < 7) {
++    std::cerr << "achilles_trace <arow> <config> <integrator> <dt> <steps> <out.csv>\n";
++    return 1;
++  }
++  auto integrator = achilles::algorithms::IntegratorFromName(argv[3]);
++  if (!integrator) { std::cerr << "bad integrator\n"; return 1; }
++  const auto dt = static_cast<ScalarOperationT>(std::strtof(argv[4], nullptr));
++  const long steps = std::atol(argv[5]);
++  Simulation sim;
++  if (!sim.LoadArowFile(argv[1]) || !sim.LoadConfigFile(argv[2]) || !sim.Init()) return 1;
++  sim.SetIntegrator(*integrator);
++  std::vector<std::size_t> rows = ChainRows(sim.TopologyFor<TopologicalOrdering>());
++  std::ofstream out(argv[6]);
++  out.precision(17);
++  out << "t";
++  for (std::size_t j = 0; j < rows.size(); ++j) {
++    out << ",j" << j << "_qw,j" << j << "_qx,j" << j << "_qy,j" << j << "_qz";
++    for (int k = 0; k < 6; ++k) out << ",j" << j << "_v" << k;
++    for (int k = 0; k < 6; ++k) out << ",j" << j << "_a" << k;
++  }
++  out << '\n';
++  auto record = [&](double t) {
++    sim.StepWith<achilles::util::TypeList<achilles::algorithms::aba::ABAStep>>(0.0F);
++    auto view = sim.ViewFor<ABAAlgorithm>();
++    out << t;
++    for (std::size_t row : rows) {
++      auto q = view.Load<ABAField::kJointPosition, ScalarOperationT>(row);
++      out << ',' << q.Rotation().W() << ',' << q.Rotation().X() << ','
++          << q.Rotation().Y() << ',' << q.Rotation().Z();
++      WriteSix(out, view.Load<ABAField::kJointVelocity, ScalarOperationT>(row));
++      WriteSix(out, view.Load<ABAField::kJointAcceleration, ScalarOperationT>(row));
++    }
++    out << '\n';
++  };
++  record(0.0);
++  for (long i = 1; i <= steps; ++i) {
++    if (!sim.Step(dt)) return 1;
++    record(static_cast<double>(i) * static_cast<double>(dt));
++  }
++  return 0;
++}
+diff --git a/tools/collision_probe.cpp b/tools/collision_probe.cpp
+new file mode 100644
+index 0000000..50c17df
+--- /dev/null
++++ b/tools/collision_probe.cpp
+@@ -0,0 +1,73 @@
++// LOCAL TOOL (not for upstream): run narrow_phase::ComputeSweptBoxContactOp
++// on pairs read from stdin, one pair per SIMD lane.
++// stdin, one pair per line (source then target):
++//   hx hy hz r m tx ty tz qw qx qy qz   hx hy hz r m tx ty tz qw qx qy qz
++// stdout, one line per pair:
++//   nx ny nz  d0..d3  p0x p0y p0z .. p3x p3y p3z  a0..a3
++#include <array>
++#include <cstdio>
++#include <iostream>
++#include <vector>
++
++#include "algorithms/conventions.hpp"
++#include "algorithms/narrow_phase/narrow_phase_data.hpp"
++#include "algorithms/narrow_phase/narrow_phase_ops.hpp"
++
++using namespace achilles::algorithms;
++using narrow_phase::ComputeSweptBoxContactOp;
++using narrow_phase::ContactActiveMask;
++using narrow_phase::ContactDistances;
++using narrow_phase::ContactPoints;
++using narrow_phase::kSweptBoxContactSlots;
++
++struct Shape { float h[3], r, m, t[3], q[4]; };
++
++int main() {
++  std::vector<std::array<Shape, 2>> pairs;
++  std::array<Shape, 2> p{};
++  while (true) {
++    bool ok = true;
++    for (auto& s : p) {
++      ok = ok && (std::cin >> s.h[0] >> s.h[1] >> s.h[2] >> s.r >> s.m >> s.t[0] >> s.t[1] >> s.t[2] >> s.q[0] >> s.q[1] >> s.q[2] >> s.q[3]);
++    }
++    if (!ok) break;
++    pairs.push_back(p);
++  }
++  constexpr std::size_t L = kLanes;
++  for (std::size_t base = 0; base < pairs.size(); base += L) {
++    auto lanes = [&](int which, auto get) {
++      alignas(64) std::array<float, L> v{};
++      for (std::size_t l = 0; l < L; ++l) {
++        v[l] = get(pairs[std::min(base + l, pairs.size() - 1)][which]);
++      }
++      return BatchOperationT::load_aligned(v.data());
++    };
++    auto shape = [&](int w) {
++      Transform x(lanes(w, [](const Shape& s) { return s.t[0]; }), lanes(w, [](const Shape& s) { return s.t[1]; }),
++                  lanes(w, [](const Shape& s) { return s.t[2]; }), lanes(w, [](const Shape& s) { return s.q[0]; }),
++                  lanes(w, [](const Shape& s) { return s.q[1]; }), lanes(w, [](const Shape& s) { return s.q[2]; }),
++                  lanes(w, [](const Shape& s) { return s.q[3]; }));
++      Vector3 h(lanes(w, [](const Shape& s) { return s.h[0]; }), lanes(w, [](const Shape& s) { return s.h[1]; }),
++                lanes(w, [](const Shape& s) { return s.h[2]; }));
++      Scalar r(lanes(w, [](const Shape& s) { return s.r; }));
++      Scalar m(lanes(w, [](const Shape& s) { return s.m; }));
++      return std::make_tuple(x, h, r, m);
++    };
++    auto [xs, hs, rs, ms] = shape(0);
++    auto [xt, ht, rt, mt] = shape(1);
++    Vector3 normal;
++    ContactDistances dist;
++    ContactPoints point;
++    ContactActiveMask active;
++    ComputeSweptBoxContactOp{}(xt, ht, rt, mt, xs, hs, rs, ms, LaneMask::Ones(), &normal, &dist, &point, &active);
++    for (std::size_t l = 0; l < L && base + l < pairs.size(); ++l) {
++      std::printf("%.9g %.9g %.9g", normal.X().get(l), normal.Y().get(l), normal.Z().get(l));
++      for (std::size_t k = 0; k < kSweptBoxContactSlots; ++k) std::printf(" %.9g", dist(k, 0).get(l));
++      for (std::size_t k = 0; k < kSweptBoxContactSlots; ++k)
++        for (std::size_t i = 0; i < 3; ++i) std::printf(" %.9g", point(i, k).get(l));
++      for (std::size_t k = 0; k < kSweptBoxContactSlots; ++k)
++        std::printf(" %d", (active.AsStorage() >> (k * L + l)) & 1 ? 1 : 0);
++      std::printf("\n");
++    }
++  }
++}

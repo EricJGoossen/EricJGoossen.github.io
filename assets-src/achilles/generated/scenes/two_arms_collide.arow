@@ -1,0 +1,127 @@
+archetype: two_arms
+joints:
+- name: world
+  parent: null
+  fields:
+    joint_subspace: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    joint_activation_mask: [0]
+    fixed_joint_transform:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [1.0, 0, 0, 0, 1.0, 1.0, 1.0, 0, 0, 0]
+    joint_position:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.01, 0.01, 0.01]
+    visual_color: [0.3, 0.3, 0.3]
+    collision_pose:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0, 0, 0]
+    collision_radius: [0]
+    collision_margin: [0]
+    collision_group: [0]
+    collision_mask: [0]
+- name: left_shoulder
+  parent: world
+  fields:
+    joint_subspace: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    joint_activation_mask: [1]
+    fixed_joint_transform:
+      translation: [-0.1, -1.0, 2.3]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [1.0, 0, 0.3, 0, 0.18083, 0.015, 0.18083, 0, 0, 0]
+    joint_position:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.15, 0.5, 0.15]
+    collision_pose:
+      translation: [0, 0.5, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.1, 0.45, 0.1]
+    collision_radius: [0.05]
+    collision_margin: [0.02]
+    collision_group: [1]
+    collision_mask: [65535]
+    visual_color: [0.85, 0.3, 0.2]
+- name: left_elbow
+  parent: left_shoulder
+  fields:
+    joint_subspace: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    joint_activation_mask: [1]
+    fixed_joint_transform:
+      translation: [0, 1.0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [0.4, 0, 0.15, 0, 0.07238, 0.00576, 0.07238, 0, 0, 0]
+    joint_position:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.12, 0.4, 0.12]
+    collision_pose:
+      translation: [0, 0.4, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.08, 0.36, 0.08]
+    collision_radius: [0.04]
+    collision_margin: [0.02]
+    collision_group: [1]
+    collision_mask: [65535]
+    visual_color: [0.2, 0.55, 0.9]
+- name: right_shoulder
+  parent: world
+  fields:
+    joint_subspace: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    joint_activation_mask: [1]
+    fixed_joint_transform:
+      translation: [0.1, 1.0, 2.3]
+      rotation: [0, 0, 0, 1]
+    rigid_body_inertia: [1.0, 0, 0.3, 0, 0.18083, 0.015, 0.18083, 0, 0, 0]
+    joint_position:
+      translation: [0, 0, 0]
+      rotation: [0.9962, -0.0872, 0, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.15, 0.5, 0.15]
+    collision_pose:
+      translation: [0, 0.5, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.1, 0.45, 0.1]
+    collision_radius: [0.05]
+    collision_margin: [0.02]
+    collision_group: [1]
+    collision_mask: [65535]
+    visual_color: [0.2, 0.62, 0.45]
+- name: right_elbow
+  parent: right_shoulder
+  fields:
+    joint_subspace: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    joint_activation_mask: [1]
+    fixed_joint_transform:
+      translation: [0, 1.0, 0]
+      rotation: [1, 0, 0, 0]
+    rigid_body_inertia: [0.4, 0, 0.15, 0, 0.07238, 0.00576, 0.07238, 0, 0, 0]
+    joint_position:
+      translation: [0, 0, 0]
+      rotation: [1, 0, 0, 0]
+    joint_velocity: [0, 0, 0, 0, 0, 0]
+    joint_torque: [0, 0, 0, 0, 0, 0]
+    visual_extents: [0.12, 0.4, 0.12]
+    collision_pose:
+      translation: [0, 0.4, 0]
+      rotation: [1, 0, 0, 0]
+    collision_extents: [0.08, 0.36, 0.08]
+    collision_radius: [0.04]
+    collision_margin: [0.02]
+    collision_group: [1]
+    collision_mask: [65535]
+    visual_color: [0.92, 0.72, 0.2]
