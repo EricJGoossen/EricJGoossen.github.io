@@ -13,6 +13,6 @@
   {"name": "Python", "best": "hil-cap/harness"},
   {"name": "PyTorch"},
   {"name": "Reinforcement learning", "best": "fleet-rl/highlight-one"},
-  {"name": "Embedded C", "best": "aruw/highlight-one"},
-  {"name": "CAD", "best": "aruw/highlight-two"}
+  {"name": "Embedded C"},
+  {"name": "CAD"}
 ]

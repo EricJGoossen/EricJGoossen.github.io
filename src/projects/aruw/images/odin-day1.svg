@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 356" role="img" aria-labelledby="t d">
+  <title id="t">Day 1 of the campaign</title>
+  <desc id="d">The nine steps of the first collection day as the campaign&#x27;s own time estimate gives them, 93 minutes in all. Holding still at four spots for 10 minutes each is the longest step at 41 minutes, then 24 cold starts at 16 minutes and 15 covered-sensor outages at 11.</desc>
+  <style>
+    svg { --text:#1c1917; --muted:#6b6560; --grid:#e7e5e4; --axis:#a8a29e;
+          --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#6250d6; --ref:#78716c; }
+    @media (prefers-color-scheme: dark) {
+      svg { --text:#f2f1ef; --muted:#a39d97; --grid:#33312e; --axis:#57534e;
+            --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#9085e9; --ref:#a8a29e; }
+    }
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: var(--text); font-size: 13px; }
+    .m { fill: var(--muted); } .s { font-size: 12px; } .b { font-weight: 650; }
+    .e { text-anchor: end; } .c { text-anchor: middle; }
+    .grid { stroke: var(--grid); stroke-width: 1; }
+    .axis { stroke: var(--axis); stroke-width: 1; }
+    .ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+    .dash { stroke-dasharray: 6 4; }
+    .guide { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+  </style>
+  <text class="s e" x="86" y="59">check</text>
+  <rect x="96.0" y="45" width="3.3" height="20" rx="3" style="fill:var(--s1)" fill-opacity="0.8"/>
+  <text class="s m" x="107.3" y="59">0.7 min · identify command gains</text>
+  <text class="s e" x="86" y="89">preflight</text>
+  <rect x="99.3" y="75" width="39.3" height="20" rx="3" style="fill:var(--s1)" fill-opacity="0.8"/>
+  <text class="s m" x="146.6" y="89">8.4 min · mocap and Odin power-cycled</text>
+  <text class="s e" x="86" y="119">calib</text>
+  <rect x="138.6" y="105" width="12.2" height="20" rx="3" style="fill:var(--s1)" fill-opacity="0.8"/>
+  <text class="s m" x="158.8" y="119">2.6 min · spins and swerves</text>
+  <text class="s e" x="86" y="149">map</text>
+  <rect x="150.8" y="135" width="21.5" height="20" rx="3" style="fill:var(--s1)" fill-opacity="0.8"/>
+  <text class="s m" x="180.3" y="149">4.6 min · 77 m of lanes and loops</text>
+  <text class="s e" x="86" y="179">session</text>
+  <rect x="172.3" y="165" width="27.6" height="20" rx="3" style="fill:var(--s1)" fill-opacity="0.8"/>
+  <text class="s m" x="207.9" y="179">5.9 min · figure-8 laps</text>
+  <text class="s e" x="86" y="209">holds</text>
+  <rect x="199.9" y="195" width="192.0" height="20" rx="3" style="fill:var(--s1)" fill-opacity="0.8"/>
+  <text class="s m" x="399.9" y="209">41 min · 4 spots, 10 min each</text>
+  <text class="s e" x="86" y="239">latency</text>
+  <rect x="391.9" y="225" width="12.6" height="20" rx="3" style="fill:var(--s1)" fill-opacity="0.8"/>
+  <text class="s m" x="412.5" y="239">2.7 min · back-and-forth, then rotation</text>
+  <text class="s e" x="86" y="269">init</text>
+  <rect x="404.5" y="255" width="74.9" height="20" rx="3" style="fill:var(--s1)" fill-opacity="0.8"/>
+  <text class="s m" x="487.4" y="269">16 min · 24 cold starts</text>
+  <text class="s e" x="86" y="299">outage</text>
+  <rect x="479.4" y="285" width="50.6" height="20" rx="3" style="fill:var(--s1)" fill-opacity="0.8"/>
+  <text class="s m" x="538.0" y="299">10.8 min · 15 covered trials</text>
+  <line class="axis" x1="96" x2="530" y1="322" y2="322"/>
+  <text class="s m c" x="96" y="340">0</text>
+  <text class="s m c" x="166" y="340">15</text>
+  <text class="s m c" x="236" y="340">30</text>
+  <text class="s m c" x="307" y="340">45</text>
+  <text class="s m c" x="377" y="340">60</text>
+  <text class="s m c" x="447" y="340">75</text>
+  <text class="s m c" x="517" y="340">90</text>
+  <text class="s m" x="540" y="340">minutes (day 1: 93)</text>
+</svg>
