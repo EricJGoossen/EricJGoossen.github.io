@@ -51,7 +51,7 @@ for k, f in enumerate(F[::stride]):
         ax.plot(f['plan'][:, 0], f['plan'][:, 1], color=PLAN, lw=2, alpha=0.9)
     if f.get('goal'):
         ax.plot(*f['goal'], marker='*', ms=16, color=PLAN, mec=BG)
-    for key, color, size in (('front', FRONT, 3), ('back', BACK, 3)):
+    for key, color, size in (('front', FRONT, 9), ('back', BACK, 9)):
         if f.get(key) is not None:
             ax.scatter(f[key][:, 0], f[key][:, 1], s=size, c=color, linewidths=0, alpha=0.9)
     x, y, th = f['pose']
