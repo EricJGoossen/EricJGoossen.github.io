@@ -97,4 +97,39 @@ desc = ("The language ablation from the paper: the same apple-to-pan task, with 
 open(f"{out}/language-ablation.svg", "w").write(
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" role="img" aria-labelledby="t d">\n'
     f'  <title id="t">{escape(title)}</title>\n  <desc id="d">{escape(desc)}</desc>\n' + STYLE + "  " + "\n  ".join(b) + "\n</svg>\n")
+# --- Success vs task progression for the two π models (Table 1) ----------------
+PROG = {  # task -> (pi0 SR, pi0 NTP, pi0.5 SR, pi0.5 NTP)
+    "Banana → plate": (.80, .90, .90, .98), "Block → basket": (.40, .44, 1.0, 1.0),
+    "Baseball → bucket": (.00, .16, .20, .50), "Apple, bread → bowl": (.40, .64, .40, .65),
+    "Bread from box": (.40, .40, .40, .44), "Close drawer": (.10, .23, .00, .17),
+    "Fold cloth": (.00, .40, .00, .04), "Banana under cloth": (.10, .36, .00, .19),
+}
+ml, mt, rh, pw, gap = 160, 84, 30, 250, 40
+w, h = ml + 2 * pw + gap + 16, mt + rh * len(PROG) + 46
+b = []
+for k, name in enumerate(("π0", "π0.5")):
+    x0 = ml + k * (pw + gap)
+    X = lambda v, x0=x0: x0 + v * pw  # noqa: E731
+    b.append(f'<text class="b" x="{x0}" y="{mt - 26}">{name}</text>')
+    for v in (0, .5, 1):
+        b.append(f'<line class="grid" x1="{X(v):.0f}" x2="{X(v):.0f}" y1="{mt - 18}" y2="{mt + rh * len(PROG)}"/>')
+        b.append(f'<text class="s m c" x="{X(v):.0f}" y="{mt + rh * len(PROG) + 16}">{v:g}</text>')
+    for i, (task, vals) in enumerate(PROG.items()):
+        y = mt + rh * i + rh / 2
+        sr, ntp = vals[2 * k], vals[2 * k + 1]
+        if k == 0:
+            b.append(f'<text class="s e" x="{ml - 12}" y="{y + 4:.0f}">{escape(task)}</text>')
+        b.append(f'<line x1="{X(sr):.1f}" x2="{X(ntp):.1f}" y1="{y:.0f}" y2="{y:.0f}" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>')
+        b.append(f'<circle cx="{X(ntp):.1f}" cy="{y:.0f}" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>')
+        b.append(f'<circle cx="{X(sr):.1f}" cy="{y:.0f}" r="6" style="fill:var(--s1)"/>')
+b.append(f'<circle cx="{ml + 6}" cy="{mt - 66}" r="6" style="fill:var(--s1)"/><text class="s" x="{ml + 18}" y="{mt - 62}">success rate</text>')
+b.append(f'<circle cx="{ml + 126}" cy="{mt - 66}" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/><text class="s" x="{ml + 138}" y="{mt - 62}">task progression (share of rubric steps done)</text>')
+title = "How far the VLAs got, not just whether they finished"
+desc = ("For π0 and π0.5 on each of the eight tasks, success rate beside normalized task progression, the share of a "
+        "task's rubric steps completed. On the hard tasks success is 0 to 0.1 but progression is often higher: π0 "
+        "reaches 0.40 of the cloth fold and 0.36 of the banana under a cloth while succeeding 0 and 0.1 of the time, "
+        "and π0.5 gets halfway through the baseball task while succeeding 0.2 of the time.")
+open(f"{out}/success-vs-progress.svg", "w").write(
+    f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" role="img" aria-labelledby="t d">\n'
+    f'  <title id="t">{escape(title)}</title>\n  <desc id="d">{escape(desc)}</desc>\n' + STYLE + "  " + "\n  ".join(b) + "\n</svg>\n")
 print("wrote charts")

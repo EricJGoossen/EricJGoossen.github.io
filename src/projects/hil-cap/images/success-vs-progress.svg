@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 716 370" role="img" aria-labelledby="t d">
+  <title id="t">How far the VLAs got, not just whether they finished</title>
+  <desc id="d">For π0 and π0.5 on each of the eight tasks, success rate beside normalized task progression, the share of a task&#x27;s rubric steps completed. On the hard tasks success is 0 to 0.1 but progression is often higher: π0 reaches 0.40 of the cloth fold and 0.36 of the banana under a cloth while succeeding 0 and 0.1 of the time, and π0.5 gets halfway through the baseball task while succeeding 0.2 of the time.</desc>
+  <style>
+    svg { --text:#1c1917; --muted:#6b6560; --grid:#e7e5e4; --axis:#a8a29e;
+          --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#6250d6; --ref:#78716c; }
+    @media (prefers-color-scheme: dark) {
+      svg { --text:#f2f1ef; --muted:#a39d97; --grid:#33312e; --axis:#57534e;
+            --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#9085e9; --ref:#a8a29e; }
+    }
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: var(--text); font-size: 13px; }
+    .m { fill: var(--muted); } .s { font-size: 12px; } .b { font-weight: 650; }
+    .e { text-anchor: end; } .c { text-anchor: middle; }
+    .grid { stroke: var(--grid); stroke-width: 1; }
+    .axis { stroke: var(--axis); stroke-width: 1; }
+    .ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+    .dash { stroke-dasharray: 6 4; }
+    .guide { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+  </style>
+  <text class="b" x="160" y="58">π0</text>
+  <line class="grid" x1="160" x2="160" y1="66" y2="324"/>
+  <text class="s m c" x="160" y="340">0</text>
+  <line class="grid" x1="285" x2="285" y1="66" y2="324"/>
+  <text class="s m c" x="285" y="340">0.5</text>
+  <line class="grid" x1="410" x2="410" y1="66" y2="324"/>
+  <text class="s m c" x="410" y="340">1</text>
+  <text class="s e" x="148" y="103">Banana → plate</text>
+  <line x1="360.0" x2="385.0" y1="99" y2="99" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>
+  <circle cx="385.0" cy="99" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>
+  <circle cx="360.0" cy="99" r="6" style="fill:var(--s1)"/>
+  <text class="s e" x="148" y="133">Block → basket</text>
+  <line x1="260.0" x2="270.0" y1="129" y2="129" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>
+  <circle cx="270.0" cy="129" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>
+  <circle cx="260.0" cy="129" r="6" style="fill:var(--s1)"/>
+  <text class="s e" x="148" y="163">Baseball → bucket</text>
+  <line x1="160.0" x2="200.0" y1="159" y2="159" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>
+  <circle cx="200.0" cy="159" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>
+  <circle cx="160.0" cy="159" r="6" style="fill:var(--s1)"/>
+  <text class="s e" x="148" y="193">Apple, bread → bowl</text>
+  <line x1="260.0" x2="320.0" y1="189" y2="189" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>
+  <circle cx="320.0" cy="189" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>
+  <circle cx="260.0" cy="189" r="6" style="fill:var(--s1)"/>
+  <text class="s e" x="148" y="223">Bread from box</text>
+  <line x1="260.0" x2="260.0" y1="219" y2="219" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>
+  <circle cx="260.0" cy="219" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>
+  <circle cx="260.0" cy="219" r="6" style="fill:var(--s1)"/>
+  <text class="s e" x="148" y="253">Close drawer</text>
+  <line x1="185.0" x2="217.5" y1="249" y2="249" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>
+  <circle cx="217.5" cy="249" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>
+  <circle cx="185.0" cy="249" r="6" style="fill:var(--s1)"/>
+  <text class="s e" x="148" y="283">Fold cloth</text>
+  <line x1="160.0" x2="260.0" y1="279" y2="279" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>
+  <circle cx="260.0" cy="279" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>
+  <circle cx="160.0" cy="279" r="6" style="fill:var(--s1)"/>
+  <text class="s e" x="148" y="313">Banana under cloth</text>
+  <line x1="185.0" x2="250.0" y1="309" y2="309" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>
+  <circle cx="250.0" cy="309" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>
+  <circle cx="185.0" cy="309" r="6" style="fill:var(--s1)"/>
+  <text class="b" x="450" y="58">π0.5</text>
+  <line class="grid" x1="450" x2="450" y1="66" y2="324"/>
+  <text class="s m c" x="450" y="340">0</text>
+  <line class="grid" x1="575" x2="575" y1="66" y2="324"/>
+  <text class="s m c" x="575" y="340">0.5</text>
+  <line class="grid" x1="700" x2="700" y1="66" y2="324"/>
+  <text class="s m c" x="700" y="340">1</text>
+  <line x1="675.0" x2="695.0" y1="99" y2="99" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>
+  <circle cx="695.0" cy="99" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>
+  <circle cx="675.0" cy="99" r="6" style="fill:var(--s1)"/>
+  <line x1="700.0" x2="700.0" y1="129" y2="129" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>
+  <circle cx="700.0" cy="129" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>
+  <circle cx="700.0" cy="129" r="6" style="fill:var(--s1)"/>
+  <line x1="500.0" x2="575.0" y1="159" y2="159" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>
+  <circle cx="575.0" cy="159" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>
+  <circle cx="500.0" cy="159" r="6" style="fill:var(--s1)"/>
+  <line x1="550.0" x2="612.5" y1="189" y2="189" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>
+  <circle cx="612.5" cy="189" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>
+  <circle cx="550.0" cy="189" r="6" style="fill:var(--s1)"/>
+  <line x1="550.0" x2="560.0" y1="219" y2="219" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>
+  <circle cx="560.0" cy="219" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>
+  <circle cx="550.0" cy="219" r="6" style="fill:var(--s1)"/>
+  <line x1="450.0" x2="492.5" y1="249" y2="249" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>
+  <circle cx="492.5" cy="249" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>
+  <circle cx="450.0" cy="249" r="6" style="fill:var(--s1)"/>
+  <line x1="450.0" x2="460.0" y1="279" y2="279" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>
+  <circle cx="460.0" cy="279" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>
+  <circle cx="450.0" cy="279" r="6" style="fill:var(--s1)"/>
+  <line x1="450.0" x2="497.5" y1="309" y2="309" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>
+  <circle cx="497.5" cy="309" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>
+  <circle cx="450.0" cy="309" r="6" style="fill:var(--s1)"/>
+  <circle cx="166" cy="18" r="6" style="fill:var(--s1)"/><text class="s" x="178" y="22">success rate</text>
+  <circle cx="286" cy="18" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/><text class="s" x="298" y="22">task progression (share of rubric steps done)</text>
+</svg>
