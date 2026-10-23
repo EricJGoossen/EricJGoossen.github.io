@@ -47,3 +47,17 @@ or data, in a cloud session, without changing any of his repositories.
 `thor-install.jpg`, `base-frame-cad.jpg`, `otos-housing-cad.jpg` and `lidar-mount-cad.jpg`
 are from the lab's build guide (`UW-Allen-School-Robotics/opendubs`, `docs/assets/build/`),
 resized. Placeholder: confirm they can be used here and who to credit.
+
+## Page hero (`images/hero-arms.mp4`, `hero-arms.jpg`)
+
+`scripts/render_hero.py` renders the planned (ArmGroup) half of `data/bimanual-crossing.npz` at 1280×720 on the
+hero panel's dark color, framed with the arms on the right, played there and back so it loops:
+
+    MUJOCO_GL=egl python scripts/render_hero.py data/bimanual-crossing.npz frames
+    ffmpeg -framerate 30 -i frames/frame_%04d.png -c:v libx264 -crf 28 -preset slow -pix_fmt yuv420p -an -movflags +faststart hero-arms.mp4
+    ffmpeg -i frames/frame_0300.png -q:v 3 hero-arms.jpg
+
+## Tile cover (`images/cover-arcs.jpg`)
+
+A 3:2 crop (1170×780 at +830+150, scaled to 1200 wide) of the ARCS Night to Ignite photo of Eric
+with the robot, cropped so only Eric and the robot are in it. Photo: Jason J. Kim Photography.

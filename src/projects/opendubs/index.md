@@ -7,9 +7,10 @@ timeline: Oct 2025 – present
 tools: [ROS 2, Python, C++, ArduPilot / MAVROS, Pinocchio, MuJoCo, Docker, WebXR]
 order: 1
 summary: A bimanual mobile manipulator for the Personal Robotics Lab, from drive and localization bring-up to two arms planned and run as one.
-cover: images/bimanual-crossing.mp4
-coverPoster: images/bimanual-crossing.jpg
-# hero: images/hero.mp4     # Placeholder: real footage of the robot, subject on the right
+cover: images/cover-arcs.jpg   # Eric with the robot at ARCS Night to Ignite. Photo: Jason J. Kim Photography
+hero: images/hero-arms.mp4
+heroAlt: The robot's two OpenArm arms, one blue and one orange, reaching past each other along a plan made for both at once, rendered in MuJoCo
+heroPoster: images/hero-arms.jpg
 highlights:
   - label: Flow vs mocap
     entry: optical-flow
