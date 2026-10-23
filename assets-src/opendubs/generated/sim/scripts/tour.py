@@ -12,6 +12,7 @@ import time
 
 import numpy as np
 import rclpy
+import rclpy.executors
 from geometry_msgs.msg import PoseStamped
 from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
 from nav_msgs.msg import OccupancyGrid, Path
@@ -20,14 +21,15 @@ from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
 from sensor_msgs.msg import LaserScan
 import tf2_ros
 
-# Goals in the map frame (the map starts where the robot does: (-3.6, 1.6) in the world).
+# Goals in world coordinates. Gazebo's odometry starts at the robot's spawn pose in the
+# world, and slam_toolbox's map starts on the odometry frame, so map = world here.
 WORLD_START = (-3.6, 1.6)
 GOALS_WORLD = [(-3.4, -2.4, -1.57), (-0.2, -2.6, 0.0), (2.2, -1.6, 0.6), (4.1, -0.6, 1.57),
                (3.6, 2.4, 3.14), (1.6, -0.4, -2.4), (-1.0, -2.4, 3.14), (-1.4, 1.6, 1.57)]
 
 
 def to_map(x, y):
-    return x - WORLD_START[0], y - WORLD_START[1]
+    return x, y
 
 
 class Recorder(Node):
@@ -88,7 +90,9 @@ def main():
     rclpy.init()
     rec = Recorder()
     nav = BasicNavigator()
-    spin = threading.Thread(target=rclpy.spin, args=(rec,), daemon=True)
+    executor = rclpy.executors.SingleThreadedExecutor()  # its own, not the global one BasicNavigator spins
+    executor.add_node(rec)
+    spin = threading.Thread(target=executor.spin, daemon=True)
     spin.start()
     nav.waitUntilNav2Active(localizer='slam_toolbox')
     results = []
@@ -104,7 +108,7 @@ def main():
         start = time.time()
         while not nav.isTaskComplete():
             time.sleep(0.2)
-            if time.time() - start > 120:
+            if time.time() - start > 300:
                 nav.cancelTask()
         res = nav.getResult()
         results.append(((gx, gy), str(res)))

@@ -14,11 +14,31 @@ from launch.actions import ExecuteProcess, IncludeLaunchDescription, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
+import subprocess
+import tempfile
+import xml.etree.ElementTree as ET
+
 import xacro
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 SIM_TIME = {'use_sim_time': True}
+
+
+def gazebo_model(urdf):
+    """Eric's URDF converted for Gazebo, with the robot's own visuals hidden from its
+    lidars: the sim draws his frame as one solid box, where the real frame is open
+    rails the RPLIDARs mostly see through."""
+    with tempfile.NamedTemporaryFile('w', suffix='.urdf', delete=False) as f:
+        f.write(urdf)
+    sdf = ET.fromstring(subprocess.run(['gz', 'sdf', '-p', f.name], capture_output=True, text=True, check=True).stdout)
+    for visual in sdf.iter('visual'):
+        ET.SubElement(visual, 'visibility_flags').text = '2'
+    for lidar in sdf.iter('lidar'):
+        ET.SubElement(lidar, 'visibility_mask').text = '1'
+    path = os.path.join(tempfile.gettempdir(), 'opendubs_gz.sdf')
+    ET.ElementTree(sdf).write(path)
+    return path
 
 
 def generate_launch_description():
@@ -34,7 +54,7 @@ def generate_launch_description():
 
     spawn = Node(
         package='ros_gz_sim', executable='create',
-        arguments=['-topic', 'robot_description', '-name', 'opendubs',
+        arguments=['-file', gazebo_model(robot_description), '-name', 'opendubs',
                    '-x', '-3.6', '-y', '1.6', '-z', '0.06', '-Y', '0.0'])
 
     bridge = Node(
