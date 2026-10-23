@@ -75,6 +75,33 @@ Grasps are angled 45° inward at the handover, where an IK sweep found both arms
 - `scripts/make_prl_charts.py data charts`: also `flow-paths.svg`, the March 29 run from above.
 - `sim/scripts/render_stills.py tour.pkl out`: `sim-slam-map.png`, the finished map and path.
 
+## Four impedance controllers in sim (`images/impedance-four-sim.mp4`)
+
+Eric's four arm control laws, compiled unmodified from his repos into one library
+(`armlaws/build_armlaws.sh`, the C interface in `armlaws/wrapper.cpp`) and called from a
+MuJoCo loop at 500 Hz on the left OpenArm (the model's own gravity compensation and servos
+turned off, torques applied directly):
+
+| panel | law | repo @ commit |
+|---|---|---|
+| Cartesian | `CartesianImpedance`: J^T (K dx + D dxdot) + gravity | `openarm_cartesian_control` @ `3bf55b0` |
+| joint space | `Impedance`: (J^T K J + I) (q* - q) + J^T D J (qd* - qd) + gravity | `openarm_impedance_control` @ `871d1e3` |
+| null space | `ImpedanceLaw`: the Cartesian term plus a posture term projected into the null space | `openarm_impedance_control` @ `eb8e13a` |
+| motors | `RobotModel::gravityTorqueRT` as the feedforward of the motors' PD (kp, kd from `control_gains.yaml`) | `openarm_impedance_control` @ `b517999` |
+
+The URDF is `openarm_description`'s bimanual xacro (`arm_type:=openarm_v1.0 bimanual:=true
+ros2_control:=false`). Pinocchio's gravity torques match MuJoCo's within 2% at the hold pose.
+The gains are the demo's own (Cartesian K = 200 N/m, 4 N·m/rad; D = 20, 0.2; null space
+K = 10, 2 N·m/rad), the same for the first three. Each arm is pushed with 20 N at the hand
+(sideways, 1.0 to 1.6 s), then 20 N at the elbow across the shoulder-wrist line (its swivel,
+4.0 to 4.6 s). Measured: Cartesian holds the hand to 3 mm but leaves the elbow 9.2 cm off;
+joint space brings it back to 7 mm; null space to 1 mm; motors move the elbow 1.9 cm at most.
+
+    build_armlaws.sh <venv> <prl dir> build
+    python scripts/sim_impedance4.py build/libarmlaws.so openarm_bimanual.urdf impedance4.npz
+    python scripts/render_impedance4.py impedance4.npz frames
+    (ffmpeg 2x2 xstack with labels; see the command below)
+
 ## Tile cover (`images/cover-arcs.jpg`)
 
 A 3:2 crop (1170×780 at +830+150, scaled to 1200 wide) of the ARCS Night to Ignite photo of Eric
