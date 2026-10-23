@@ -37,3 +37,25 @@ since the ROS apt servers were unreachable):
 
 8 Nav2 goals, 7 succeeded. The first, a tight spot beside the west bench, timed out after
 5 minutes; the clip starts at the second goal and covers the remaining 255 s at 6× speed.
+
+## Optical flow in ArduPilot SITL (`flow-sim-paths.svg`, `flow-sim-error.svg`)
+
+A re-creation, not robot data. ArduPilot Rover 4.6.2 SITL (`--model rover-skid`) navigating on
+optical flow alone (EKF3, `EK3_SRC1_VELXY = 5`, no GPS), with SITL's simulated flow sensor and a
+downward rangefinder 10 cm off the floor. `scripts/sitl_flow.py` drives Eric's test (5.5 m out
+and back, then a spin in place) and reads ground truth (`SIM`) and the EKF (`XKF1`) from the
+onboard log; `scripts/make_flow_sim_charts.py data <images>` draws both charts.
+
+- One simulator change, `ardupilot-sitl-flow-ground.patch`: SITL's flow sensor assumes it is
+  flying and reports no motion at height 0; the patch lets a ground vehicle's sensor see the floor.
+- EKF3 ignores flow until it detects a "takeoff" (for a rover, a turn over 0.1 rad/s after
+  arming), so each run starts with a short turn. `EK3_MAX_FLOW` is raised to 7 rad/s, since at
+  10 cm walking pace is several rad/s of flow.
+- The three runs: `FLOW_ORIENT_YAW = 9000` (the simulated sensor reports in the body frame, so
+  this is a 90-degree mismatch between mounting and config); `0`; and `0` with
+  `FLOW_FXSCALER = FLOW_FYSCALER = -130`, the gain trim that brought the scale error down.
+
+      build ArduPilot: ./waf configure --board sitl && ./waf rover   (Python: empy==3.3.4, pexpect, setuptools<81)
+      THR=70 T_LEG=18 python scripts/sitl_flow.py ardurover ardupilot data/flow-missing.npz 9000
+      THR=70 T_LEG=18 python scripts/sitl_flow.py ardurover ardupilot data/flow-fixed.npz 0
+      GAIN=-130 THR=70 T_LEG=18 python scripts/sitl_flow.py ardurover ardupilot data/flow-tuned.npz 0

@@ -1,0 +1,13 @@
+diff --git a/libraries/AP_OpticalFlow/AP_OpticalFlow_SITL.cpp b/libraries/AP_OpticalFlow/AP_OpticalFlow_SITL.cpp
+index d238254..ad0bd15 100644
+--- a/libraries/AP_OpticalFlow/AP_OpticalFlow_SITL.cpp
++++ b/libraries/AP_OpticalFlow/AP_OpticalFlow_SITL.cpp
+@@ -64,7 +64,7 @@ void AP_OpticalFlow_SITL::update(void)
+ 
+     // estimate range to centre of image
+     float range;
+-    if (rotmat.c.z > 0.05f && _sitl->state.height_agl > 0) {
++    if (rotmat.c.z > 0.05f && _sitl->state.height_agl >= 0) {  // >= so a ground vehicle (height 0) sees the floor
+         Vector3f relPosSensorEF = rotmat * posRelSensorBF;
+         range = (_sitl->state.height_agl - relPosSensorEF.z) / rotmat.c.z;
+     } else {
