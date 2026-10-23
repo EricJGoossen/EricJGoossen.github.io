@@ -49,7 +49,7 @@ How to read the table:
 
 ## Made but not committed
 
-- **arcs-dance-with-audio.mp4:** the same excerpt with the Monster Mash audio. The song is copyrighted, so it's kept out of the public repo for now. Eric decides whether it goes up.
+- **arcs-dance-with-audio.mp4:** the same excerpt with the Monster Mash audio. Eric decided (2026-10-22) it stays off the site; use the silent `arcs-dance.mp4`.
 - **arcs-group (IMG_1545.jpeg):** already in the repo as `arcs-team.jpg`, from the same photo. That photo was taken by the event organizer on Daphne's phone; please confirm. It shows 4 people with the robot.
 
 ## Looked at and skipped
