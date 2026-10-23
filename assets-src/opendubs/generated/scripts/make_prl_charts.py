@@ -135,4 +135,37 @@ c.line(t, zl, "--s1")
 c.line(t, zr, "--s2")
 c.legend([("joint stiffness only", "--s1", False), ("+ gravity compensation", "--s2", False)])
 open(f"{out}/impedance-gravcomp-sim.svg", "w").write(c.svg())
+# --- Clearance between the arms, one at a time vs together (clearance.py) ------
+cz2 = np.load(f"{data}/bimanual-clearance.npz")
+dur = float(cz2["dur"])
+c = Chart(
+    "How close the two arms come, one arm at a time and together",
+    f"Closest distance between the left and right arms over time for the same {dur:.1f}-second plan. Run one arm "
+    f"after the other, as multi-arm plans used to run, it takes {2 * dur:.1f} seconds and the arms overlap, by up to "
+    f"{-cz2['left_then_right'].min() * 1000:.0f} mm (left first) or {-cz2['right_then_left'].min() * 1000:.0f} mm "
+    f"(right first). Run together from one start stamp, it takes {dur:.1f} seconds and never closes below "
+    f"{cz2['together'].min() * 1000:.0f} mm.",
+    h=380, mt=78, mb=52,
+)
+c.xscale(0, 2 * dur)
+c.yscale(-1.5, 7.5)
+c.axes([0, 10, 20, 30, 40], [0, 2, 4, 6], "time (s)", "closest distance between the arms (cm)",
+       yfmt=lambda v: f"{v:g}")
+c.body.insert(0, f'<rect x="{c.ml}" y="{c.Y(0):.1f}" width="{c.w - c.ml - c.mr}" height="{c.Y(-1.5) - c.Y(0):.1f}" '
+                 'style="fill:#dc2626" fill-opacity="0.12"/>')
+c.label(c.ml + 6, c.Y(-1.5) - 5, "overlapping", cls="s m")
+for key, var, lbl in (("together", "--s3", f"done at {dur:.1f} s"), ("left_then_right", "--s1", f"done at {2 * dur:.1f} s")):
+    t_end = cz2[key + "_t"][-1]
+    c.body.append(f'<line class="guide" x1="{c.X(t_end):.1f}" x2="{c.X(t_end):.1f}" y1="{c.mt}" y2="{c.h - c.mb}"/>')
+    c.label(c.X(t_end) - 4, c.mt + 12, lbl, anchor="end", cls="s m")
+for key, var in (("left_then_right", "--s1"), ("right_then_left", "--s2"), ("together", "--s3")):
+    yv = np.clip(cz2[key] * 100, -1.5, 7.5)
+    c.line(cz2[key + "_t"], yv, var, width=3 if key == "together" else 2)
+    over = cz2[key] < 0
+    for i in np.nonzero(over)[0]:
+        x = c.X(cz2[key + "_t"][i])
+        c.body.append(f'<circle cx="{x:.1f}" cy="{c.Y(yv[i]):.1f}" r="2.6" style="fill:#dc2626"/>')
+c.legend([("left, then right", "--s1", False), ("right, then left", "--s2", False),
+          ("together, one start stamp", "--s3", False)])
+open(f"{out}/parallel-clearance.svg", "w").write(c.svg())
 print("wrote charts")
