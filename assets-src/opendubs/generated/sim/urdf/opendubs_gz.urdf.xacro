@@ -10,7 +10,7 @@
   <xacro:macro name="rplidar" params="prefix">
     <gazebo reference="${prefix}_link">
       <sensor name="${prefix}" type="gpu_lidar">
-        <topic>scan_${prefix.replace('_lidar', '')}</topic>
+        <topic>/scan_${prefix.replace('_lidar', '')}</topic>
         <gz_frame_id>${prefix}_link</gz_frame_id>
         <update_rate>7</update_rate>
         <always_on>true</always_on>
