@@ -48,14 +48,32 @@ or data, in a cloud session, without changing any of his repositories.
 are from the lab's build guide (`UW-Allen-School-Robotics/opendubs`, `docs/assets/build/`),
 resized. Placeholder: confirm they can be used here and who to credit.
 
-## Page hero (`images/hero-arms.mp4`, `hero-arms.jpg`)
+## Page hero (`images/hero-handover.mp4`, `hero-handover.jpg`)
 
-`scripts/render_hero.py` renders the planned (ArmGroup) half of `data/bimanual-crossing.npz` at 1280×720 on the
-hero panel's dark color, framed with the arms on the right, played there and back so it loops:
+A two-arm handover of a can, planned with the unmodified ArmGroup planner (openarm's `Openarm`
+wrapper around mj_manipulator) in the OpenArm model plus a table (`scripts/handover_scene.py`):
+the right arm picks the can, both arms meet in one two-arm plan, the left arm takes it and sets
+it down, then the same in mirror so the clip loops. The arms' motions are the planner's, checked
+against the table and each other; the can is a prop that follows whichever gripper holds it.
+Grasps are angled 45° inward at the handover, where an IK sweep found both arms' reach overlaps.
 
-    MUJOCO_GL=egl python scripts/render_hero.py data/bimanual-crossing.npz frames
-    ffmpeg -framerate 30 -i frames/frame_%04d.png -c:v libx264 -crf 28 -preset slow -pix_fmt yuv420p -an -movflags +faststart hero-arms.mp4
-    ffmpeg -i frames/frame_0300.png -q:v 3 hero-arms.jpg
+    python scripts/plan_handover.py handover.npz                    # about 15 minutes
+    LOOKAT="0.30 -0.25 0.52" DIST=1.35 AZ=230 EL=-18 python scripts/render_handover.py handover.npz frames 5
+    ffmpeg -framerate 30 -i frames/frame_%05d.png -c:v libx264 -crf 28 -preset slow -pix_fmt yuv420p -an -movflags +faststart hero-handover.mp4
+
+(`scripts/render_hero.py` made the earlier hero, the crossing plan alone.)
+
+## More renders
+
+- `scripts/render_plan_extras.py data/bimanual-crossing.npz out`: `arm-group-strobe.jpg` (the
+  ArmGroup plan at six moments, with both grippers' paths) and the frames of
+  `parallel-arms-sequential.mp4` (the plan run left arm, then right, red while they intersect).
+- `scripts/sim_teleop.py teleop.npz` then `scripts/render_teleop.py teleop.npz frames`:
+  `teleop-sim.mp4`. Eric's teleop (`openarm.webxr_teleop` HandClutch, TeleopController, the event
+  loop tick) run headless with two scripted hands in place of the headset's poses; the only
+  changes are an alias so the headless sim context finds each arm by name, and no gripper toggles.
+- `scripts/make_prl_charts.py data charts`: also `flow-paths.svg`, the March 29 run from above.
+- `sim/scripts/render_stills.py tour.pkl out`: `sim-slam-map.png`, the finished map and path.
 
 ## Tile cover (`images/cover-arcs.jpg`)
 

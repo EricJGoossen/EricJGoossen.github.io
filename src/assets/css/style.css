@@ -373,8 +373,13 @@ main.wrap:has(> .project, > .skill-page) { --wrap: 72rem; }
 }
 .row + .row { border-top: 1px solid var(--border); }
 .row-text > :last-child { margin-bottom: 0; }
-.row-media { display: grid; gap: 1.5rem; }
-.entry .row-media figure { margin: 0; }
+.row-media { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 1rem; }
+.entry .row-media figure { grid-column: 1 / -1; margin: 0; }
+/* Portrait photos and phone video: half the column, so they pair up side by
+   side; one on its own is centered at that width. */
+.entry .row-media figure.tall { grid-column: auto; }
+.entry .row-media figure.tall:only-child,
+.entry .row-media figure:not(.tall) + figure.tall:last-child { grid-column: 1 / -1; justify-self: center; width: calc(50% - 0.5rem); }
 .entry .row-media img, .row-media video { width: 100%; margin: 0; }
 @media (max-width: 800px) {
   .row { grid-template-columns: minmax(0, 1fr); gap: 1rem; padding: 1.25rem 0; }
