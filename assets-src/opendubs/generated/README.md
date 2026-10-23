@@ -58,10 +58,13 @@ straight joint-space move when that is collision-free, otherwise the plan shortc
 sample re-checked with the group's own collision checker (table, other arm, 5 mm margin), with
 quintic timing so each move starts and stops smoothly. Single-arm moves (lifts, places, short
 carries) use ArmGroup's Cartesian planner for a straight gripper line when it can follow one; an
-arm with no goal holds still. The can is a prop the collision checker can't see, so a path that
-carries it is rejected if the can would dip more than 6 cm or swing well past the table's edge,
-and it is set down by its own height (eased onto the table if the arm can't reach exactly). The
-clip plays at 3x.
+arm with no goal holds still. The can is a prop the collision checker can't see; it turns with
+the gripper holding it, and along a planned carry the holding wrist is re-solved at every
+waypoint so the can stays level (within 4 degrees). A carry is rejected if the can would dip more
+than 6 cm, tip past 35 degrees or swing well past the table's edge, and it is set down by its own
+height. For the two-arm move the joint goals are chosen explicitly: the giver's nearest IK
+solution, the taker's furthest from its joint limits. Each finger closes until it touches the
+can (the two finger joints are independent, so neither sinks into it). The clip plays at 3x.
 Grasps are angled 45° inward at the handover, where an IK sweep found both arms' reach overlaps.
 
     python scripts/plan_handover.py handover.npz                    # about 10 minutes

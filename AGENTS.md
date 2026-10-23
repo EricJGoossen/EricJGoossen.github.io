@@ -101,7 +101,7 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
   The paragraph, in Markdown.
   {% endrow %}
   ```
-  Videos work the same way (`{ poster: "images/still.jpg" }` for the still). To stack more media under the first (say a clip and the chart that backs it up), add `more: [{ src: "images/chart.svg", alt: "...", caption: "..." }]`. The build stops if any of them has no media or no alt text.
+  Videos work the same way (`{ poster: "images/still.jpg" }` for the still). To stack more media under the first (say a clip and the chart that backs it up), add `more: [{ src: "images/chart.svg", alt: "...", caption: "..." }]`. Portrait media sit at half width (two side by side); add `wide: true` to show one at full width. The build stops if any of them has no media or no alt text.
 - Image in a log entry: `![What the image shows](images/photo.jpg)`. Always write real alt text.
 - Short clip that loops like a GIF (muted, with pause controls): `{% video "images/clip.mp4", "What it shows" %}`
 - Longer video with sound (click to play): `{% video "images/talk.mp4", "What it shows", { play: true, poster: "images/talk.jpg" } %}`

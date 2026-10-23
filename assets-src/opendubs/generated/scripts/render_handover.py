@@ -69,6 +69,8 @@ for k, i in enumerate(idx):
     d.qpos[fin["left"]] = z["fL"][i]
     d.qpos[fin["right"]] = z["fR"][i]
     d.mocap_pos[can] = z["can"][i]
+    if "can_quat" in z:
+        d.mocap_quat[can] = z["can_quat"][i]
     mujoco.mj_forward(m, d)
     renderer.update_scene(d, cam, opt)
     img = renderer.render().astype(float)
