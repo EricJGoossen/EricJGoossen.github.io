@@ -42,6 +42,37 @@ c.line(t[keep], np.maximum(err[keep], 0.01), "--s1")
 c.label(c.X(202) - 4, c.Y(err.max()) - 8, f"{err.max():.0f} m", anchor="end", cls="s b")
 open(f"{out}/flow-ekf-vs-mocap.svg", "w").write(c.svg())
 
+# --- The same run seen from above: paths, not distances ----------------------
+mx, my, ex, ey = z["mx"], z["my"], z["ex"], z["ey"]
+drive, spin = (t >= 60) & (t < 120), (t >= 120) & (t < spin_end)
+c = Chart(
+    "The March 29 run from above",
+    "Top-down paths in the motion capture frame. While the robot drives back and forth, ArduPilot's estimate "
+    "(orange) follows the true path from motion capture (blue) to within "
+    f"{err[drive].max():.2f} meters. When the robot starts to spin in place, the estimate (dashed) slides "
+    f"{np.hypot(ex[spin][-1] - ex[spin][0], ey[spin][-1] - ey[spin][0]):.1f} meters away in 15 seconds, "
+    "on its way to 155 meters, while the true position barely moves.",
+    w=680, h=420, ml=56, mr=24, mt=56, mb=48,
+)
+c.xscale(-3.4, 0.4)
+c.yscale(-1.2, 0.9)
+c.axes([-3, -2, -1, 0], [-1, -0.5, 0, 0.5], "y (m)", "x (m)", xfmt=lambda v: f"{v:g}", yfmt=lambda v: f"{v:g}")
+for v in [-3, -2, -1, 0]:
+    c.body.insert(0, f'<line class="grid" x1="{c.X(v):.1f}" x2="{c.X(v):.1f}" y1="{c.mt}" y2="{c.h - c.mb}"/>')
+k = slice(None, None, 5)
+c.line(my[drive | spin][k], mx[drive | spin][k], "--s1", width=3)
+c.line(ey[drive][k], ex[drive][k], "--s2")
+c.line(ey[spin][k], ex[spin][k], "--s2", dash=True)
+x0, y0 = c.X(ey[spin][0]), c.Y(ex[spin][0])
+c.body.append(f'<circle cx="{x0:.1f}" cy="{y0:.1f}" r="4" style="fill:var(--s2)"/>')
+c.label(x0 - 10, y0 + 20, "spin starts", anchor="end", cls="s m")
+xe, ye = c.X(ey[spin][-1]), c.Y(ex[spin][-1])
+c.body.append(f'<circle cx="{xe:.1f}" cy="{ye:.1f}" r="3" style="fill:var(--s2)"/>')
+c.label(xe - 10, ye + 4, "15 s later, still running away (peak 155 m)", anchor="end", cls="s b")
+c.legend([("motion capture", "--s1", False), ("ArduPilot estimate, driving", "--s2", False),
+          ("estimate, spinning", "--s2", True)])
+open(f"{out}/flow-paths.svg", "w").write(c.svg())
+
 # --- Bimanual plan executed one arm at a time vs together ----------------------
 cz = np.load(f"{data}/bimanual-crossing.npz")
 sz = np.load(f"{data}/bimanual-sequential.npz")
