@@ -19,5 +19,6 @@ delete its line here.
 ## Still owed from earlier rounds
 
 - [ ] ARUW: LD19 lidar screenshots, sentry photos, LQR path-tracking footage.
-- [ ] HCRL: anything from collecting the teleop demos, fine-tuning results, and GR00T and
-      MolmoAct2 rollout videos.
+- [ ] HCRL: a video of collecting a teleoperated demonstration with the Quest controller (for
+      the fine-tuning entry, along with what fine-tuning changed), and GR00T and MolmoAct2
+      rollout videos.

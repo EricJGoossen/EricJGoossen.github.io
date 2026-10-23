@@ -71,11 +71,11 @@ ROWS = [  # (perturbation, instruction, pi0.5 success, ARCHITECT success)
     ("underspecified", "Move the apple.", 0, 0),
     ("overspecified", "Pick up the red apple and put it on the white pan; approach from directly overhead, …", 0, 1),
 ]
-ml, mt, rh = 128, 58, 27
-w, h = 720, mt + rh * len(ROWS) + 30
+ml, mt, rh = 128, 40, 19  # compact rows
+w, h = 720, mt + rh * len(ROWS) + 26
 cx = {"pi": 586, "arch": 668}
-b = [f'<text class="s b c" x="{cx["pi"]}" y="{mt - 16}">π0.5</text>',
-     f'<text class="s b c" x="{cx["arch"]}" y="{mt - 16}">ARCHITECT</text>']
+b = [f'<text class="s b c" x="{cx["pi"]}" y="{mt - 12}">π0.5</text>',
+     f'<text class="s b c" x="{cx["arch"]}" y="{mt - 12}">ARCHITECT</text>']
 for i, (kind, text, pi, arch) in enumerate(ROWS):
     y = mt + rh * i + rh / 2
     if i % 2 == 0:
@@ -85,9 +85,9 @@ for i, (kind, text, pi, arch) in enumerate(ROWS):
     b.append(f'<text class="s" x="{ml}" y="{y + 4:.0f}">“{escape(short.rstrip("…"))}{"…" if short.endswith("…") else ""}”</text>')
     for key, ok, var in (("pi", pi, "--s1"), ("arch", arch, "--s3")):
         if ok:
-            b.append(f'<circle cx="{cx[key]}" cy="{y:.0f}" r="8" style="fill:var({var})"/>')
+            b.append(f'<circle cx="{cx[key]}" cy="{y:.0f}" r="6" style="fill:var({var})"/>')
         else:
-            b.append(f'<circle cx="{cx[key]}" cy="{y:.0f}" r="7.5" style="fill:none;stroke:var(--ref)" stroke-width="1.5"/>')
+            b.append(f'<circle cx="{cx[key]}" cy="{y:.0f}" r="5.5" style="fill:none;stroke:var(--ref)" stroke-width="1.5"/>')
 b.append(f'<text class="s m" x="{ml}" y="{h - 10}">Filled: success. Same apple, same pan, same placement; only the words change.</text>')
 title = "One task, fifteen ways to say it"
 desc = ("The language ablation from the paper: the same apple-to-pan task, with the object held in place, given in "
@@ -104,7 +104,7 @@ PROG = {  # task -> (pi0 SR, pi0 NTP, pi0.5 SR, pi0.5 NTP)
     "Bread from box": (.40, .40, .40, .44), "Close drawer": (.10, .23, .00, .17),
     "Fold cloth": (.00, .40, .00, .04), "Banana under cloth": (.10, .36, .00, .19),
 }
-ml, mt, rh, pw, gap = 160, 84, 30, 250, 40
+ml, mt, rh, pw, gap = 160, 66, 21, 250, 40  # compact rows
 w, h = ml + 2 * pw + gap + 16, mt + rh * len(PROG) + 46
 b = []
 for k, name in enumerate(("π0", "π0.5")):
@@ -120,10 +120,10 @@ for k, name in enumerate(("π0", "π0.5")):
         if k == 0:
             b.append(f'<text class="s e" x="{ml - 12}" y="{y + 4:.0f}">{escape(task)}</text>')
         b.append(f'<line x1="{X(sr):.1f}" x2="{X(ntp):.1f}" y1="{y:.0f}" y2="{y:.0f}" style="stroke:var(--s1)" stroke-width="3" stroke-opacity="0.35"/>')
-        b.append(f'<circle cx="{X(ntp):.1f}" cy="{y:.0f}" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/>')
-        b.append(f'<circle cx="{X(sr):.1f}" cy="{y:.0f}" r="6" style="fill:var(--s1)"/>')
-b.append(f'<circle cx="{ml + 6}" cy="{mt - 66}" r="6" style="fill:var(--s1)"/><text class="s" x="{ml + 18}" y="{mt - 62}">success rate</text>')
-b.append(f'<circle cx="{ml + 126}" cy="{mt - 66}" r="6" style="fill:none;stroke:var(--s1)" stroke-width="2"/><text class="s" x="{ml + 138}" y="{mt - 62}">task progression (share of rubric steps done)</text>')
+        b.append(f'<circle cx="{X(ntp):.1f}" cy="{y:.0f}" r="5" style="fill:none;stroke:var(--s1)" stroke-width="2"/>')
+        b.append(f'<circle cx="{X(sr):.1f}" cy="{y:.0f}" r="5" style="fill:var(--s1)"/>')
+b.append(f'<circle cx="{ml + 6}" cy="12" r="5" style="fill:var(--s1)"/><text class="s" x="{ml + 18}" y="16">success rate</text>')
+b.append(f'<circle cx="{ml + 126}" cy="12" r="5" style="fill:none;stroke:var(--s1)" stroke-width="2"/><text class="s" x="{ml + 138}" y="16">task progression (share of rubric steps done)</text>')
 title = "How far the VLAs got, not just whether they finished"
 desc = ("For π0 and π0.5 on each of the eight tasks, success rate beside normalized task progression, the share of a "
         "task's rubric steps completed. On the hard tasks success is 0 to 0.1 but progression is often higher: π0 "
