@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 776 390" role="img" aria-labelledby="t d">
+  <title id="t">Success rate by task: four VLAs against LLM-written code</title>
+  <desc id="d">Success rates from the paper&#x27;s real-world benchmark on a Franka Panda, 10 rollouts per task. The four VLAs (π0, π0.5, MolmoAct2, GR00T N1.7) do well only on simple pick and place, led by π0.5 with 0.9 on banana to plate and 1.0 on block to basket, and score 0 to 0.1 on closing a drawer, folding a cloth and the banana under a cloth. Code as Policies scores at most 0.6. ARCHITECT, with human corrections, scores 0.7 to 1.0 on every task.</desc>
+  <style>
+    svg { --text:#1c1917; --muted:#6b6560; --grid:#e7e5e4; --axis:#a8a29e;
+          --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#6250d6; --ref:#78716c; }
+    @media (prefers-color-scheme: dark) {
+      svg { --text:#f2f1ef; --muted:#a39d97; --grid:#33312e; --axis:#57534e;
+            --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#9085e9; --ref:#a8a29e; }
+    }
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: var(--text); font-size: 13px; }
+    .m { fill: var(--muted); } .s { font-size: 12px; } .b { font-weight: 650; }
+    .e { text-anchor: end; } .c { text-anchor: middle; }
+    .grid { stroke: var(--grid); stroke-width: 1; }
+    .axis { stroke: var(--axis); stroke-width: 1; }
+    .ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+    .dash { stroke-dasharray: 6 4; }
+    .guide { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+  </style>
+  <text class="s b c" x="210" y="46">π0</text>
+  <text class="s m c" x="210" y="62">VLA</text>
+  <text class="s b c" x="310" y="46">π0.5</text>
+  <text class="s m c" x="310" y="62">VLA</text>
+  <text class="s b c" x="410" y="46">MolmoAct2</text>
+  <text class="s m c" x="410" y="62">VLA</text>
+  <text class="s b c" x="510" y="46">GR00T N1.7</text>
+  <text class="s m c" x="510" y="62">VLA</text>
+  <text class="s b c" x="610" y="46">Code as Policies</text>
+  <text class="s m c" x="610" y="62">LLM code</text>
+  <text class="s b c" x="710" y="46">ARCHITECT</text>
+  <text class="s m c" x="710" y="62">LLM code</text>
+  <text class="s e" x="150" y="95">Banana → plate</text>
+  <rect x="162" y="76" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.74"/>
+  <text class="s c b" x="210" y="95" style="fill:#fff">0.8</text>
+  <rect x="262" y="76" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.82"/>
+  <text class="s c b" x="310" y="95" style="fill:#fff">0.9</text>
+  <rect x="362" y="76" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.74"/>
+  <text class="s c b" x="410" y="95" style="fill:#fff">0.8</text>
+  <rect x="462" y="76" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.41"/>
+  <text class="s c" x="510" y="95">0.4</text>
+  <rect x="562" y="76" width="96" height="30" rx="4" style="fill:var(--s3)" fill-opacity="0.24"/>
+  <text class="s c" x="610" y="95">0.2</text>
+  <rect x="662" y="76" width="96" height="30" rx="4" style="fill:var(--s3)" fill-opacity="0.74"/>
+  <text class="s c b" x="710" y="95" style="fill:#fff">0.8</text>
+  <text class="s e" x="150" y="129">Block → basket</text>
+  <rect x="162" y="110" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.41"/>
+  <text class="s c" x="210" y="129">0.4</text>
+  <rect x="262" y="110" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.90"/>
+  <text class="s c b" x="310" y="129" style="fill:#fff">1.0</text>
+  <rect x="362" y="110" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.33"/>
+  <text class="s c" x="410" y="129">0.3</text>
+  <rect x="462" y="110" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.08"/>
+  <text class="s c" x="510" y="129">0.0</text>
+  <rect x="562" y="110" width="96" height="30" rx="4" style="fill:var(--s3)" fill-opacity="0.41"/>
+  <text class="s c" x="610" y="129">0.4</text>
+  <rect x="662" y="110" width="96" height="30" rx="4" style="fill:var(--s3)" fill-opacity="0.65"/>
+  <text class="s c b" x="710" y="129" style="fill:#fff">0.7</text>
+  <text class="s e" x="150" y="163">Baseball → bucket</text>
+  <rect x="162" y="144" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.08"/>
+  <text class="s c" x="210" y="163">0.0</text>
+  <rect x="262" y="144" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.24"/>
+  <text class="s c" x="310" y="163">0.2</text>
+  <rect x="362" y="144" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.08"/>
+  <text class="s c" x="410" y="163">0.0</text>
+  <rect x="462" y="144" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.08"/>
+  <text class="s c" x="510" y="163">0.0</text>
+  <rect x="562" y="144" width="96" height="30" rx="4" style="fill:var(--s3)" fill-opacity="0.57"/>
+  <text class="s c b" x="610" y="163" style="fill:#fff">0.6</text>
+  <rect x="662" y="144" width="96" height="30" rx="4" style="fill:var(--s3)" fill-opacity="0.90"/>
+  <text class="s c b" x="710" y="163" style="fill:#fff">1.0</text>
+  <text class="s e" x="150" y="197">Apple, bread → bowl</text>
+  <rect x="162" y="178" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.41"/>
+  <text class="s c" x="210" y="197">0.4</text>
+  <rect x="262" y="178" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.41"/>
+  <text class="s c" x="310" y="197">0.4</text>
+  <rect x="362" y="178" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.16"/>
+  <text class="s c" x="410" y="197">0.1</text>
+  <rect x="462" y="178" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.08"/>
+  <text class="s c" x="510" y="197">0.0</text>
+  <rect x="562" y="178" width="96" height="30" rx="4" style="fill:var(--s3)" fill-opacity="0.16"/>
+  <text class="s c" x="610" y="197">0.1</text>
+  <rect x="662" y="178" width="96" height="30" rx="4" style="fill:var(--s3)" fill-opacity="0.74"/>
+  <text class="s c b" x="710" y="197" style="fill:#fff">0.8</text>
+  <text class="s e" x="150" y="231">Bread from box</text>
+  <rect x="162" y="212" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.41"/>
+  <text class="s c" x="210" y="231">0.4</text>
+  <rect x="262" y="212" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.41"/>
+  <text class="s c" x="310" y="231">0.4</text>
+  <rect x="362" y="212" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.24"/>
+  <text class="s c" x="410" y="231">0.2</text>
+  <rect x="462" y="212" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.08"/>
+  <text class="s c" x="510" y="231">0.0</text>
+  <rect x="562" y="212" width="96" height="30" rx="4" style="fill:var(--s3)" fill-opacity="0.16"/>
+  <text class="s c" x="610" y="231">0.1</text>
+  <rect x="662" y="212" width="96" height="30" rx="4" style="fill:var(--s3)" fill-opacity="0.65"/>
+  <text class="s c b" x="710" y="231" style="fill:#fff">0.7</text>
+  <text class="s e" x="150" y="265">Close drawer</text>
+  <rect x="162" y="246" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.16"/>
+  <text class="s c" x="210" y="265">0.1</text>
+  <rect x="262" y="246" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.08"/>
+  <text class="s c" x="310" y="265">0.0</text>
+  <rect x="362" y="246" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.08"/>
+  <text class="s c" x="410" y="265">0.0</text>
+  <rect x="462" y="246" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.08"/>
+  <text class="s c" x="510" y="265">0.0</text>
+  <rect x="562" y="246" width="96" height="30" rx="4" style="fill:var(--s3)" fill-opacity="0.08"/>
+  <text class="s c" x="610" y="265">0.0</text>
+  <rect x="662" y="246" width="96" height="30" rx="4" style="fill:var(--s3)" fill-opacity="0.82"/>
+  <text class="s c b" x="710" y="265" style="fill:#fff">0.9</text>
+  <text class="s e" x="150" y="299">Fold cloth</text>
+  <rect x="162" y="280" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.08"/>
+  <text class="s c" x="210" y="299">0.0</text>
+  <rect x="262" y="280" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.08"/>
+  <text class="s c" x="310" y="299">0.0</text>
+  <rect x="362" y="280" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.08"/>
+  <text class="s c" x="410" y="299">0.0</text>
+  <rect x="462" y="280" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.08"/>
+  <text class="s c" x="510" y="299">0.0</text>
+  <rect x="562" y="280" width="96" height="30" rx="4" style="fill:var(--s3)" fill-opacity="0.08"/>
+  <text class="s c" x="610" y="299">0.0</text>
+  <rect x="662" y="280" width="96" height="30" rx="4" style="fill:var(--s3)" fill-opacity="0.74"/>
+  <text class="s c b" x="710" y="299" style="fill:#fff">0.8</text>
+  <text class="s e" x="150" y="333">Banana under cloth</text>
+  <rect x="162" y="314" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.16"/>
+  <text class="s c" x="210" y="333">0.1</text>
+  <rect x="262" y="314" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.08"/>
+  <text class="s c" x="310" y="333">0.0</text>
+  <rect x="362" y="314" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.08"/>
+  <text class="s c" x="410" y="333">0.0</text>
+  <rect x="462" y="314" width="96" height="30" rx="4" style="fill:var(--s1)" fill-opacity="0.08"/>
+  <text class="s c" x="510" y="333">0.0</text>
+  <rect x="562" y="314" width="96" height="30" rx="4" style="fill:var(--s3)" fill-opacity="0.08"/>
+  <text class="s c" x="610" y="333">0.0</text>
+  <rect x="662" y="314" width="96" height="30" rx="4" style="fill:var(--s3)" fill-opacity="0.74"/>
+  <text class="s c b" x="710" y="333" style="fill:#fff">0.8</text>
+  <text class="s m" x="160" y="376">Success rate over 10 rollouts per task; the objects' placement and the wording change every rollout.</text>
+</svg>

@@ -8,8 +8,10 @@
   {"name": "Impedance control", "best": "opendubs/impedance-control"},
   {"name": "Teleoperation", "best": "opendubs/teleop"},
   {"name": "Docker", "best": "opendubs/bringup"},
-  {"name": "Python", "best": "hil-cap/highlight-one"},
-  {"name": "PyTorch", "best": "hil-cap/highlight-one"},
+  {"name": "VLA benchmarking", "best": "hil-cap/experiment-design"},
+  {"name": "Experiment design", "best": "hil-cap/experiment-design"},
+  {"name": "Python", "best": "hil-cap/harness"},
+  {"name": "PyTorch"},
   {"name": "Reinforcement learning", "best": "fleet-rl/highlight-one"},
   {"name": "Embedded C", "best": "aruw/highlight-one"},
   {"name": "CAD", "best": "aruw/highlight-two"}

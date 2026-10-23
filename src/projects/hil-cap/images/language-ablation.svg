@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 493" role="img" aria-labelledby="t d">
+  <title id="t">One task, fifteen ways to say it</title>
+  <desc id="d">The language ablation from the paper: the same apple-to-pan task, with the object held in place, given in fifteen phrasings. π0.5 succeeds on 6 of them, failing on synonyms such as &#x27;Take the apple and place it onto the pan&#x27;, on reordered and ambiguous wording, on typos, and on under- and over-specified instructions. ARCHITECT succeeds on 13, failing on the longest phrasing and on &#x27;Move the apple.&#x27;</desc>
+  <style>
+    svg { --text:#1c1917; --muted:#6b6560; --grid:#e7e5e4; --axis:#a8a29e;
+          --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#6250d6; --ref:#78716c; }
+    @media (prefers-color-scheme: dark) {
+      svg { --text:#f2f1ef; --muted:#a39d97; --grid:#33312e; --axis:#57534e;
+            --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#9085e9; --ref:#a8a29e; }
+    }
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: var(--text); font-size: 13px; }
+    .m { fill: var(--muted); } .s { font-size: 12px; } .b { font-weight: 650; }
+    .e { text-anchor: end; } .c { text-anchor: middle; }
+    .grid { stroke: var(--grid); stroke-width: 1; }
+    .axis { stroke: var(--axis); stroke-width: 1; }
+    .ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+    .dash { stroke-dasharray: 6 4; }
+    .guide { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+  </style>
+  <text class="s b c" x="586" y="42">π0.5</text>
+  <text class="s b c" x="668" y="42">ARCHITECT</text>
+  <rect x="8" y="58" width="704" height="27" style="fill:var(--grid)" fill-opacity="0.45"/>
+  <text class="s m e" x="118" y="76">canonical</text>
+  <text class="s" x="128" y="76">“Put the red apple in the pan.”</text>
+  <circle cx="586" cy="72" r="8" style="fill:var(--s1)"/>
+  <circle cx="668" cy="72" r="8" style="fill:var(--s3)"/>
+  <text class="s m e" x="118" y="102">synonym</text>
+  <text class="s" x="128" y="102">“Grab the apple and set it on the pan.”</text>
+  <circle cx="586" cy="98" r="8" style="fill:var(--s1)"/>
+  <circle cx="668" cy="98" r="8" style="fill:var(--s3)"/>
+  <rect x="8" y="112" width="704" height="27" style="fill:var(--grid)" fill-opacity="0.45"/>
+  <text class="s m e" x="118" y="130">synonym</text>
+  <text class="s" x="128" y="130">“Take the apple and place it onto the pan.”</text>
+  <circle cx="586" cy="126" r="7.5" style="fill:none;stroke:var(--ref)" stroke-width="1.5"/>
+  <circle cx="668" cy="126" r="8" style="fill:var(--s3)"/>
+  <text class="s m e" x="118" y="156">synonym</text>
+  <text class="s" x="128" y="156">“Move the apple onto the pan.”</text>
+  <circle cx="586" cy="152" r="7.5" style="fill:none;stroke:var(--ref)" stroke-width="1.5"/>
+  <circle cx="668" cy="152" r="8" style="fill:var(--s3)"/>
+  <rect x="8" y="166" width="704" height="27" style="fill:var(--grid)" fill-opacity="0.45"/>
+  <text class="s m e" x="118" y="184">synonym</text>
+  <text class="s" x="128" y="184">“Lift the apple and rest it on the pan.”</text>
+  <circle cx="586" cy="180" r="8" style="fill:var(--s1)"/>
+  <circle cx="668" cy="180" r="8" style="fill:var(--s3)"/>
+  <text class="s m e" x="118" y="210">passive</text>
+  <text class="s" x="128" y="210">“The apple should be picked up and placed on the pan.”</text>
+  <circle cx="586" cy="206" r="8" style="fill:var(--s1)"/>
+  <circle cx="668" cy="206" r="8" style="fill:var(--s3)"/>
+  <rect x="8" y="220" width="704" height="27" style="fill:var(--grid)" fill-opacity="0.45"/>
+  <text class="s m e" x="118" y="238">word order</text>
+  <text class="s" x="128" y="238">“Onto the pan, place the apple.”</text>
+  <circle cx="586" cy="234" r="7.5" style="fill:none;stroke:var(--ref)" stroke-width="1.5"/>
+  <circle cx="668" cy="234" r="8" style="fill:var(--s3)"/>
+  <text class="s m e" x="118" y="264">ambiguity</text>
+  <text class="s" x="128" y="264">“Relocate the fruit so that it sits on the pan.”</text>
+  <circle cx="586" cy="260" r="7.5" style="fill:none;stroke:var(--ref)" stroke-width="1.5"/>
+  <circle cx="668" cy="260" r="8" style="fill:var(--s3)"/>
+  <rect x="8" y="274" width="704" height="27" style="fill:var(--grid)" fill-opacity="0.45"/>
+  <text class="s m e" x="118" y="292">short</text>
+  <text class="s" x="128" y="292">“apple on pan”</text>
+  <circle cx="586" cy="288" r="8" style="fill:var(--s1)"/>
+  <circle cx="668" cy="288" r="8" style="fill:var(--s3)"/>
+  <text class="s m e" x="118" y="318">medium</text>
+  <text class="s" x="128" y="318">“Pick up the apple from the table and place it onto the pan s…”</text>
+  <circle cx="586" cy="314" r="7.5" style="fill:none;stroke:var(--ref)" stroke-width="1.5"/>
+  <circle cx="668" cy="314" r="8" style="fill:var(--s3)"/>
+  <rect x="8" y="328" width="704" height="27" style="fill:var(--grid)" fill-opacity="0.45"/>
+  <text class="s m e" x="118" y="346">long</text>
+  <text class="s" x="128" y="346">“There is a apple resting on the surface in front of you. Pic…”</text>
+  <circle cx="586" cy="342" r="8" style="fill:var(--s1)"/>
+  <circle cx="668" cy="342" r="7.5" style="fill:none;stroke:var(--ref)" stroke-width="1.5"/>
+  <text class="s m e" x="118" y="372">typos</text>
+  <text class="s" x="128" y="372">“pickup teh appel an put it on the frying pan”</text>
+  <circle cx="586" cy="368" r="7.5" style="fill:none;stroke:var(--ref)" stroke-width="1.5"/>
+  <circle cx="668" cy="368" r="8" style="fill:var(--s3)"/>
+  <rect x="8" y="382" width="704" height="27" style="fill:var(--grid)" fill-opacity="0.45"/>
+  <text class="s m e" x="118" y="400">underspecified</text>
+  <text class="s" x="128" y="400">“Put the apple away.”</text>
+  <circle cx="586" cy="396" r="7.5" style="fill:none;stroke:var(--ref)" stroke-width="1.5"/>
+  <circle cx="668" cy="396" r="8" style="fill:var(--s3)"/>
+  <text class="s m e" x="118" y="426">underspecified</text>
+  <text class="s" x="128" y="426">“Move the apple.”</text>
+  <circle cx="586" cy="422" r="7.5" style="fill:none;stroke:var(--ref)" stroke-width="1.5"/>
+  <circle cx="668" cy="422" r="7.5" style="fill:none;stroke:var(--ref)" stroke-width="1.5"/>
+  <rect x="8" y="436" width="704" height="27" style="fill:var(--grid)" fill-opacity="0.45"/>
+  <text class="s m e" x="118" y="454">overspecified</text>
+  <text class="s" x="128" y="454">“Pick up the red apple and put it on the white pan; approach…”</text>
+  <circle cx="586" cy="450" r="7.5" style="fill:none;stroke:var(--ref)" stroke-width="1.5"/>
+  <circle cx="668" cy="450" r="8" style="fill:var(--s3)"/>
+  <text class="s m" x="128" y="483">Filled: success. Same apple, same pan, same placement; only the words change.</text>
+</svg>

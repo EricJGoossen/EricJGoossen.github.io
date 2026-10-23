@@ -1,0 +1,16 @@
+---
+title: "Designing the benchmark: what makes a VLA test fair"
+date: 2026-07-20 12:00:00
+---
+{# Placeholder: Eric to confirm, and to fill in the lighting and placement story (the date is a stand-in). Facts from the paper: 8 tasks in 6 challenge categories, 10 rollouts per task (400 for the main table), object position, orientation and wording changed every rollout, scored by success rate, goal condition recall and normalized task progression against a written rubric. The language ablation held the object still and ran each of 15 phrasings once (configs/task_configs/language_ablation.yaml: 15 instructions, 15 rollouts). VLA failure modes are the paper's Appendix E. Clips are from the paper's website. #}
+{% row "images/sr-by-task.svg", "Grid of success rates for eight tasks and six methods. The four VLAs score well only on simple pick and place, led by π0.5 at 0.9 and 1.0, and near zero on the drawer, the cloth fold and the banana under a cloth. Code as Policies peaks at 0.6. ARCHITECT scores 0.7 to 1.0 on every task", { caption: "Success rate over 10 rollouts per task, from the paper's Tables 1 and 2." } %}
+A VLA can look great near its training setup and fall apart a few centimeters away, so the hard part is deciding what a fair test is. We picked eight tasks across six kinds of challenge and changed the objects' placement and the wording on each of ten rollouts. Placeholder: what lighting did to the models, and how we chose starting placements that were really out of distribution.
+{% endrow %}
+
+{% row "images/language-ablation.svg", "Fifteen phrasings of the same apple-to-pan instruction, with π0.5 and ARCHITECT marked for each. π0.5 succeeds on 6, failing on synonyms, reordered and ambiguous wording, typos and under- or over-specified instructions. ARCHITECT succeeds on 13", { caption: "The language ablation: one task, fifteen phrasings, each run once." } %}
+Success alone also hides a lot, so each rollout was scored three ways: did it succeed, what fraction of the goals were met, and how far along a written rubric it got. To isolate wording, we held the apple still and changed only the words: π0.5 succeeded on "Grab the apple and set it on the pan" and failed on "Take the apple and place it onto the pan."
+{% endrow %}
+
+{% row "images/rollout-close-cabinet-drawer-pi05.mp4", "The Franka arm running π0.5 hovers over the top of a small white cabinet and never pushes its open drawer", { poster: "images/rollout-close-cabinet-drawer-pi05.jpg", caption: "π0.5 asked to close the drawer.", more: [{ src: "images/rollout-fold-towel-triangle-pi0.mp4", poster: "images/rollout-fold-towel-triangle-pi0.jpg", alt: "The Franka arm running π0 grabs a white towel by its middle and lifts it instead of folding a corner over", caption: "π0 asked to fold the cloth into a triangle." }, { src: "images/rollout-baseball-bucket-pi0.mp4", poster: "images/rollout-baseball-bucket-pi0.jpg", alt: "The Franka arm running π0 hovers near a baseball without picking it up", caption: "π0 and the baseball." }] } %}
+The VLAs were smooth on familiar pick and place and brittle elsewhere: they depended on the object (π0 never got the baseball into the bucket), ignored clearance, grabbed the drawer's lip instead of pushing it, and gave up halfway through two-object tasks. Placeholder: what Eric took away about benchmarking.
+{% endrow %}
