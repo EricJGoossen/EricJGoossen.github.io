@@ -28,8 +28,10 @@ highlights:
     entry: arm-group
     skills: [Motion planning, Python, MuJoCo]
 links:
-  - label: GitHub
-    url: https://github.com/EricJGoossen/mj_manipulator
+  - label: Arm code
+    url: https://github.com/EricJGoossen/openarm_robot-code
+  - label: OpenDubs
+    url: https://github.com/UW-Allen-School-Robotics/opendubs
 ---
-{# Placeholder: Eric to confirm the whole page. Drafted from his commits in rajitzg/opendubs-core, EricJGoossen/open_dubs_mocap, project_openDubs, the openarm_* repos and the mj_manipulator / mj_manipulator_ros forks, plus his resume. From Eric (Oct 23): point-to-point navigation worked only in simulation, so the overview no longer claims it (the resume still does). Which GitHub link(s) should the header show? The tile cover is the ARCS portrait cropped to Eric and the robot (Jason J. Kim Photography: OK to use without a visible credit on the tile?). The hero is a MuJoCo render of the ArmGroup plan (images/hero-arms.mp4); swap in real footage of the arms, subject on the right and a dark background, when there is some. #}
+{# Placeholder: Eric to confirm the overview. Navigation only worked in simulation, so it isn't claimed here (the resume still does; Eric will handle it). UW-Allen-School-Robotics/opendubs is private as of Oct 23, so that link 404s for visitors until it's public. The hero is a MuJoCo render; Eric wants to replace it with real footage eventually. #}
 OpenDubs is the Personal Robotics Lab's bimanual mobile manipulator: a holonomic mecanum base, an NVIDIA Jetson Thor and two 7-DOF OpenArm arms, granted by NVIDIA. I'm on the four-person undergraduate team building its software, and I own base navigation, localization and arm control: each piece built in simulation first, then brought up on the hardware. Both arms now move in 3D under planned and teleoperated control, and I've led demos of the robot for industry visitors and donors.

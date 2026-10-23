@@ -408,6 +408,8 @@ main.wrap:has(> .project, > .skill-page) { --wrap: 72rem; }
 figure.video, figure.youtube { margin: 1.25rem 0; }
 figure.video video { margin: 0; }
 figcaption { margin-top: 0.4rem; color: var(--muted); font-size: 0.9rem; }
+figure .credit { display: block; margin-top: 0.3rem; color: var(--muted); font-size: 0.75rem; letter-spacing: 0.01em; }
+figure .credit + figcaption { margin-top: 0.15rem; }
 .youtube a { position: relative; display: block; border-radius: var(--radius); overflow: hidden; }
 .youtube img { width: 100%; margin: 0; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 0; background: var(--ph); }
 .youtube .play {

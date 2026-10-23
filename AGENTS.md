@@ -95,7 +95,7 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
 - `best` must be an entry tagged with this skill (by its highlight or its `skillTags`). Without `best`, the skill page starts with the newest tagged entry.
 
 **Add images and videos** (put the files in the project's `images/` folder)
-- A paragraph with its image or video beside it (the usual way to write a log entry). The blank-line rules of Markdown apply inside, so keep the paragraph unindented:
+- A paragraph with its image or video beside it (the usual way to write a log entry). Until the file exists, `{% row "placeholder", "Video: what it will show" %}` holds its place with a gray box. The blank-line rules of Markdown apply inside, so keep the paragraph unindented:
   ```
   {% row "images/chart.svg", "What the image shows", { caption: "..." } %}
   The paragraph, in Markdown.
@@ -105,7 +105,7 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
 - Image in a log entry: `![What the image shows](images/photo.jpg)`. Always write real alt text.
 - Short clip that loops like a GIF (muted, with pause controls): `{% video "images/clip.mp4", "What it shows" %}`
 - Longer video with sound (click to play): `{% video "images/talk.mp4", "What it shows", { play: true, poster: "images/talk.jpg" } %}`
-- Optional caption on either: add `caption: "..."` to the options.
+- Optional caption on either: add `caption: "..."` to the options. A photo credit goes in `credit: "Photo: ..."` (on `{% row %}` and `{% video %}`, and in each `more` item), a small line right under the media, so the caption stays about the picture.
 - YouTube: `{% youtube "VIDEO_ID or full link", "Title" %}`. This shows a thumbnail that links to YouTube; no YouTube code runs on the site.
 - Covers, heroes and publication teasers can be `.mp4` too. Give a video cover a `coverPoster`.
 - Sizes: aim for images under about 1 MB (2000px on the long side) and clips under 5 MB. Cloudflare rejects any file over 25 MB, and the build stops on it.
