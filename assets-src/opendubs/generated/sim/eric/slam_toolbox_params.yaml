@@ -1,0 +1,21 @@
+slam_toolbox:
+  ros__parameters: 
+    # Sensor/Frame
+    odom_frame: "odom"
+    base_frame: "base_link"
+    map_frame: "map"
+    scan_topic: "/scan"    
+
+    # Mapping
+    mode: "mapping"
+    map_file_name: "src/main/maps/room_map"
+    use_scan_matching: true
+    use_imu_data: false # mocap only
+    resolution: 0.025
+    minimum_travel_distance: 0.1 
+    minimum_travel_heading: 0.2 #11.5 deg
+    do_loop_closure: true
+    transform_timeout: 0.2
+    max_laser_range: 12.0
+    transform_tolerance : 0.2
+    max_laser_scan_range: 12.0

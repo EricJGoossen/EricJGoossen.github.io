@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<robot name="open_dubs" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- Define robot constants -->
+    <xacro:property name="frame_width" value="0.36195"/>
+    <xacro:property name="frame_length" value="0.4318"/>
+    <xacro:property name="frame_height" value="0.2889"/>
+
+    <xacro:property name="wheel_radius" value="0.0700"/>
+    <xacro:property name="wheel_width" value="0.0370"/>
+    <xacro:property name="wheel_ygap" value="0.02500"/>
+    <xacro:property name="wheel_zoff" value="-0.11945"/>
+    <xacro:property name="wheel_xoff" value="0.1778"/>
+
+    <xacro:property name="lidar_radius" value="0.0273"/>
+    <xacro:property name="lidar_height" value="0.0254"/>
+    <xacro:property name="lidar_xoff" value="0.26225"/>
+    <xacro:property name="lidar_yoff" value="0.0"/>
+    <xacro:property name="lidar_zoff" value="-0.09603"/>
+
+    <xacro:property name="deg_to_rad" value="${pi/180}"/>
+
+    <!-- Define inertial property macros  -->
+    <xacro:macro name="box_inertia" params="m w h d">
+        <inertial>
+            <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}"/>
+            <mass value="${m}"/>
+            <inertia ixx="${(m/12) * (h*h + d*d)}" ixy="0.0" ixz="0.0" iyy="${(m/12) * (w*w + d*d)}" iyz="0.0" izz="${(m/12) * (w*w + h*h)}"/>
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="cylinder_inertia" params="m r h">
+        <inertial>
+            <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+            <mass value="${m}"/>
+            <inertia ixx="${(m/12) * (3*r*r + h*h)}" ixy = "0" ixz = "0" iyy="${(m/12) * (3*r*r + h*h)}" iyz = "0" izz="${(m/2) * (r*r)}"/>
+        </inertial>
+    </xacro:macro>
+
+    <!-- Base Link -->
+    <link name="base_link"/>
+
+    <!-- Robot Frame -->
+    <link name="frame_link">
+        <visual>
+            <geometry>
+                <box size="${frame_length} ${frame_width} ${frame_height}"/>
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+
+        <collision>
+            <geometry>
+                <box size="${frame_length} ${frame_width} ${frame_height}"/>
+            </geometry>
+        </collision>
+        <xacro:box_inertia m="15" w="${frame_width}" d="${frame_length}" h="${frame_height}"/>
+    </link>
+
+    <joint name="frame_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="frame_link"/>
+        <origin xyz="0.0 0.0 ${frame_height/2.0}" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <!-- Robot Footprint -->
+    <link name="base_footprint"/>
+
+    <joint name="base_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="base_footprint"/>
+        <origin xyz="0.0 0.0 ${frame_height/2.0+wheel_zoff-wheel_radius}" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Wheels -->
+    <xacro:macro name="wheel" params="prefix x_reflect y_reflect">
+        <link name="${prefix}_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+                </geometry>
+                <material name="Gray">
+                    <color rgba="0.5 0.5 0.5 1.0"/>
+                </material>
+            </visual>
+
+            <collision>
+                <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+                </geometry>
+            </collision>
+
+            <xacro:cylinder_inertia m="0.5" r="${wheel_radius}" h="${wheel_width}"/>
+        </link>
+
+        <joint name="${prefix}_joint" type="continuous">
+            <parent link="frame_link"/>
+            <child link="${prefix}_link"/>
+            <origin xyz="${x_reflect*wheel_xoff} ${y_reflect*(frame_width/2+wheel_ygap)} ${wheel_zoff}" rpy="0 0 0"/>
+            <axis xyz="0 1 0"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:wheel prefix="drivewhl_FL" x_reflect=" 1" y_reflect=" 1" />
+    <xacro:wheel prefix="drivewhl_FR" x_reflect=" 1" y_reflect="-1" />
+    <xacro:wheel prefix="drivewhl_BL" x_reflect="-1" y_reflect=" 1" />
+    <xacro:wheel prefix="drivewhl_BR" x_reflect="-1" y_reflect="-1" />
+
+    <!-- Lidar -->
+
+    <xacro:macro name="lidar" params="prefix x_reflect yaw_offset">
+        <link name="${prefix}_link">
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <mass value="0.125"/>
+                <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+            </inertial>
+
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <cylinder radius="${lidar_radius}" length="${lidar_height}"/>
+                </geometry>
+            </collision>
+
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <cylinder radius="${lidar_radius}" length="${lidar_height}"/>
+                </geometry>
+                <material name="Black">
+                    <color rgba="0.0 0.0 0.0 1.0"/>
+                </material>
+            </visual>
+        </link>
+
+        <joint name="${prefix}_joint" type="fixed">
+            <parent link="frame_link"/>
+            <child link="${prefix}_link"/>
+            <origin xyz="${x_reflect*lidar_xoff} ${lidar_yoff} ${lidar_zoff}" rpy="0 0 ${yaw_offset*deg_to_rad}"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:lidar prefix="front_lidar" x_reflect="1" yaw_offset="180"/>
+    <xacro:lidar prefix="back_lidar" x_reflect="-1" yaw_offset="0"/>
+</robot>
