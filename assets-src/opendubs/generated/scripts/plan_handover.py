@@ -5,18 +5,23 @@ OpenDubs page hero.
 The right arm picks the can off a table, both arms meet in the middle (one
 two-arm plan), the left arm takes it and sets it down on the other side; then
 the same in mirror, so the clip loops. The can is carried kinematically (it
-follows the gripper that holds it); the arms' motions are ArmGroup's plans,
-checked against the table and each other.
+follows the gripper that holds it). Each move is planned by ArmGroup, then made
+direct: a straight joint-space move if that is collision-free, otherwise the
+plan shortcut and splined, every sample re-checked with the robot's own collision
+checker (table included); moves start and stop smoothly (quintic timing).
 
   plan_handover.py <out.npz>
 Writes per-frame joint positions for both arms and fingers, and the can's pose.
 """
+import contextlib
+import io
 import os
 import re
 import sys
 
 import mujoco
 import numpy as np
+from scipy.interpolate import CubicSpline
 
 from openarm.config import OpenarmConfig
 from openarm.robot import Openarm
@@ -85,8 +90,58 @@ def record(qL, qR):
     frames.append((np.array(qL), np.array(qR), state["fL"], state["fR"], state["can"].copy()))
 
 
+def collision_free(q):
+    """q: both arms' joints, left then right. The robot's own checker (table included)."""
+    d.qpos[joint["left"]], d.qpos[joint["right"]] = q[:7], q[7:]
+    mujoco.mj_forward(m, d)
+    with contextlib.redirect_stdout(io.StringIO()):
+        return not robot.check_collisions()
+
+
+def segment_free(a, b, step=0.03):
+    n = max(2, int(np.ceil(np.abs(b - a).max() / step)) + 1)
+    return all(collision_free(a + (b - a) * u) for u in np.linspace(0, 1, n))
+
+
+def smooth(P):
+    """Make a planned path direct and smooth: a straight joint-space move when that
+    is collision-free, otherwise the planner's path shortcut and splined, with every
+    sample re-checked. Returns dense waypoints."""
+    a, b = P[0], P[-1]
+    if segment_free(a, b):
+        return np.array([a, b])
+    W = list(P[:: max(1, len(P) // 40)]) + [P[-1]]
+    rng = np.random.default_rng(0)
+    for _ in range(300):
+        if len(W) < 3:
+            break
+        i, j = sorted(rng.choice(len(W), 2, replace=False))
+        if j - i > 1 and segment_free(W[i], W[j]):
+            W = W[: i + 1] + W[j:]
+    W = np.array(W)
+    if len(W) > 2:
+        u = np.r_[0, np.cumsum(np.abs(np.diff(W, axis=0)).max(axis=1))]
+        cs = CubicSpline(u / u[-1], W, bc_type="clamped")
+        S = cs(np.linspace(0, 1, 200))
+        if all(collision_free(q) for q in S):
+            return S
+    return W
+
+
+def play(P, vmax=0.8):
+    """Record a joint-space path with a smooth start and stop (quintic timing)."""
+    seg = np.abs(np.diff(P, axis=0)).max(axis=1)
+    u = np.r_[0, np.cumsum(seg)]
+    T = max(1.0, u[-1] / vmax * 1.875)  # quintic peak speed is 1.875x its average
+    for k in range(int(T * FPS) + 1):
+        tau = min(k / (T * FPS), 1.0)
+        s_ = (10 * tau ** 3 - 15 * tau ** 4 + 6 * tau ** 5) * u[-1]
+        q = np.array([np.interp(s_, u, P[:, j]) for j in range(P.shape[1])])
+        record(q[:7], q[7:])
+
+
 def move(goals):
-    """Plan to {side: tcp pose} with ArmGroup (others hold still) and record it."""
+    """Plan to {side: tcp pose} with ArmGroup (others hold still), smooth it, record it."""
     for flip in ((True, False) if state["mirror"] else (False, True)):
         g = {s: pose(R @ FLIP if flip else R, p) for s, (R, p) in goals.items()}
         res = robot.plan_ee_to_pose(g)
@@ -94,13 +149,10 @@ def move(goals):
             break
     else:
         raise RuntimeError(f"no plan to {goals}")
-    print("planned", {s: np.round(p, 3).tolist() for s, (R, p) in goals.items()}, f"{res.left.timestamps[-1]:.1f}s", flush=True)
-    L, R_ = res.left, res.right
-    t = np.asarray(L.timestamps)
-    for tk in np.arange(0, t[-1], 1 / FPS):
-        i = min(np.searchsorted(t, tk), len(t) - 1)
-        record(L.positions[i], R_.positions[i])
-    record(L.positions[-1], R_.positions[-1])
+    P = np.c_[np.asarray(res.left.positions), np.asarray(res.right.positions)]
+    S = smooth(P)
+    print("planned", {s: np.round(p, 3).tolist() for s, (R, p) in goals.items()}, len(S), "waypoints", flush=True)
+    play(S)
 
 
 def hold(seconds, **fingers):
@@ -109,8 +161,9 @@ def hold(seconds, **fingers):
     start = {k: state[k] for k in fingers}
     n = int(seconds * FPS)
     for k in range(1, n + 1):
+        e = 0.5 - 0.5 * np.cos(np.pi * k / n)  # ease in and out
         for f, target in fingers.items():
-            state[f] = start[f] + (target - start[f]) * k / n
+            state[f] = start[f] + (target - start[f]) * e
         record(qL, qR)
 
 
@@ -135,11 +188,7 @@ def back(R, p, dist=0.10):
 def go_ready(side):
     ready = np.array(robot.named_poses["ready"][side])
     res = robot.plan_to_configuration({side: ready})
-    t = np.asarray(res.left.timestamps)
-    for tk in np.arange(0, t[-1], 1 / FPS):
-        i = min(np.searchsorted(t, tk), len(t) - 1)
-        record(res.left.positions[i], res.right.positions[i])
-    record(res.left.positions[-1], res.right.positions[-1])
+    play(smooth(np.c_[np.asarray(res.left.positions), np.asarray(res.right.positions)]))
 
 
 def pass_can(giver, taker, from_spot, to_spot):
