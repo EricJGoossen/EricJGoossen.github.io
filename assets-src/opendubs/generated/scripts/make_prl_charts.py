@@ -113,4 +113,26 @@ for r, (name, bars, hits) in enumerate(rows):
 c.body.append(f'<line x1="{c.ml}" x2="{c.ml + 16}" y1="18" y2="18" stroke="#dc2626" stroke-width="2"/>')
 c.label(c.ml + 22, 22, "left and right arm intersect", cls="s m")
 open(f"{out}/bimanual-sequential-vs-sync.svg", "w").write(c.svg())
+# --- Gravity compensation illustration (sim_gravcomp.py) -----------------------
+gz = np.load(f"{data}/gravcomp-sim.npz")
+t, zl, zr = gz["t"], gz["zl"] * 100, gz["zr"] * 100
+p0, p1 = gz["push"]
+c = Chart(
+    "Holding a pose, with and without gravity compensation (simulation)",
+    f"Wrist height of the two simulated OpenArms holding the same reach-out pose with the same joint stiffness. With "
+    f"stiffness alone (blue) the wrist sags from {zl[0]:.0f} to {zl[80]:.0f} cm and stays there; with gravity "
+    f"compensation added (orange) it holds at {zr[0]:.0f} cm. Both are pushed down with 15 N for 0.6 seconds and "
+    f"spring back to where they were.",
+    h=340, mt=56, mb=52,
+)
+c.xscale(0, 6)
+c.yscale(15, 70)
+c.axes([0, 1, 2, 3, 4, 5, 6], [20, 30, 40, 50, 60, 70], "time (s)", "wrist height (cm)")
+x0, x1 = c.X(p0), c.X(p1)
+c.body.insert(0, f'<rect x="{x0:.1f}" y="{c.mt}" width="{x1 - x0:.1f}" height="{c.h - c.mt - c.mb}" style="fill:#dc2626" fill-opacity="0.12"/>')
+c.label((x0 + x1) / 2, c.mt + 14, "push", anchor="middle", cls="s m")
+c.line(t, zl, "--s1")
+c.line(t, zr, "--s2")
+c.legend([("joint stiffness only", "--s1", False), ("+ gravity compensation", "--s2", False)])
+open(f"{out}/impedance-gravcomp-sim.svg", "w").write(c.svg())
 print("wrote charts")

@@ -79,3 +79,11 @@ Grasps are angled 45° inward at the handover, where an IK sweep found both arms
 
 A 3:2 crop (1170×780 at +830+150, scaled to 1200 wide) of the ARCS Night to Ignite photo of Eric
 with the robot, cropped so only Eric and the robot are in it. Photo: Jason J. Kim Photography.
+- `sim/scripts/render_urdf.py sim/urdf/opendubs_expanded_mujoco.urdf out.png`: `bringup-urdf.png`.
+  Eric's `eric/open_dubs_description.urdf` expanded with xacro, plus a `<mujoco>` compiler tag
+  so MuJoCo keeps the fixed links, drawn with every link's frame.
+- `scripts/sim_gravcomp.py` then `scripts/render_gravcomp.py`: `impedance-gravcomp-sim.mp4`, and
+  `make_prl_charts.py` makes `impedance-gravcomp-sim.svg` from `data/gravcomp-sim.npz`. An
+  illustration, not Eric's controller: both arms hold one pose under the same made-up joint
+  stiffness and damping (MIT-mode shaped); the right arm adds MuJoCo's gravity torques as the
+  feedforward; at 3 s both wrists are pushed down with 15 N for 0.6 s.
