@@ -53,12 +53,19 @@ resized. Placeholder: confirm they can be used here and who to credit.
 A two-arm handover of a can, planned with the unmodified ArmGroup planner (openarm's `Openarm`
 wrapper around mj_manipulator) in the OpenArm model plus a table (`scripts/handover_scene.py`):
 the right arm picks the can, both arms meet in one two-arm plan, the left arm takes it and sets
-it down, then the same in mirror so the clip loops. The arms' motions are the planner's, checked
-against the table and each other; the can is a prop that follows whichever gripper holds it.
+it down, then the same in mirror so the clip loops. Each move is the planner's, then made direct: a
+straight joint-space move when that is collision-free, otherwise the plan shortcut and splined, every
+sample re-checked with the group's own collision checker (table, other arm, 5 mm margin), with
+quintic timing so each move starts and stops smoothly. Single-arm moves (lifts, places, short
+carries) use ArmGroup's Cartesian planner for a straight gripper line when it can follow one; an
+arm with no goal holds still. The can is a prop the collision checker can't see, so a path that
+carries it is rejected if the can would dip more than 6 cm or swing well past the table's edge,
+and it is set down by its own height (eased onto the table if the arm can't reach exactly). The
+clip plays at 3x.
 Grasps are angled 45° inward at the handover, where an IK sweep found both arms' reach overlaps.
 
-    python scripts/plan_handover.py handover.npz                    # about 15 minutes
-    LOOKAT="0.30 -0.25 0.52" DIST=1.35 AZ=230 EL=-18 python scripts/render_handover.py handover.npz frames 5
+    python scripts/plan_handover.py handover.npz                    # about 10 minutes
+    LOOKAT="0.30 -0.25 0.52" DIST=1.35 AZ=230 EL=-18 python scripts/render_handover.py handover.npz frames 3
     ffmpeg -framerate 30 -i frames/frame_%05d.png -c:v libx264 -crf 28 -preset slow -pix_fmt yuv420p -an -movflags +faststart hero-handover.mp4
 
 (`scripts/render_hero.py` made the earlier hero, the crossing plan alone.)
