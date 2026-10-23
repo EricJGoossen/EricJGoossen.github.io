@@ -1,6 +1,6 @@
 # ericjgoossen.com
 
-Personal portfolio site. Markdown + [Eleventy](https://www.11ty.dev/) build to plain static HTML, hosted on Cloudflare Workers (static assets only, no server code). See `PLAN.md` for the design.
+Personal portfolio site. Markdown + [Eleventy](https://www.11ty.dev/) build to plain static HTML, hosted on Cloudflare Workers (static assets only, no server code). See `PLAN.md` for the design and `MEDIA-TODO.md` for photos and videos still to collect.
 
 ## Preview locally
 
