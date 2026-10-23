@@ -1,11 +1,7 @@
 [
   {"name": "C++", "best": "achilles/simd"},
-  {"name": "SIMD", "best": "achilles/simd"},
-  {"name": "Performance engineering", "best": "achilles/mujoco-comparison"},
-  {"name": "Rigid-body dynamics", "best": "achilles/dynamics"},
-  {"name": "Numerical methods", "best": "achilles/integrators"},
-  {"name": "Collision detection", "best": "achilles/collisions"},
-  {"name": "OpenGL", "best": "achilles/renderer"},
+  {"name": "Kinematics & Dynamics", "best": "achilles/dynamics"},
+  {"name": "MuJoCo", "best": "achilles/mujoco-comparison"},
   {"name": "ROS 2", "best": "opendubs/lidar"},
   {"name": "State estimation", "best": "opendubs/optical-flow"},
   {"name": "Motion planning", "best": "opendubs/arm-group"},
@@ -15,7 +11,6 @@
   {"name": "Python", "best": "hil-cap/highlight-one"},
   {"name": "PyTorch", "best": "hil-cap/highlight-one"},
   {"name": "Reinforcement learning", "best": "fleet-rl/highlight-one"},
-  {"name": "MuJoCo", "best": "fleet-rl/highlight-two"},
   {"name": "Embedded C", "best": "aruw/highlight-one"},
   {"name": "CAD", "best": "aruw/highlight-two"}
 ]

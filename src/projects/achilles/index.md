@@ -14,19 +14,19 @@ summary: A C++20 rigid-body simulator that steps 8 robots per SIMD instruction, 
 highlights:
   - label: SIMD batching
     entry: simd
-    skills: [C++, SIMD, Performance engineering]
+    skills: [C++]
   - label: OpenGL renderer
     entry: renderer
-    skills: [OpenGL]
+    skills: [C++]
   - label: 3× MuJoCo
     entry: mujoco-comparison
-    skills: [Performance engineering, MuJoCo, C++]
+    skills: [MuJoCo, C++]
   - label: Integrators
     entry: integrators
-    skills: [Numerical methods, C++]
+    skills: [Kinematics & Dynamics, C++]
   - label: Contact solver
     entry: collision-response
-    skills: [Rigid-body dynamics, Numerical methods, C++]
+    skills: [Kinematics & Dynamics, C++]
 links:
   - label: GitHub
     url: https://github.com/EricJGoossen/Achilles

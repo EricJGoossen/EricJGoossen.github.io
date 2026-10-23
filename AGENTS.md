@@ -123,7 +123,7 @@ Add an object to `publications.json`:
   "links": [{ "label": "Paper", "url": "https://..." }, { "label": "arXiv", "url": "https://..." }]
 }
 ```
-- `image` (and the optional `poster`) start at `src/`. Give it real alt text with `imageAlt` (otherwise it reads "Teaser for <title>"). The card crops it to 4:3.
+- `image` (and the optional `poster`) start at `src/`. Put paper images in `src/assets/pubs/`: a draft project's `images/` folder isn't published at all, so an image there would break while the project is hidden. Give it real alt text with `imageAlt` (otherwise it reads "Teaser for <title>"). The card crops it to 4:3.
 - Names listed in `site.json` `authorNames` are shown in bold.
 - Empty badge fields are hidden.
 - `project` must be an existing project folder. The card then also appears on that project page, and gets a `[Project page]` link once that project is published.

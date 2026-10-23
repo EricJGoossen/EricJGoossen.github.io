@@ -16,7 +16,7 @@
     "award": "",
     "lab": "Human Centered Robotics Lab",
     "project": "hil-cap",
-    "image": "/projects/hil-cap/images/architect-teaser.jpg",
+    "image": "/assets/pubs/architect-teaser.jpg",
     "imageAlt": "A Franka Panda arm grasping a green cup, about to place it upright on a small white table",
     "tldr": "Tests whether human feedback helps LLM-written robot code beat vision-language-action models: human feedback lifts Code-as-Policies 1.75× over base VLAs, solving tasks VLAs failed completely.",
     "links": [

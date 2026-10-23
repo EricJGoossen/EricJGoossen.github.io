@@ -7,8 +7,19 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy("src/_headers"); // security headers, read by Cloudflare
   // Each project's images/ folder. Copied as a directory (not a glob) so images
-  // added while the preview is running show up without a restart.
-  eleventyConfig.addPassthroughCopy({ "src/projects": "projects" }, { filter: ["*/images/**", "!**/.gitkeep"] });
+  // added while the preview is running show up without a restart. A draft
+  // project's images stay out too, so nothing of it is reachable by URL
+  // (read once at startup: restart the preview after changing `draft`).
+  const draftProjects = fs.readdirSync("src/projects").filter((folder) => {
+    const file = `src/projects/${folder}/index.md`;
+    if (!fs.existsSync(file)) return false;
+    const frontMatter = fs.readFileSync(file, "utf8").split(/^---\s*$/m)[1] ?? "";
+    return /^draft:\s*true\b/m.test(frontMatter);
+  });
+  eleventyConfig.addPassthroughCopy(
+    { "src/projects": "projects" },
+    { filter: ["*/images/**", "!**/.gitkeep", ...draftProjects.map((folder) => `!${folder}/**`)] }
+  );
 
   // Log entries can hold many images, so only load them as they scroll into view.
   eleventyConfig.amendLibrary("md", (md) => {
