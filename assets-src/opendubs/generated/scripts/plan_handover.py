@@ -190,9 +190,52 @@ def checker():
     return group._make_collision_checker(fork.model, fork.data)
 
 
+dc = mujoco.MjData(m)   # scratch state for the can check, so the live state is untouched
+can_geom = m.geom("can_prop_visual").id
+arm_geoms = {sd: [g for g in range(m.ngeom) if m.body(m.geom_bodyid[g]).name.startswith(f"openarm_{sd}_")
+                  and m.geom_group[g] == 2] for sd in ("left", "right")}
+
+
+def site_pose(data, side):
+    sid = robot._arm_group[side].ee_site_id
+    return pose(data.site_xmat[sid].reshape(3, 3), data.site_xpos[sid])
+
+
+def into_can(q, depth=False):
+    """Whether an arm not holding the can would pass into it at q (both arms' joints).
+    The collision checker can't see the can (a prop), so without this an arm could
+    sweep through it, e.g. on its way home after setting it down. Touching is fine
+    (fingers stop 0.5 mm from it, and an open gripper letting go of it may graze it);
+    passing more than 3 mm into it is not."""
+    dc.qpos[joint["left"]], dc.qpos[joint["right"]] = q[:7], q[7:]
+    dc.qpos[finger["left"]], dc.qpos[finger["right"]] = state["fL"], state["fR"]
+    mujoco.mj_kinematics(m, dc)
+    held = state["held"]
+    if held:
+        T = site_pose(dc, held) @ state["offset"]
+        cp, cR = T[:3, 3], T[:3, :3]
+    else:
+        cp, cR = state["can"], state["can_R"]
+    dc.mocap_pos[can_mocap] = cp
+    mujoco.mju_mat2Quat(dc.mocap_quat[can_mocap], cR.flatten())
+    mujoco.mj_kinematics(m, dc)
+    fromto, deepest = np.zeros(6), 0.02
+    for sd in ("left", "right"):
+        if sd == held:
+            continue
+        for g in arm_geoms[sd]:
+            if np.linalg.norm(dc.geom_xpos[g] - cp) > m.geom_rbound[g] + 0.08:
+                continue  # too far to touch
+            deepest = min(deepest, mujoco.mj_geomDistance(m, dc, g, can_geom, 0.02, fromto))
+            if deepest < -0.003 and not depth:
+                return True
+    return deepest if depth else False
+
+
 def collision_free(q, chk):
-    """q: both arms' joints, left then right."""
-    return not chk.get_contacts(q)
+    """q: both arms' joints, left then right. Checks the arms and the table (the
+    group's checker, 5 mm margin) and that no free arm passes into the can."""
+    return not chk.get_contacts(q) and not into_can(q)
 
 
 def segment_free(a, b, chk, step=0.03):
@@ -452,7 +495,8 @@ def move(goals, exact=False):
         if S is None:
             print("retrying", list(goals), flush=True)
     else:
-        raise RuntimeError(f"no smooth plan to {goals}")
+        now = np.r_[frames[-1][0], frames[-1][1]]
+        raise RuntimeError(f"no smooth plan to {goals} (an arm is {into_can(now, True) * 1000:.1f} mm from the can at the start)")
     print("planned", {s: np.round(p, 3).tolist() for s, (R, p) in goals.items()}, how, flush=True)
     play(S)
 
@@ -491,17 +535,21 @@ def wait(side):
 
 
 def settle():
-    """Let a released can drop the last bit onto the table and stand up straight (it
-    may have been set down tilted, or upside down after a rolled grasp), eased."""
+    """Let a released can down the last bit onto the table and stand up straight (it
+    may have been set down tilted, or upside down after a rolled grasp) while the
+    gripper opens, eased in and out over most of a second so it doesn't snap down."""
     z0, z1 = state["can"][2], TABLE_Z + CAN_HALF
     R0 = state["can_R"]
     up = np.sign(R0[2, 2]) or 1.0          # keep it the way up it is
     axis = np.cross(R0[:, 2], [0, 0, up])
     ang = np.arcsin(min(1.0, np.linalg.norm(axis)))
-    n = max(6, int(np.ceil(abs(z0 - z1) / 0.008)), int(np.ceil(ang / 0.05)))
+    n = max(int(0.9 * FPS), int(np.ceil(ang / 0.05)))
     state["actor"] = state["settling"]                     # the arm that let go waits for it
+    f = "fL" if state["settling"] == "left" else "fR"
+    f0 = state[f].copy()
     for k in range(1, n + 1):
-        u = (k / n) ** 2
+        u = 0.5 - 0.5 * np.cos(np.pi * k / n)
+        state[f] = f0 + (OPEN - f0) * min(1.0, 1.5 * u)    # the fingers open as it goes
         Rk = R0
         if ang > 1e-6:
             Rk = Rotation.from_rotvec(axis / np.linalg.norm(axis) * ang * u).as_matrix() @ R0
@@ -541,10 +589,16 @@ def back(R, p, dist=0.10):
 
 
 def go_ready(side):
+    """Back to the ready pose. The planner can't see the can, so if none of its paths
+    home keeps clear of it, the hand first rises straight up 12 cm, over the can, and
+    goes home from there."""
     ready = np.array(robot.named_poses["ready"][side])
-    for attempt in range(8):
+    for attempt in range(16):
+        if attempt == 8:
+            T = ee(side)
+            move({side: (T[:3, :3], T[:3, 3] + [0, 0, 0.12])}, exact=True)
         res = robot.plan_to_configuration({side: ready})
-        S = smooth(only(res, (side,)))
+        S = smooth(only(res, (side,))) if res is not None and res.success else None
         if S is not None:
             return play(S)
     raise RuntimeError(f"no smooth plan to ready for {side}")
@@ -566,6 +620,9 @@ def pass_can(giver, taker, from_spot, to_spot):
     # its hand would meet the table before the can does when it sets it down. Rolling
     # it over later would tip the can.
     move_to({taker: pick_ik(taker, Rt, back(Rt, take), "margin", roll=False)}, f"{taker} to take")
+    # Come in over the top: to just behind the can, 8 cm up, then down and in, so the
+    # fingers don't sweep across the can on the way from ready.
+    move({giver: (Rp, back(Rp, grip) + [0, 0, 0.08])})
     move({giver: (Rp, back(Rp, grip))})
     move({giver: (Rp, grip)})
     hold(0.6, **{fg: closed_on_can(giver)})
@@ -638,11 +695,11 @@ def pass_can(giver, taker, from_spot, to_spot):
             move({taker: (Rh, low)}, exact=True)
     release()
     settle()
-    hold(0.5, **{ft: OPEN})
     move({taker: (Rh, back(Rh, low))}, exact=True)
     go_ready(taker)
 
 
+assert np.allclose(site_pose(d, "left"), ee("left"))  # the can check's gripper pose is ee()'s
 for sd in ("left", "right"):          # start (and end) at the ready pose, so the clip loops
     d.qpos[joint[sd]] = robot.named_poses["ready"][sd]
 mujoco.mj_forward(m, d)
@@ -699,10 +756,6 @@ def timeline(waits, delays={}):
     return out
 
 
-arm_geoms = {sd: [g for g in range(m.ngeom) if m.body(m.geom_bodyid[g]).name.startswith(f"openarm_{sd}_")
-                  and m.geom_group[g] == 2] for sd in ("left", "right")}
-
-
 def as_planned(fr):
     """Whether an overlapped frame is one that was planned: an arm mid-motion with the
     other exactly where it was when that motion was planned."""
@@ -716,12 +769,13 @@ def as_planned(fr):
 def clash(fr, chk):
     """Whether an overlapped frame has the arms (or the table) within the collision
     margin, or the moving can within 5 mm of the other arm."""
-    (qL, *_), (qR, *_), (cp, cq, owner) = fr
-    if not collision_free(np.r_[qL, qR], chk):
+    (qL, fL, *_), (qR, fR, *_), (cp, cq, owner) = fr
+    if chk.get_contacts(np.r_[qL, qR]):
         return True
     if owner is None:
         return False
     d.qpos[joint["left"]], d.qpos[joint["right"]] = qL, qR
+    d.qpos[finger["left"]], d.qpos[finger["right"]] = fL, fR
     d.mocap_pos[can_mocap], d.mocap_quat[can_mocap] = cp, cq
     mujoco.mj_kinematics(m, d)
     can_g, fromto = m.geom("can_prop_visual").id, np.zeros(6)

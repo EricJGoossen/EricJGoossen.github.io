@@ -52,7 +52,8 @@ resized. Placeholder: confirm they can be used here and who to credit.
 
 A two-arm handover of a can, planned with the unmodified ArmGroup planner (openarm's `Openarm`
 wrapper around mj_manipulator) in the OpenArm model plus a table (`scripts/handover_scene.py`):
-the right arm picks the can while the left gets in position, the right brings it over, the left
+the right arm picks the can (coming in over the top, then down and in) while the left gets in
+position, the right brings it over, the left
 takes it and sets it down while the right goes back to ready, then, after both arms rest at ready for
 a second, the same in mirror so the clip loops (both arms start and end at ready). The moves are planned one arm at a time (an idle arm
 held exactly still), then overlapped: each arm plays its own moves back to back and waits for the
@@ -64,8 +65,9 @@ straight joint-space move when that is collision-free, otherwise the plan shortc
 sample re-checked with the group's own collision checker (table, other arm, 5 mm margin), with
 quintic timing so each move starts and stops smoothly. Single-arm moves (lifts, places, short
 carries) use ArmGroup's Cartesian planner for a straight gripper line when it can follow one; an
-arm with no goal holds still. The can is a prop the collision checker can't see; it turns with
-the gripper holding it, and along a planned carry the holding wrist is re-solved at every
+arm with no goal holds still. The can is a prop the collision checker can't see, so every check
+also tests it against any arm not holding it (touching is fine, passing more than 3 mm into it is not); it turns
+with the gripper holding it, and along a planned carry the holding wrist is re-solved at every
 waypoint so the can stays level (within 4 degrees). A carry is rejected if the can would dip more
 than 6 cm, tip past 35 degrees or swing well past the table's edge, and it is set down by its own
 height. At the handover the joint goals are chosen explicitly: the giver's nearest IK
@@ -73,7 +75,9 @@ solution, the taker's furthest from its joint limits, grasping unrolled (the gri
 symmetric top to bottom; rolled, its hand meets the table first when setting the can down).
 The taker grips 3.5 cm below the handover point so the two grippers keep 5 mm apart, carries the
 can over the spot in a straight line (or through a few upright poses), and lowers it to the lowest
-height where its hand clears the table; the can settles the last centimeter or two. The left spot
+height where its hand clears the table; the can is eased down the last centimeter or two over
+0.9 s while the gripper opens. An arm going home after letting go of the can rises straight up
+over it first if no planned path home keeps clear of it. The left spot
 is (0.38, 0.12), inside the left arm's comfortable reach. Every grasp ends with both fingers
 0.5 mm from the can. Each finger closes until it touches the
 can (the two finger joints are independent, so neither sinks into it). The clip plays at 3x.
