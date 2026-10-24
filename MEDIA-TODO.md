@@ -33,8 +33,6 @@ delete its line here.
       them was sent in chat on Oct 24. A cover, a hero still, the sentry and engineer, competition shots.
 - [ ] The competition entry (`log/2025-10-01-the-competition.md`, a draft): how a game is won, how ARUW
       did at the last ARC, and the reveal clips.
-- [ ] The Odin depth image for the error-model entry (in place of the SLAM map, which didn't work out):
-      it came through in chat but not as a file, so send it again as an attachment or in Drive.
 - [ ] Check the ARUW link (https://aruw.org/, from UW ECE's news pages; the cloud session can't reach it).
 
 ## Fleet RL
