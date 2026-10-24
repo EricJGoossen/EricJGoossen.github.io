@@ -1,6 +1,6 @@
-# Media to collect
+# Media to collect, and entries to write
 
-Photos and videos Eric still needs to gather for the site. When one comes in, drop it in the
+Photos and videos Eric still needs to gather for the site, and entries still to write. When one comes in, drop it in the
 project's `images/` folder (see "Add images and videos" in `AGENTS.md`), wire it in, and
 delete its line here.
 
@@ -22,3 +22,8 @@ delete its line here.
 - [ ] HCRL: a video of collecting a teleoperated demonstration with the Quest controller (for
       the fine-tuning entry, along with what fine-tuning changed), and GR00T and MolmoAct2
       rollout videos.
+
+## Still to write
+
+- [ ] HCRL: the "writing the paper" entry. The old draft and its page images are in
+      `assets-src/hil-cap/writing-the-paper/`.
