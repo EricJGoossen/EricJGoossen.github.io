@@ -32,7 +32,7 @@ import handover_scene
 out = sys.argv[1]
 TABLE_Z = 0.40       # table top
 CAN_HALF = 0.0615    # the can's half height (prl_assets "can")
-SPOTS = {"right": np.array([0.36, -0.17]), "left": np.array([0.36, 0.17])}
+SPOTS = {"right": np.array([0.36, -0.17]), "left": np.array([0.38, 0.12])}  # the left arm runs into a joint limit placing further out
 HANDOVER = np.array([0.33, 0.0, 0.58])
 FPS = 30
 
@@ -113,34 +113,41 @@ def can_path(S):
 
 def keep_upright(S):
     """Re-solve the holding arm's three wrist joints along joint path S so the carried
-    can's axis stays vertical (or upside down, if it already is), warm-started from the
-    previous waypoint so the path stays continuous. The arm still follows the plan's
-    route; only the wrist turns to keep the can level. Returns the corrected path."""
+    can's axis stays vertical (or upside down, if it already is). The can stays upright
+    however the gripper turns about its axis, so the fit is also pulled toward the
+    planned wrist (or that turn drifts and moves the gripper), and the correction fades
+    to nothing at both ends, so the move still starts and ends exactly as planned.
+    Returns the corrected path."""
     side = state["held"]
     if side is None:
         return S
+    S = np.asarray(S)
     i0 = (0 if side == "left" else 7) + 4               # joints 5, 6, 7 of the holding arm
     keep = d.qpos.copy()
     up = np.sign((ee(side) @ state["offset"])[2, 2]) or 1.0
     out, prev = [], None
+    n = len(S)
 
     def axis(q):
         d.qpos[joint["left"]], d.qpos[joint["right"]] = q[:7], q[7:]
         mujoco.mj_kinematics(m, d)
         return (ee(side) @ state["offset"])[:3, 2]
 
-    for q in np.asarray(S):
-        q = q.copy()
-        w0 = q[i0:i0 + 3] if prev is None else prev
+    for k, q0 in enumerate(S):
+        q = q0.copy()
+        w_plan = q0[i0:i0 + 3]
+        w_start = w_plan if prev is None else prev
 
         def resid(w):
             q[i0:i0 + 3] = w
             a = axis(q) * up
-            return np.r_[a[0], a[1], 0.05 * (w - w0)]
+            return np.r_[a[0], a[1], 0.03 * (w - w_plan), 0.03 * (w - w_start)]
 
-        sol = least_squares(resid, w0, bounds=(lo[i0:i0 + 3, 0], lo[i0:i0 + 3, 1]))
-        q[i0:i0 + 3] = sol.x
+        sol = least_squares(resid, w_start, bounds=(lo[i0:i0 + 3, 0], lo[i0:i0 + 3, 1]))
         prev = sol.x
+        u = k / max(1, n - 1)
+        taper = min(1.0, min(u, 1 - u) / 0.06)          # 0 at the ends, 1 in the middle
+        q[i0:i0 + 3] = w_plan + (sol.x - w_plan) * taper
         out.append(q)
     d.qpos[:] = keep
     mujoco.mj_forward(m, d)
@@ -209,8 +216,12 @@ def smooth(P):
     Returns dense waypoints."""
     chk = checker()
     a, b = P[0], P[-1]
-    if segment_free(a, b, chk) and keeps_can_up(np.linspace(a, b, 40)):
-        return np.array([a, b])
+    if segment_free(a, b, chk):
+        if state["held"] is None:
+            return np.array([a, b])
+        S = keep_upright(np.linspace(a, b, 60))        # carrying: keep the can level on the way
+        if keeps_can_up(S) and all(collision_free(q, chk) for q in S):
+            return S
     ready = np.r_[robot.named_poses["ready"]["left"], robot.named_poses["ready"]["right"]]
     moving = np.zeros(14, bool)
     for sl in (slice(0, 7), slice(7, 14)):
@@ -239,8 +250,10 @@ def smooth(P):
         S = keep_upright(S)
         if keeps_can_up(S) and all(collision_free(q, chk) for q in S):
             options.append(S)
-    elif keeps_can_up(dense(W)) and all(collision_free(q, chk) for q in dense(W)):
-        options.append(W)
+    else:
+        Wd = keep_upright(dense(W))
+        if keeps_can_up(Wd) and all(collision_free(q, chk) for q in Wd):
+            options.append(Wd)
     if not options:
         return None
     return min(options, key=length)
@@ -319,18 +332,51 @@ def straight(goals, steps=30, exact=False):
     return None
 
 
-def pick_ik(side, R, p, prefer):
-    """One IK solution for `side` at pose (R, p), trying both rolls of the grasp:
-    "near" picks the one closest to the arm's current joints, "margin" the one
-    furthest from any joint limit (so the arm isn't left at a limit, unable to go on
-    to its next move). Only solutions clear of the table and the other arm count."""
+def framed(side, R, p, n=6, exact=False):
+    """A carry that stays close to a straight gripper line where the Cartesian planner
+    can't follow one exactly: ArmGroup plans through n poses along the line (positions
+    interpolated, rotations slerped), so each step is short and the can stays nearly
+    level; smoothing then keeps it level between them. Returns a path, or None."""
+    for flip in rolls(exact):
+        T0, T1 = ee(side), pose(R @ FLIP if flip else R, p)
+        u = np.linspace(0, 1, n + 1)[1:]
+        rots = Slerp([0, 1], Rotation.from_matrix([T0[:3, :3], T1[:3, :3]]))(u)
+        poses = [pose(r.as_matrix(), (1 - s_) * T0[:3, 3] + s_ * T1[:3, 3]) for s_, r in zip(u, rots)]
+        for attempt in range(3):
+            res = robot.plan_ee_to_pose({side: poses})
+            if res is not None and res.success:
+                S = smooth(np.c_[np.asarray(res.left.positions), np.asarray(res.right.positions)])
+                if S is not None:
+                    return S
+    return None
+
+
+def reachable_clear(side, R, p):
+    """Whether `side` has an IK solution at exactly (R, p) that is clear of the table
+    and the other arm."""
+    i0 = 0 if side == "left" else 7
+    now, chk = np.r_[frames[-1][0], frames[-1][1]], checker()
+    for q in robot._arm_group[side].ik_solver.solve_valid(pose(R, p)):
+        full = now.copy()
+        full[i0:i0 + 7] = q
+        if collision_free(full, chk):
+            return True
+    return False
+
+
+def pick_ik(side, R, p, prefer, roll=None):
+    """One IK solution for `side` at pose (R, p), trying both rolls of the grasp (or
+    only `roll`, False for R as given, True for it turned 180°): "near" picks the one
+    closest to the arm's current joints, "margin" the one furthest from any joint
+    limit (so the arm isn't left at a limit, unable to go on to its next move). Only
+    solutions clear of the table and the other arm count."""
     arm = robot._arm_group[side]
     lo_s, hi_s = arm.get_joint_limits()
     i0 = 0 if side == "left" else 7
     now = np.r_[frames[-1][0], frames[-1][1]]
     chk = checker()
     best, best_cost = None, np.inf
-    for flip in rolls(False):
+    for flip in (rolls(False) if roll is None else (roll,)):
         for q in arm.ik_solver.solve_valid(pose(R @ FLIP if flip else R, p)):
             full = now.copy()
             full[i0:i0 + 7] = q
@@ -476,40 +522,72 @@ def pass_can(giver, taker, from_spot, to_spot):
     move({giver: (Rp, grip + [0, 0, 0.10])})
     # The handover: both arms planned together into the shared space.
     give = HANDOVER + [0, 0, 0.025]
-    take = HANDOVER - [0, 0, 0.02]
+    take = HANDOVER - [0, 0, 0.035]  # low enough that the two grippers keep their 5 mm apart
     # Both arms planned together, to joint goals chosen here: the giver's nearest IK
     # solution, and for the taker the one furthest from its joint limits, so it can
     # carry the can on to the table without reconfiguring (and tipping it).
-    move_to({giver: pick_ik(giver, Rg, give, "near"), taker: pick_ik(taker, Rt, back(Rt, take), "margin")},
+    # The taker grasps unrolled (the gripper's x axis up, as every pick is): the gripper
+    # isn't symmetric top to bottom, and rolled over its hand would meet the table before
+    # the can does when it sets it down. Rolling it over later would tip the can.
+    move_to({giver: pick_ik(giver, Rg, give, "near"),
+             taker: pick_ik(taker, Rt, back(Rt, take), "margin", roll=False)},
             f"{giver} to give, {taker} to take")
-    move({taker: (Rt, take)})
+    move({taker: (Rt, take)}, exact=True)
     hold(0.6, **{ft: closed_on_can(taker)})
     grasp(taker)
     hold(0.5, **{fg: OPEN})
     move({giver: (Rg, back(Rg, give))})
     place = np.r_[to_spot, TABLE_Z + CAN_HALF] - [0, 0, 0.02]
-    # The can is round, so the taker turns its grip back to straight ahead on the way
-    # over, the same approach it would pick with (the inward grip ends at a joint limit).
-    # Any heading works for a round can: take the first that ArmGroup's Cartesian planner
-    # can reach in a straight, upright line, else plan to the straight-ahead one.
+    # Any heading works for a round can: take the first the taker can carry over the spot
+    # in a straight, upright line (or close to one, through a few upright poses) and then
+    # lower to just above the table (how far depends on where the can sits in the grip).
+    # Otherwise plan over the spot and lower from there.
     sign = 1 if taker == "right" else -1
-    for v in ([1, 0, 0], [1, 0.4 * sign, 0], [1, -0.4 * sign, 0], [1, 1.0 * sign, 0], [1, 0.8 * sign, 0]):
-        P = straight({taker: (approach(v), place + [0, 0, 0.08])})
-        if P is not None:
-            print("planned", taker, "over the spot, heading", v, "straight line", flush=True)
-            play(P)
-            break
+    rest = TABLE_Z + CAN_HALF
+    # Unrolled headings only, the way the taker holds the can (see the take above).
+    headings = [approach(v) for v in ([1, 0, 0], [1, 0.4 * sign, 0], [1, -0.4 * sign, 0],
+                                      [1, 1.0 * sign, 0], [1, 0.8 * sign, 0])]
+    for v in headings:
+        over = straight({taker: (v, place + [0, 0, 0.08])}, exact=True)
+        if over is None:
+            over = framed(taker, v, place + [0, 0, 0.08], exact=True)
+        if over is None:
+            continue
+        snap = (len(frames), {k: (v_.copy() if isinstance(v_, np.ndarray) else v_) for k, v_ in state.items()}, d.qpos.copy())
+        play(over)
+        T = ee(taker)
+        # Down to the lowest height (1.5 to 4.5 cm above the table) where the hand clears
+        # the tabletop: the taker holds the can low, so its hand meets the table before
+        # the can does. The released can settles the rest of the way.
+        Rh = T[:3, :3]
+        lows = [T[:3, 3] - [0, 0, state["can"][2] - rest - clear] for clear in (0.015, 0.025, 0.035, 0.045)]
+        lows = [p_ for p_ in lows if reachable_clear(taker, Rh, p_)][:1]
+        if lows:
+            low = lows[0]
+            try:
+                move({taker: (Rh, low)}, exact=True)
+                print("planned", taker, "over the spot and down, heading", np.round(Rh[:, 2], 2), flush=True)
+                break
+            except RuntimeError:
+                down = framed(taker, Rh, low, n=3, exact=True)
+                if down is not None:
+                    play(down)
+                    print("planned", taker, "over the spot and down through poses, heading", np.round(Rh[:, 2], 2), flush=True)
+                    break
+        # this heading can't set it down: undo and try the next
+        del frames[snap[0]:]
+        state.update(snap[1])
+        d.qpos[:] = snap[2]
+        mujoco.mj_forward(m, d)
     else:
         move({taker: (Rp, place + [0, 0, 0.08])})
-    # Lower until the can itself rests on the table (where it sits in this grip
-    # depends on how it was taken), keeping the grip's orientation.
-    T = ee(taker)
-    Rh, low = T[:3, :3], T[:3, 3] - [0, 0, state["can"][2] - (TABLE_Z + CAN_HALF)]
-    try:
-        move({taker: (Rh, low)}, exact=True)
-    except RuntimeError:  # can't reach that exactly: set it down from just above instead
-        low = T[:3, 3] - [0, 0, max(0.0, state["can"][2] - (TABLE_Z + CAN_HALF) - 0.05)]
-        move({taker: (Rh, low)}, exact=True)
+        T = ee(taker)
+        Rh, low = T[:3, :3], T[:3, 3] - [0, 0, state["can"][2] - rest]
+        try:
+            move({taker: (Rh, low)}, exact=True)
+        except RuntimeError:  # can't reach that exactly: set it down from just above instead
+            low = T[:3, 3] - [0, 0, max(0.0, state["can"][2] - rest - 0.05)]
+            move({taker: (Rh, low)}, exact=True)
     release()
     settle()
     hold(0.5, **{ft: OPEN})

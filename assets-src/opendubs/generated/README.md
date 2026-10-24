@@ -63,7 +63,13 @@ the gripper holding it, and along a planned carry the holding wrist is re-solved
 waypoint so the can stays level (within 4 degrees). A carry is rejected if the can would dip more
 than 6 cm, tip past 35 degrees or swing well past the table's edge, and it is set down by its own
 height. For the two-arm move the joint goals are chosen explicitly: the giver's nearest IK
-solution, the taker's furthest from its joint limits. Each finger closes until it touches the
+solution, the taker's furthest from its joint limits, grasping unrolled (the gripper isn't
+symmetric top to bottom; rolled, its hand meets the table first when setting the can down).
+The taker grips 3.5 cm below the handover point so the two grippers keep 5 mm apart, carries the
+can over the spot in a straight line (or through a few upright poses), and lowers it to the lowest
+height where its hand clears the table; the can settles the last centimeter or two. The left spot
+is (0.38, 0.12), inside the left arm's comfortable reach. Every grasp ends with both fingers
+0.5 mm from the can. Each finger closes until it touches the
 can (the two finger joints are independent, so neither sinks into it). The clip plays at 3x.
 Grasps are angled 45° inward at the handover, where an IK sweep found both arms' reach overlaps.
 
