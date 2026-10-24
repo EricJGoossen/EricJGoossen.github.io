@@ -34,11 +34,13 @@ void v1_fk(void* p, const double* q, int n, double* pos, double* quat_wxyz) {
   const auto& qu = c->getOrientation();
   quat_wxyz[0] = qu.w(); quat_wxyz[1] = qu.x(); quat_wxyz[2] = qu.y(); quat_wxyz[3] = qu.z();
 }
-void v1_control(void* p, const double* q, const double* dq, int n, const double* pos, const double* quat_wxyz, double* tau) {
+void v1_control(void* p, const double* q, const double* dq, int n, const double* pos, const double* quat_wxyz,
+                const double* linvel, const double* angvel, double* tau) {
   auto* c = static_cast<openarm_cartesian_control::CartesianImpedance*>(p);
   Eigen::Quaterniond qr(quat_wxyz[0], quat_wxyz[1], quat_wxyz[2], quat_wxyz[3]);
   out(c->computeControl(Map<const VectorXd>(q, n), Map<const VectorXd>(dq, n), Eigen::Vector3d(pos[0], pos[1], pos[2]),
-                        qr, Eigen::Vector3d::Zero(), Eigen::Vector3d::Zero()), tau);
+                        qr, Eigen::Vector3d(linvel[0], linvel[1], linvel[2]),
+                        Eigen::Vector3d(angvel[0], angvel[1], angvel[2])), tau);
 }
 
 void* v2_new(const char* urdf, const char** j, int n, const char* ee, const double* tau, int grav, int damp, int stiff) {
@@ -48,10 +50,10 @@ void v2_gains(void* p, const double* k, const double* d) {
   auto* c = static_cast<openarm_impedance_control::Impedance*>(p);
   c->setStiffness(vec(k, 6)); c->setDamping(vec(d, 6));
 }
-void v2_control(void* p, const double* q, const double* dq, const double* qr, int n, double* tau) {
+void v2_control(void* p, const double* q, const double* dq, const double* qr, const double* dqr, int n, double* tau) {
   auto* c = static_cast<openarm_impedance_control::Impedance*>(p);
   out(c->computeControl(Map<const VectorXd>(q, n), Map<const VectorXd>(dq, n), Map<const VectorXd>(qr, n),
-                        VectorXd::Zero(n)), tau);
+                        Map<const VectorXd>(dqr, n)), tau);
 }
 
 void* v3_new(const char* urdf, const char** j, int n, const char* ee, const double* tau, const double* wrench, int grav) {
@@ -62,10 +64,10 @@ void v3_gains(void* p, const double* k, const double* d, const double* kn, const
   c->setCartesianStiffness(vec(k, 6)); c->setCartesianDamping(vec(d, 6));
   c->setNullspaceStiffness(vec(kn, n)); c->setNullspaceDamping(vec(dn, n));
 }
-void v3_control(void* p, const double* q, const double* dq, const double* qr, int n, double* tau) {
+void v3_control(void* p, const double* q, const double* dq, const double* qr, const double* dqr, int n, double* tau) {
   auto* c = static_cast<openarm_impedance_controller::ImpedanceLaw*>(p);
   out(c->computeControl(Map<const VectorXd>(q, n), Map<const VectorXd>(dq, n), Map<const VectorXd>(qr, n),
-                        VectorXd::Zero(n)), tau);
+                        Map<const VectorXd>(dqr, n)), tau);
 }
 
 void* v4_new(const char* urdf, const char** j, int n, const char* ee) {

@@ -1,6 +1,6 @@
 """Render impedance4.npz (sim_impedance4.py) as four panels, one per controller:
-the left arm in blue over a faint ghost of the pose it is holding, a red arrow
-on the hand or the elbow while it is pushed.
+the left arm in blue over a faint ghost of where the plan has it at that moment,
+a red arrow on the elbow while it is pushed.
 usage: render_impedance4.py <npz> <out_dir>   (writes <out_dir>/<name>/frame_NNNN.png)"""
 import os
 import sys
@@ -66,12 +66,14 @@ def shot(qpos, arrow=None):
 
 
 names = ("pure", "mixed", "null", "passthru")
-ghost_q = z["pure"][0]
-ghost, gmask = shot(ghost_q)
-back = BG + (ghost - BG) * 0.4 * gmask[..., None]       # faint ghost of the held pose
+backs = []
+for k in range(len(z["t"])):
+    ghost, gmask = shot(z["ref"][k])
+    backs.append(BG + (ghost - BG) * 0.4 * gmask[..., None])    # faint ghost of the plan
 for name in names:
     os.makedirs(f"{out}/{name}", exist_ok=True)
     for k, t in enumerate(z["t"]):
+        back = backs[k]
         arrow = None
         for (t0, t1, body), f in zip(z["pushes"], z["force"]):
             if t0 <= t < t1:

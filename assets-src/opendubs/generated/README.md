@@ -95,8 +95,8 @@ Grasps are angled 45° inward at the handover, where an IK sweep found both arms
 
 Eric's four arm control laws, compiled unmodified from his repos into one library
 (`armlaws/build_armlaws.sh`, the C interface in `armlaws/wrapper.cpp`) and called from a
-MuJoCo loop at 500 Hz on the left OpenArm (the model's own gravity compensation and servos
-turned off, torques applied directly):
+MuJoCo loop on the left OpenArm (the model's own gravity compensation and servos turned off,
+torques applied directly):
 
 | panel | law | repo @ commit |
 |---|---|---|
@@ -106,17 +106,42 @@ turned off, torques applied directly):
 | motors | `RobotModel::gravityTorqueRT` as the feedforward of the motors' PD (kp, kd from `control_gains.yaml`) | `openarm_impedance_control` @ `b517999` |
 
 The URDF is `openarm_description`'s bimanual xacro (`arm_type:=openarm_v1.0 bimanual:=true
-ros2_control:=false`). Pinocchio's gravity torques match MuJoCo's within 2% at the hold pose.
+ros2_control:=false`). Pinocchio's gravity torques match MuJoCo's within 2% at both poses.
 The gains are the demo's own (Cartesian K = 200 N/m, 4 N·m/rad; D = 20, 0.2; null space
-K = 10, 2 N·m/rad), the same for the first three. Each arm is pushed with 20 N at the hand
-(sideways, 1.0 to 1.6 s), then 20 N at the elbow across the shoulder-wrist line (its swivel,
-4.0 to 4.6 s). Measured: Cartesian holds the hand to 3 mm but leaves the elbow 9.2 cm off;
-joint space brings it back to 7 mm; null space to 1 mm; motors move the elbow 1.9 cm at most.
+K = 10, 2 N·m/rad), the same for the first three; every law gets the plan's velocity as its
+reference and the same torque limits.
+
+Timing (an assumption of the demo, not a measurement): physics at 2 kHz. The first three laws
+run at 500 Hz on the arm's state from the previous cycle, their torque held between updates (a
+read, compute, write loop on the Thor). The motors close their PD every physics step on the
+current state; the Thor sends them only the plan and the gravity feedforward at 500 Hz.
+
+The routine: a 0.5 s quintic reach (starting at 0.5 s) from an elbow-bent pose to an almost straight arm
+(elbow at 0.05 rad, the hand 30 cm out), 35 N straight down on the elbow (1.9 to 2.5 s), the
+reach back (4.6 s), then 20 N on the elbow across the shoulder-wrist line (its swivel, 6.3 to
+6.9 s). The faint arm in the video is the plan at that moment. Measured:
+
+| | hand behind the plan on the reach | elbow after the push down | elbow at the end |
+|---|---|---|---|
+| Cartesian | 9.1 cm (and stops 1.9 cm short) | 5.7 cm (stays bent 0.54 rad) | 18.3 cm |
+| joint space | 8.5 cm | 0.8 cm | 1.7 cm |
+| null space | 6.3 cm | 0.3 cm | 0.2 cm |
+| motors | 2.2 cm | 0.0 cm | 0.0 cm |
+
+Near the straight arm, a hand error along the arm turns into almost no elbow torque through
+J^T, so the Cartesian law cannot straighten the elbow once it is bent; the joint-space terms can.
 
     build_armlaws.sh <venv> <prl dir> build
     python scripts/sim_impedance4.py build/libarmlaws.so openarm_bimanual.urdf impedance4.npz
-    python scripts/render_impedance4.py impedance4.npz frames
-    (ffmpeg 2x2 xstack with labels; see the command below)
+    LOOKAT="0.24 0.15 0.70" DIST=0.92 AZ=-112 EL=-10 python scripts/render_impedance4.py impedance4.npz frames
+    F=Inter-Medium.otf
+    lab(){ echo "crop=640:390:0:105,drawtext=fontfile=$F:text='$1':fontcolor=0xE6E8EB:fontsize=26:x=22:y=16"; }
+    ph(){ echo "drawtext=fontfile=$F:text='$3':fontcolor=0xA39D97:fontsize=26:x=(w-tw)/2:y=h-38:enable='between(t\,$1\,$2)'"; }
+    ffmpeg -framerate 30 -i frames/pure/frame_%04d.png -framerate 30 -i frames/mixed/frame_%04d.png \
+      -framerate 30 -i frames/null/frame_%04d.png -framerate 30 -i frames/passthru/frame_%04d.png \
+      -filter_complex "[0]$(lab 'Cartesian')[a];[1]$(lab 'Cartesian, in joint space')[b];[2]$(lab 'Cartesian + null space')[c];[3]$(lab 'Motor PD + gravity')[d];[a][b][c][d]xstack=inputs=4:layout=0_0|w0_0|0_h0|w0_h0,pad=iw:ih+52:0:0:0x0F1114,$(ph 0.4 1.9 'Fast reach out to an almost straight arm'),$(ph 1.9 4.5 'Elbow pushed down'),$(ph 4.5 6.2 'Fast reach back'),$(ph 6.2 9.6 'Elbow pushed sideways'),scale=960:-2" \
+      -c:v libx264 -crf 27 -preset slow -pix_fmt yuv420p -an -movflags +faststart impedance-four-sim.mp4
+    ffmpeg -ss 3.5 -i impedance-four-sim.mp4 -frames:v 1 -q:v 3 impedance-four-sim.jpg
 
 ## Tile cover (`images/cover-arcs.jpg`)
 
