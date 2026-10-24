@@ -70,32 +70,32 @@ desc = ("Both controllers on the same simulated chassis and the same three paths
                  f"LQR {S[n]['lqr'][0]:.1f} s and {S[n]['lqr'][2]:.1f} cm." for n, lab in names))
 
 
-def bars(c, key, idx, fmt, top):
-    gap = (c.w - c.ml - c.mr) / len(names)
+# Compact: the two measures side by side as horizontal bars, drawn at about the size it is shown.
+W, H = 600, 236
+c = Chart("LQR against pure pursuit on three paths", desc, w=W, h=H)
+c.body = []
+panels = [("time to finish (s)", 0, 12, [0, 4, 8, 12], 104, 330, lambda v: f"{v:.1f}"),
+          ("farthest from the path (cm)", 2, 50, [0, 25, 50], 368, 580, lambda v: f"{v:.0f}" if v >= 10 else f"{v:.1f}")]
+top, bar, pair_gap, group = 70, 13, 3, 50
+for title, idx, hi, ticks, x0, x1, fmt in panels:
+    X = lambda v: x0 + (x1 - x0) * v / hi  # noqa: E731
+    c.label(x0, top - 14, title, cls="s m")
+    for tv in ticks:
+        c.body.append(f'<line class="grid" x1="{X(tv):.1f}" x2="{X(tv):.1f}" y1="{top - 4}" y2="{top + 3 * group - 10}"/>')
+        c.label(X(tv), top + 3 * group + 4, f"{tv:g}", anchor="middle", cls="s m")
     for j, (n, lab) in enumerate(names):
-        x0 = c.ml + j * gap + gap * 0.22
         for k_, (who, var) in enumerate((("pure_pursuit", "--s2"), ("lqr", "--s1"))):
             v = S[n][who][idx]
-            x = x0 + k_ * gap * 0.3
-            y = c.Y(v)
-            c.body.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{gap * 0.26:.1f}" height="{c.Y(0) - y:.1f}" rx="3" style="fill:var({var})"/>')
-            c.label(x + gap * 0.13, y - 6, fmt(v), anchor="middle", cls="s")
-        c.label(x0 + gap * 0.28, c.h - c.mb + 18, lab, anchor="middle", cls="s m")
-
-
-c = Chart("LQR against pure pursuit on three paths", desc, w=680, h=560, ml=56, mr=20, mt=70, mb=290)
-c.yscale(0, 12)
-c.axes([], [0, 4, 8, 12], "", "time to finish (s)", yfmt=lambda v: f"{v:g}")
-bars(c, "t", 0, lambda v: f"{v:.1f} s", 12)
-top = c.body
-c2 = Chart("", "", w=680, h=560, ml=56, mr=20, mt=330, mb=40)
-c2.yscale(0, 50)
-c2.axes([], [0, 10, 20, 30, 40, 50], "", "farthest from the path (cm)", yfmt=lambda v: f"{v:g}")
-bars(c2, "max", 2, lambda v: f"{v:.0f}" if v >= 10 else f"{v:.1f}", 50)
-c.body = top + c2.body
-c.body.append('<rect x="56" y="14" width="14" height="14" rx="2" style="fill:var(--s2)"/>')
-c.label(76, 26, "pure pursuit (the team's)")
-c.body.append('<rect x="260" y="14" width="14" height="14" rx="2" style="fill:var(--s1)"/>')
-c.label(280, 26, "LQR")
+            y = top + j * group + k_ * (bar + pair_gap)
+            c.body.append(f'<rect x="{x0}" y="{y}" width="{X(v) - x0:.1f}" height="{bar}" rx="2" style="fill:var({var})"/>')
+            c.label(X(v) + 5, y + bar - 2, fmt(v), cls="s")
+        if x0 == panels[0][4]:
+            name, length = lab.split(", ")
+            c.label(x0 - 10, top + j * group + 12, name, anchor="end", cls="s")
+            c.label(x0 - 10, top + j * group + 27, length, anchor="end", cls="s m")
+c.body.append(f'<rect x="{panels[0][4]}" y="12" width="12" height="12" rx="2" style="fill:var(--s2)"/>')
+c.label(panels[0][4] + 18, 23, "pure pursuit (the team's)")
+c.body.append(f'<rect x="{panels[0][4] + 200}" y="12" width="12" height="12" rx="2" style="fill:var(--s1)"/>')
+c.label(panels[0][4] + 218, 23, "LQR")
 open(f"{out}/lqr-vs-pure-pursuit.svg", "w").write(c.svg())
 print({n: S[n] for n, _ in names})

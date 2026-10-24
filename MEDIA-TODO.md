@@ -28,8 +28,14 @@ delete its line here.
 
 ## ARUW
 
-- [ ] A hero and a cover (sentry photos).
-- [ ] Odin point clouds or a SLAM map for the error-model entry.
+- [ ] The hero: round 2 of the match at https://www.youtube.com/watch?v=PqSzhmRSAZA, or clips from the
+      robot reveal at https://www.youtube.com/watch?v=FGh1yQdJGeM. YouTube is blocked from the cloud
+      session: allow `www.youtube.com` and `*.googlevideo.com` in the environment's network settings, or
+      send the MP4s.
+- [ ] A cover (sentry photos; SharePoint once a connector is set up, or a shared Drive folder).
+- [ ] The competition entry (`log/2025-10-01-the-competition.md`, a draft): what a match is, the ARC
+      competition, which robots you worked on, and the reveal clips.
+- [ ] The SLAM map for the error-model entry (another session is building it).
 
 ## Fleet RL
 

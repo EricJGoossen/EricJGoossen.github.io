@@ -5,12 +5,13 @@ not in the repo). Writes frames; ffmpeg turns them into the two clips (see READM
 
 1. auto/frame_NNNN.png: the engineer's autonomous drive at competition (Ozone_DataSampling_260630.csv,
    Jun 30): the filter's own logged pose, replayed at real time over the 5 m field image, with the
-   planned stops from path.yaml. The log's first rows are a position reset (a jump from the origin
+   planned stops from path.yaml, cut to the drive itself. The log's first rows are a position reset (a jump from the origin
    to the start pose), which is cut.
 2. sweep/frame_NNNN.png: offline tuning, with Eric's own replay tool (odo_tuner/field_odometry_replay.py,
-   imported unchanged): his logged square run (deadwheel_log.csv) replayed while one tracking wheel's
-   radius sweeps from 85% of its tuned value up to the tuned value. The closure error (distance from
-   the end of the estimated path to its start) falls to its minimum at the tuned radius.
+   imported unchanged): his logged 5 m sideways push (strafe.csv) replayed with the pods moving from
+   their design values to his tuned ones, against the IMU heading in the same log. (The square run,
+   deadwheel_log.csv, isn't used: its loop is about 1.5-1.7 m, not the 1.3 m square in the tool, so
+   its closure has no reliable ground truth.)
 """
 import csv
 import importlib.util
@@ -42,11 +43,20 @@ y = np.array([float(a[col("position).y")]) for a in r])
 th = np.array([float(a[col("orientation")]) for a in r])
 jump = np.argmax(np.hypot(np.diff(x), np.diff(y)) > 0.3) + 1        # the reset to the start pose
 t, x, y, th = t[jump:] - t[jump], x[jump:], y[jump:], th[jump:]
+# The robot waits about 10 s before it drives and about 10 s after it stops; keep the
+# 4.2 s drive with half a second either side, and the clock counts from there.
+speed = np.hypot(np.gradient(x, t), np.gradient(y, t))
+moving = np.convolve(speed > 0.05, np.ones(25), "same") > 0       # bridge brief dips
+edges = np.flatnonzero(np.diff(np.r_[0, moving.astype(int), 0]))
+go_i, stop_i = max(zip(edges[::2], edges[1::2] - 1), key=lambda e: e[1] - e[0])   # the longest drive
+go, stop = t[go_i], t[stop_i]
+keep = (t >= go - 0.5) & (t <= stop + 0.5)
+t, x, y, th = t[keep] - t[keep][0], x[keep], y[keep], th[keep]
 stops = np.array(yaml.safe_load(open(os.path.join(src, "path.yaml")))["points"])
 R = 0.2794                                                           # ROBOT_RADIUS in path.yaml's note
 os.makedirs(f"{out}/auto", exist_ok=True)
 fps = 30
-for k, tk in enumerate(np.arange(0, t[-1] + 1.0, 1 / fps)):
+for k, tk in enumerate(np.arange(0, t[-1] + 1.5, 1 / fps)):
     i = min(np.searchsorted(t, tk), len(t) - 1)
     fig = plt.figure(figsize=(6.4, 6.4), dpi=150, facecolor=BG)
     ax = fig.add_axes([0.02, 0.02, 0.96, 0.96])
@@ -68,46 +78,54 @@ for k, tk in enumerate(np.arange(0, t[-1] + 1.0, 1 / fps)):
 end = np.hypot(x[-1] - stops[-1, 0], y[-1] - stops[-1, 1])
 print(f"auto: {t[-1]:.1f} s, {np.sum(np.hypot(np.diff(x), np.diff(y))):.2f} m, ends {end * 100:.1f} cm from the last stop")
 
-# ---------------------------------------------------------------- 2. the radius sweep
+# ---------------------------------------------------------------- 2. design values to tuned, on the strafe
+# Eric's 5 m sideways push (strafe.csv), replayed through his own filter replica with the pods
+# interpolated from their design values (rolling straight along the axes, 15.2 mm wheels, CAD
+# positions) to his tuned ones. The log's IMU heading is the check: the robot really turned
+# about 13 degrees while being pushed, and the wheels alone should say the same.
 sys.path.insert(0, os.path.join(src, "odo_tuner"))
 spec = importlib.util.spec_from_file_location("replay", os.path.join(src, "odo_tuner", "field_odometry_replay.py"))
 rp = importlib.util.module_from_spec(spec); spec.loader.exec_module(rp)
-data = rp.load_csv(os.path.join(src, "odo_tuner", "deadwheel_log.csv"))
-tuned = rp.PODS["p1"]["radius"]
-fracs = np.r_[np.linspace(0.85, 1.0, 31), np.ones(1)]
-paths = []
+data = rp.load_csv(os.path.join(src, "odo_tuner", "strafe.csv"))
+rows = list(csv.DictReader(open(os.path.join(src, "odo_tuner", "strafe.csv"))))
+imu = np.unwrap([float(a["((odometrySubsystem).imuTheta).wrapped"]) for a in rows])
+imu = np.degrees(imu - imu[0])
+ts = data["t"] - data["t"][0]
+tuned = rp.PODS
+design = {"p1": dict(theta=0.0, x=0.0, y=0.0777, radius=0.0152), "p2": dict(theta=0.0, x=0.0, y=-0.081, radius=0.0152),
+          "perp": dict(theta=np.pi / 2, x=-0.1442, y=0.0, radius=0.0152)}
+fracs = np.r_[0.0, (1 - np.cos(np.linspace(0, np.pi, 40))) / 2]
+runs = []
 for f in fracs:
-    pods = {k_: dict(v) for k_, v in rp.PODS.items()}
-    pods["p1"]["radius"] = tuned * f
-    xs, ys, _ = rp.simulate(data, pods=pods)
-    paths.append((f, xs, ys, np.hypot(xs[-1] - xs[0], ys[-1] - ys[0])))
-gt = np.array(rp.GROUND_TRUTH_PATH)
+    pods = {n: {k_: design[n][k_] + f * (tuned[n][k_] - design[n][k_]) for k_ in design[n]} for n in design}
+    xs, ys, yaws = rp.simulate(data, pods=pods, init_yaw=0.0, init_pos=(0.0, 0.0))
+    runs.append((f, xs, ys, np.degrees(yaws), np.hypot(xs[-1], ys[-1])))
 os.makedirs(f"{out}/sweep", exist_ok=True)
-hold = {0: 20, len(fracs) - 1: 75}                                  # frames to hold first and last
+hold = {0: 30, len(fracs) - 1: 90}                                  # frames to hold first and last
 k = 0
-for j, (f, xs, ys, closure) in enumerate(paths):
-    for _ in range(hold.get(j, 3)):
+for j, (f, xs, ys, yd, dist) in enumerate(runs):
+    for _ in range(hold.get(j, 2)):
         fig = plt.figure(figsize=(6.4, 6.4), dpi=150, facecolor=BG)
-        ax = fig.add_axes([0.06, 0.30, 0.88, 0.66])
-        ax.set_facecolor(BG)
-        ax.plot(gt[:, 0], gt[:, 1], "--", color=MUTED, lw=1.5)
-        ax.plot(xs, ys, color=BLUE, lw=2.2)
+        ax = fig.add_axes([0.06, 0.36, 0.88, 0.58]); ax.set_facecolor(BG)
+        ax.plot([0, 0], [0, -5], "--", color=MUTED, lw=1.2)
+        ax.plot(xs, ys, color=BLUE, lw=2.4)
         ax.plot(xs[0], ys[0], "o", color=GREEN, ms=8); ax.plot(xs[-1], ys[-1], "o", color=ORANGE, ms=8)
-        ax.set_xlim(-0.35, 2.65); ax.set_ylim(-1.4, 1.8); ax.set_aspect("equal"); ax.axis("off")
-        ax.text(-0.3, 1.68, "the square driven (dashed) and the filter's replayed estimate", fontsize=10, color=MUTED)
-        ax2 = fig.add_axes([0.14, 0.08, 0.80, 0.17], facecolor=BG)
-        fr = [p[0] for p in paths[:-1]]; cl = [p[3] * 100 for p in paths[:-1]]
-        ax2.plot(fr, cl, color="#33312e", lw=1.5)
-        ax2.plot(fr[: j + 1], cl[: j + 1], color=BLUE, lw=2)
-        ax2.plot(f, closure * 100, "o", color=ORANGE, ms=7)
-        ax2.set_xlim(0.845, 1.005); ax2.set_ylim(0, max(cl) * 1.1)
-        ax2.set_xticks([0.85, 0.9, 0.95, 1.0]); ax2.set_xticklabels(["85%", "90%", "95%", "tuned"])
-        ax2.set_ylabel("closure error (cm)", fontsize=9)
+        ax.set_xlim(-3.3, 3.3); ax.set_ylim(-5.6, 0.6); ax.set_aspect("equal"); ax.axis("off")
+        ax.text(-3.25, 0.35, "the 5 m push sideways, as the wheels see it", fontsize=10, color=MUTED)
+        ax.text(0.15, -5.0, "5 m", fontsize=9, color=MUTED)
+        ax2 = fig.add_axes([0.13, 0.08, 0.82, 0.22], facecolor=BG)
+        ax2.plot(ts, imu, "--", color=FG, lw=1.4, label="IMU")
+        ax2.plot(ts, yd, color=BLUE, lw=2, label="wheels")
+        ax2.set_ylim(-30, 100); ax2.set_xlim(0, ts[-1])
+        ax2.set_ylabel("heading (°)", fontsize=9); ax2.set_xlabel("time (s)", fontsize=9)
+        ax2.legend(loc="upper left", frameon=False, fontsize=9, ncol=2)
         for sp in ("top", "right"):
             ax2.spines[sp].set_visible(False)
-        ax.text(-0.3, -1.33, f"wheel radius {tuned * f * 1000:.2f} mm ({f * 100:.0f}% of tuned)    "
-                f"closure error {closure * 100:.0f} cm", fontsize=11, color=FG)
+        label = "design values" if f == 0 else ("tuned" if f == 1 else f"{f * 100:.0f}% of the way to tuned")
+        ax.text(-3.25, -5.5, f"pods: {label}    distance {dist:.2f} m    heading {yd[-1]:+.0f}° (IMU {imu[-1]:+.0f}°)",
+                fontsize=10.5, color=FG)
         fig.savefig(f"{out}/sweep/frame_{k:04d}.png", facecolor=BG)
         plt.close(fig)
         k += 1
-print("sweep: closure from %.0f cm at 85%% to %.0f cm at the tuned radius" % (paths[0][3] * 100, paths[-1][3] * 100))
+print("strafe: design %.2f m, heading %+.1f; tuned %.2f m, heading %+.1f; IMU %+.1f" %
+      (runs[0][4], runs[0][3][-1], runs[-1][4], runs[-1][3][-1], imu[-1]))
