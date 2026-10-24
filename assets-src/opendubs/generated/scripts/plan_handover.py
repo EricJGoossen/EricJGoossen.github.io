@@ -76,8 +76,14 @@ def pose(R, p):
     return T
 
 
-frames = []  # (qL, qR, fL, fR, can position, can quaternion); fL, fR: each finger joint
-state = {"mirror": False, "fL": np.full(2, 0.044), "fR": np.full(2, 0.044), "held": None, "can": np.r_[SPOTS["right"], TABLE_Z + CAN_HALF], "can_R": np.eye(3), "offset": None}
+# Each frame: (qL, qR, fL, fR, can position, can quaternion, actor, can owner). fL, fR:
+# each finger joint. actor: the arm that moves in it ("both" when they move together);
+# can owner: the arm the can moves with (holding it, or setting it down), else None.
+# The motions are planned one after another, then overlapped (see overlap()).
+frames = []
+marks = []  # (frame index, "all" or "wait", side): sync points for overlap()
+state = {"mirror": False, "fL": np.full(2, 0.044), "fR": np.full(2, 0.044), "held": None, "can": np.r_[SPOTS["right"], TABLE_Z + CAN_HALF], "can_R": np.eye(3), "offset": None,
+         "actor": "both", "settling": None}
 
 
 def ee(side):
@@ -92,7 +98,8 @@ def record(qL, qR):
         state["can"], state["can_R"] = T[:3, 3], T[:3, :3]
     quat = np.zeros(4)
     mujoco.mju_mat2Quat(quat, state["can_R"].flatten())
-    frames.append((np.array(qL), np.array(qR), np.array(state["fL"]), np.array(state["fR"]), state["can"].copy(), quat))
+    frames.append((np.array(qL), np.array(qR), np.array(state["fL"]), np.array(state["fR"]), state["can"].copy(), quat,
+                   state["actor"], state["held"] or state["settling"]))
 
 
 def can_path(S):
@@ -271,6 +278,14 @@ def dense(W, step=0.03):
 
 def play(P, vmax=0.8):
     """Record a joint-space path with a smooth start and stop (quintic timing)."""
+    P = np.array(P, float)
+    moving = []
+    for sd, sl in (("left", slice(0, 7)), ("right", slice(7, 14))):
+        if np.abs(P[:, sl] - P[0, sl]).max() > 1e-3:
+            moving.append(sd)
+        else:
+            P[:, sl] = P[0, sl]   # planner noise: an arm that barely moves holds exactly still
+    state["actor"] = moving[0] if len(moving) == 1 else "both"
     seg = np.abs(np.diff(P, axis=0)).max(axis=1)
     u = np.r_[0, np.cumsum(seg)]
     T = max(1.0, u[-1] / vmax * 1.875)  # quintic peak speed is 1.875x its average
@@ -301,6 +316,19 @@ def plan(goals, exact=False):
                 P = Pfix
             return P
     return None
+
+
+def only(res, sides):
+    """An ArmGroup result as one path, with every arm not in `sides` held exactly where
+    it starts when that stays collision-free (the planner may swing an idle arm out
+    and back), so that arm is free to move at the same time (see overlap())."""
+    P = np.c_[np.asarray(res.left.positions), np.asarray(res.right.positions)]
+    Pfix = P.copy()
+    for sd, sl in (("left", slice(0, 7)), ("right", slice(7, 14))):
+        if sd not in sides:
+            Pfix[:, sl] = P[0, sl]
+    chk = checker()
+    return Pfix if all(collision_free(q, chk) for q in dense(every(Pfix))) else P
 
 
 def straight(goals, steps=30, exact=False):
@@ -345,7 +373,7 @@ def framed(side, R, p, n=6, exact=False):
         for attempt in range(3):
             res = robot.plan_ee_to_pose({side: poses})
             if res is not None and res.success:
-                S = smooth(np.c_[np.asarray(res.left.positions), np.asarray(res.right.positions)])
+                S = smooth(only(res, (side,)))
                 if S is not None:
                     return S
     return None
@@ -398,7 +426,7 @@ def move_to(goal_q, label):
     for attempt in range(8):
         res = robot.plan_to_configuration(goal_q)
         if res is not None and res.success:
-            S = smooth(np.c_[np.asarray(res.left.positions), np.asarray(res.right.positions)])
+            S = smooth(only(res, tuple(goal_q)))
             if S is not None:
                 print("planned", label, len(S), "waypoints", flush=True)
                 return play(S)
@@ -432,6 +460,8 @@ def move(goals, exact=False):
 def hold(seconds, **fingers):
     """Hold the arms still while the named fingers open or close."""
     qL, qR = frames[-1][0], frames[-1][1]
+    sides = {"left" if f == "fL" else "right" for f in fingers}
+    state["actor"] = sides.pop() if len(sides) == 1 else "both"
     start = {k: state[k] for k in fingers}
     n = int(seconds * FPS)
     for k in range(1, n + 1):
@@ -447,7 +477,17 @@ def grasp(side):
 
 
 def release():
-    state["held"] = None
+    state["settling"], state["held"] = state["held"], None
+
+
+def barrier():
+    """Both arms finish everything before this point before either goes on."""
+    marks.append((len(frames), "all", None))
+
+
+def wait(side):
+    """`side` goes on from here only once the other arm has done everything before it."""
+    marks.append((len(frames), "wait", side))
 
 
 def settle():
@@ -459,6 +499,7 @@ def settle():
     axis = np.cross(R0[:, 2], [0, 0, up])
     ang = np.arcsin(min(1.0, np.linalg.norm(axis)))
     n = max(6, int(np.ceil(abs(z0 - z1) / 0.008)), int(np.ceil(ang / 0.05)))
+    state["actor"] = state["settling"]                     # the arm that let go waits for it
     for k in range(1, n + 1):
         u = (k / n) ** 2
         Rk = R0
@@ -466,6 +507,7 @@ def settle():
             Rk = Rotation.from_rotvec(axis / np.linalg.norm(axis) * ang * u).as_matrix() @ R0
         state["can"], state["can_R"] = np.r_[state["can"][:2], z0 + (z1 - z0) * u], Rk
         record(frames[-1][0], frames[-1][1])
+    state["settling"] = None
 
 
 OPEN = 0.044
@@ -502,7 +544,7 @@ def go_ready(side):
     ready = np.array(robot.named_poses["ready"][side])
     for attempt in range(8):
         res = robot.plan_to_configuration({side: ready})
-        S = smooth(np.c_[np.asarray(res.left.positions), np.asarray(res.right.positions)])
+        S = smooth(only(res, (side,)))
         if S is not None:
             return play(S)
     raise RuntimeError(f"no smooth plan to ready for {side}")
@@ -515,28 +557,33 @@ def pass_can(giver, taker, from_spot, to_spot):
     Rg = APPROACH["in_right" if giver == "right" else "in_left"]
     Rt = APPROACH["in_right" if taker == "right" else "in_left"]
     grip = np.r_[from_spot, TABLE_Z + CAN_HALF] + [0, 0, 0.015]
+    give = HANDOVER + [0, 0, 0.025]
+    take = HANDOVER - [0, 0, 0.035]  # low enough that the two grippers keep their 5 mm apart
+    # The taker gets in position while the giver picks the can up: its joint goal is the
+    # solution furthest from its joint limits, so it can carry the can on to the table
+    # without reconfiguring (and tipping it). It grasps unrolled (the gripper's x axis
+    # up, as every pick is): the gripper isn't symmetric top to bottom, and rolled over
+    # its hand would meet the table before the can does when it sets it down. Rolling
+    # it over later would tip the can.
+    move_to({taker: pick_ik(taker, Rt, back(Rt, take), "margin", roll=False)}, f"{taker} to take")
     move({giver: (Rp, back(Rp, grip))})
     move({giver: (Rp, grip)})
     hold(0.6, **{fg: closed_on_can(giver)})
     grasp(giver)
     move({giver: (Rp, grip + [0, 0, 0.10])})
-    # The handover: both arms planned together into the shared space.
-    give = HANDOVER + [0, 0, 0.025]
-    take = HANDOVER - [0, 0, 0.035]  # low enough that the two grippers keep their 5 mm apart
-    # Both arms planned together, to joint goals chosen here: the giver's nearest IK
-    # solution, and for the taker the one furthest from its joint limits, so it can
-    # carry the can on to the table without reconfiguring (and tipping it).
-    # The taker grasps unrolled (the gripper's x axis up, as every pick is): the gripper
-    # isn't symmetric top to bottom, and rolled over its hand would meet the table before
-    # the can does when it sets it down. Rolling it over later would tip the can.
-    move_to({giver: pick_ik(giver, Rg, give, "near"),
-             taker: pick_ik(taker, Rt, back(Rt, take), "margin", roll=False)},
-            f"{giver} to give, {taker} to take")
+    # The handover: the giver brings the can to the waiting taker (its nearest IK
+    # solution), the taker reaches in once it is there, and the giver lets go once the
+    # taker has closed; then the giver backs off and goes back to ready while the taker
+    # carries the can away.
+    move_to({giver: pick_ik(giver, Rg, give, "near")}, f"{giver} to give")
+    barrier()
     move({taker: (Rt, take)}, exact=True)
     hold(0.6, **{ft: closed_on_can(taker)})
     grasp(taker)
+    wait(giver)
     hold(0.5, **{fg: OPEN})
     move({giver: (Rg, back(Rg, give))})
+    go_ready(giver)
     place = np.r_[to_spot, TABLE_Z + CAN_HALF] - [0, 0, 0.02]
     # Any heading works for a round can: take the first the taker can carry over the spot
     # in a straight, upright line (or close to one, through a few upright poses) and then
@@ -553,7 +600,7 @@ def pass_can(giver, taker, from_spot, to_spot):
             over = framed(taker, v, place + [0, 0, 0.08], exact=True)
         if over is None:
             continue
-        snap = (len(frames), {k: (v_.copy() if isinstance(v_, np.ndarray) else v_) for k, v_ in state.items()}, d.qpos.copy())
+        snap = (len(frames), {k: (v_.copy() if isinstance(v_, np.ndarray) else v_) for k, v_ in state.items()}, d.qpos.copy(), len(marks))
         play(over)
         T = ee(taker)
         # Down to the lowest height (1.5 to 4.5 cm above the table) where the hand clears
@@ -576,6 +623,7 @@ def pass_can(giver, taker, from_spot, to_spot):
                     break
         # this heading can't set it down: undo and try the next
         del frames[snap[0]:]
+        del marks[snap[3]:]
         state.update(snap[1])
         d.qpos[:] = snap[2]
         mujoco.mj_forward(m, d)
@@ -592,17 +640,130 @@ def pass_can(giver, taker, from_spot, to_spot):
     settle()
     hold(0.5, **{ft: OPEN})
     move({taker: (Rh, back(Rh, low))}, exact=True)
-    go_ready(giver)
     go_ready(taker)
 
 
+for sd in ("left", "right"):          # start (and end) at the ready pose, so the clip loops
+    d.qpos[joint[sd]] = robot.named_poses["ready"][sd]
 mujoco.mj_forward(m, d)
 record(d.qpos[joint["left"]].copy(), d.qpos[joint["right"]].copy())
 pass_can("right", "left", SPOTS["right"], SPOTS["left"])
 state["mirror"] = True  # the mirror image of a grasp is the same grasp rolled 180°
 pass_can("left", "right", SPOTS["left"], SPOTS["right"])
 
-F = list(zip(*frames))
-np.savez(out, left=np.array(F[0]), right=np.array(F[1]), fL=np.array(F[2]), fR=np.array(F[3]),
-         can=np.array(F[4]), can_quat=np.array(F[5]), fps=FPS, table_z=TABLE_Z, can_half=CAN_HALF)
-print("frames", len(frames), "seconds", len(frames) / FPS)
+OTHER = {"left": "right", "right": "left"}
+
+
+def timeline(waits, delays={}):
+    """Lay the recorded motions out so the arms move at the same time wherever the
+    task allows: each arm plays its own motions back to back, and only waits for the
+    other at a sync point (the marks, plus the frame indices in `waits`) or for a
+    motion they make together; a motion in `delays` starts that many frames late.
+    Returns, per overlapped frame, for each arm (joints,
+    fingers, start of its latest motion, the recorded frame it is at, moving), and
+    the can (position, quaternion, owner)."""
+    cuts = sorted({0, len(frames)} | {i for i, _, _ in marks} | set(waits)
+                  | {k for k in range(1, len(frames)) if frames[k][6] != frames[k - 1][6]})
+    at = {}
+    for i, kind, side in marks:
+        at.setdefault(i, []).append((kind, side))
+    for i in waits:
+        at.setdefault(i, []).append(("all", None))
+    end = {"left": 0, "right": 0}
+    arm = {"left": {}, "right": {}}
+    can = {}
+    for a, b in zip(cuts[:-1], cuts[1:]):
+        for kind, side in at.get(a, []):
+            if kind == "all":
+                end["left"] = end["right"] = max(end.values())
+            else:
+                end[side] = max(end[side], end[OTHER[side]])
+        actor = frames[a][6]
+        sides = ("left", "right") if actor == "both" else (actor,)
+        t0 = max(end[sd] for sd in sides) + delays.get(a, 0)
+        for k in range(a, b):
+            f, t = frames[k], t0 + k - a
+            for sd in sides:
+                arm[sd][t] = (f[0] if sd == "left" else f[1], f[2] if sd == "left" else f[3], a, k, True)
+            if f[7] in sides or k == 0:
+                can[t] = (f[4], f[5], f[7])
+        for sd in sides:
+            end[sd] = t0 + b - a
+    out, last = [], {"left": arm["left"][0], "right": arm["right"][0], "can": can[0]}
+    for t in range(max(end.values())):
+        for sd in ("left", "right"):
+            last[sd] = arm[sd].get(t, (*last[sd][:4], False))   # not in t: waiting where it is
+        last["can"] = can.get(t, last["can"])
+        out.append((last["left"], last["right"], last["can"]))
+    return out
+
+
+arm_geoms = {sd: [g for g in range(m.ngeom) if m.body(m.geom_bodyid[g]).name.startswith(f"openarm_{sd}_")
+                  and m.geom_group[g] == 2] for sd in ("left", "right")}
+
+
+def as_planned(fr):
+    """Whether an overlapped frame is one that was planned: an arm mid-motion with the
+    other exactly where it was when that motion was planned."""
+    for i, sd in ((0, "left"), (1, "right")):
+        if fr[i][4]:
+            other = frames[fr[i][3]][1 - i]
+            return np.array_equal(fr[1 - i][0], other)
+    return False
+
+
+def clash(fr, chk):
+    """Whether an overlapped frame has the arms (or the table) within the collision
+    margin, or the moving can within 5 mm of the other arm."""
+    (qL, *_), (qR, *_), (cp, cq, owner) = fr
+    if not collision_free(np.r_[qL, qR], chk):
+        return True
+    if owner is None:
+        return False
+    d.qpos[joint["left"]], d.qpos[joint["right"]] = qL, qR
+    d.mocap_pos[can_mocap], d.mocap_quat[can_mocap] = cp, cq
+    mujoco.mj_kinematics(m, d)
+    can_g, fromto = m.geom("can_prop_visual").id, np.zeros(6)
+    return any(mujoco.mj_geomDistance(m, d, g, can_g, 0.05, fromto) < 0.005 for g in arm_geoms[OTHER[owner]])
+
+
+def overlap():
+    """timeline(), made safe: wherever overlapping the arms' motions brings them (or
+    the carried can) too close, the later of the two motions starts a little later, a
+    fifth of a second at a time; if 8 s of that doesn't clear it, it waits until the
+    other arm has done everything before it, as when it was planned. Repeats until no
+    frame that differs from the plan clashes."""
+    chk, waits, delays = checker(), set(), {}
+    while True:
+        tl = timeline(waits, delays)
+        fix = None
+        for t, fr in enumerate(tl):
+            if as_planned(fr) or not clash(fr, chk):
+                continue
+            later, earlier = sorted((fr[0][2], fr[1][2]), reverse=True)
+            fix = next((i for i in (later, earlier) if i not in waits and i > 0), None)
+            if fix is None:
+                raise RuntimeError(f"clash at {t / FPS:.1f} s that waiting can't remove")
+            break
+        if fix is None:
+            for i in sorted(delays):
+                print(f"  motion at frame {i} starts {delays[i] / FPS:.1f} s later to keep clear", flush=True)
+            for i in sorted(waits):
+                print(f"  motion at frame {i} waits for the other arm to finish", flush=True)
+            return tl
+        if delays.get(fix, 0) < 8 * FPS:
+            delays[fix] = delays.get(fix, 0) + 6
+        else:
+            waits.add(fix)
+
+
+acts = [f[6] for f in frames]
+runs = [acts[0]] + [a for a, b in zip(acts[1:], acts[:-1]) if a != b]
+print("motions:", " ".join(r[0].upper() if r != "both" else "B" for r in runs), flush=True)
+tl = overlap()
+print("frames", len(frames), "planned one at a time,", len(tl), "overlapped", flush=True)
+np.savez(out, left=np.array([f[0][0] for f in tl]), right=np.array([f[1][0] for f in tl]),
+         fL=np.array([f[0][1] for f in tl]), fR=np.array([f[1][1] for f in tl]),
+         can=np.array([f[2][0] for f in tl]), can_quat=np.array([f[2][1] for f in tl]),
+         fps=FPS, table_z=TABLE_Z, can_half=CAN_HALF)
+print("seconds", len(tl) / FPS)

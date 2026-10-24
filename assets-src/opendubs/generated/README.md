@@ -52,8 +52,14 @@ resized. Placeholder: confirm they can be used here and who to credit.
 
 A two-arm handover of a can, planned with the unmodified ArmGroup planner (openarm's `Openarm`
 wrapper around mj_manipulator) in the OpenArm model plus a table (`scripts/handover_scene.py`):
-the right arm picks the can, both arms meet in one two-arm plan, the left arm takes it and sets
-it down, then the same in mirror so the clip loops. Each move is the planner's, then made direct: a
+the right arm picks the can while the left gets in position, the right brings it over, the left
+takes it and sets it down while the right goes back to ready, then the same in mirror so the clip
+loops (both arms start and end at ready). The moves are planned one arm at a time (an idle arm
+held exactly still), then overlapped: each arm plays its own moves back to back and waits for the
+other only where the task needs it (the taker reaches in once the giver is there; the giver lets
+go once the taker has closed). Every overlapped frame that differs from the plan is re-checked
+(arms and table, 5 mm margin; the carried can against the other arm, 5 mm); where one clashes,
+the later move starts a fifth of a second later until it clears. Each move is the planner's, then made direct: a
 straight joint-space move when that is collision-free, otherwise the plan shortcut and splined, every
 sample re-checked with the group's own collision checker (table, other arm, 5 mm margin), with
 quintic timing so each move starts and stops smoothly. Single-arm moves (lifts, places, short
@@ -62,7 +68,7 @@ arm with no goal holds still. The can is a prop the collision checker can't see;
 the gripper holding it, and along a planned carry the holding wrist is re-solved at every
 waypoint so the can stays level (within 4 degrees). A carry is rejected if the can would dip more
 than 6 cm, tip past 35 degrees or swing well past the table's edge, and it is set down by its own
-height. For the two-arm move the joint goals are chosen explicitly: the giver's nearest IK
+height. At the handover the joint goals are chosen explicitly: the giver's nearest IK
 solution, the taker's furthest from its joint limits, grasping unrolled (the gripper isn't
 symmetric top to bottom; rolled, its hand meets the table first when setting the can down).
 The taker grips 3.5 cm below the handover point so the two grippers keep 5 mm apart, carries the
