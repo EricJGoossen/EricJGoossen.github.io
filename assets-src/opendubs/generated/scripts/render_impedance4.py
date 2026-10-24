@@ -1,18 +1,23 @@
 """Render impedance4.npz (sim_impedance4.py) as four panels, one per controller:
 the left arm in blue over a faint ghost of where the plan has it at that moment,
-a red arrow on the elbow while it is pushed.
-usage: render_impedance4.py <npz> <out_dir>   (writes <out_dir>/<name>/frame_NNNN.png)"""
+a red arrow on the elbow while it is pushed. Each panel is labelled with its
+controller and how far the arm is from the plan right now (the larger of the hand's
+and the elbow's distance), colored by size; the motors' panel, the one that runs on
+the robot, is framed.
+usage: render_impedance4.py <npz> <out_dir> [font.otf]   (writes <out_dir>/<name>/frame_NNNN.png)"""
 import os
 import sys
 
 os.environ.setdefault("MUJOCO_GL", "egl")
 import mujoco  # noqa: E402
 import numpy as np  # noqa: E402
-from PIL import Image  # noqa: E402
+from PIL import Image, ImageDraw, ImageFont  # noqa: E402
 
 from openarm.config import OpenarmConfig  # noqa: E402
 
 src, out = sys.argv[1], sys.argv[2]
+FONT = sys.argv[3] if len(sys.argv) > 3 else "/usr/share/fonts/opentype/inter/Inter-Medium.otf"
+TOP = int(os.environ.get("TOP", 105))   # the panel is cropped to 640x390 from this row down
 z = np.load(src)
 m = mujoco.MjModel.from_xml_path(str(OpenarmConfig.default().model_path))
 d = mujoco.MjData(m)
@@ -66,6 +71,38 @@ def shot(qpos, arrow=None):
 
 
 names = ("pure", "mixed", "null", "passthru")
+LABEL = {"pure": "Cartesian", "mixed": "Cartesian, in joint space", "null": "Cartesian + null space",
+         "passthru": "Motor PD + gravity (runs now)"}
+hand_id, elbow_id = m.body("openarm_left_hand").id, m.body("openarm_left_link4").id
+big, small = ImageFont.truetype(FONT, 26), ImageFont.truetype(FONT, 22)
+GREEN, AMBER, RED, TEXT, MUTED = (111, 207, 151), (230, 180, 80), (240, 120, 80), (230, 232, 235), (163, 157, 151)
+
+
+def points(q):
+    d.qpos[:] = q
+    mujoco.mj_kinematics(m, d)
+    return d.xpos[hand_id].copy(), d.xpos[elbow_id].copy()
+
+
+def off_plan(q, qref):
+    (h, e), (hr, er) = points(q), points(qref)
+    return max(np.linalg.norm(h - hr), np.linalg.norm(e - er))
+
+
+def annotate(img, name, off):
+    im = Image.fromarray(img)
+    dr = ImageDraw.Draw(im)
+    x, y = 22, TOP + 16
+    dr.text((x, y), LABEL[name], font=big, fill=GREEN if name == "passthru" else TEXT)
+    cm = off * 100
+    color = GREEN if cm < 1 else AMBER if cm < 3 else RED
+    dr.text((x, y + 36), "off plan", font=small, fill=MUTED)
+    dr.text((x + dr.textlength("off plan  ", font=small), y + 36), f"{cm:4.1f} cm", font=small, fill=color)
+    if name == "passthru":
+        dr.rounded_rectangle((3, TOP + 3, W - 4, TOP + 386), radius=10, outline=GREEN, width=3)
+    return np.asarray(im)
+
+
 backs = []
 for k in range(len(z["t"])):
     ghost, gmask = shot(z["ref"][k])
@@ -80,5 +117,6 @@ for name in names:
                 arrow = (int(body), f)
         rgb, seg = shot(z[name][k], arrow)
         img = np.where(seg[..., None], BG + rgb * (1 - BG / 255), back).astype(np.uint8)
+        img = annotate(img, name, off_plan(z[name][k], z["ref"][k]))
         Image.fromarray(img).save(f"{out}/{name}/frame_{k:04d}.png")
 print("frames", len(z["t"]), "per panel")
