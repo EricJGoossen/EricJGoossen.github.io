@@ -24,3 +24,12 @@ radius sweeps 85–100% of its tuned value). Frames to clips:
 
     ffmpeg -framerate 30 -i auto/frame_%04d.png -vf scale=720:-2 -c:v libx264 -crf 26 -preset slow -pix_fmt yuv420p -an -movflags +faststart kf-competition-run.mp4
     ffmpeg -framerate 30 -i sweep/frame_%04d.png -vf scale=720:-2 -c:v libx264 -crf 26 -preset slow -pix_fmt yuv420p -an -movflags +faststart kf-radius-sweep.mp4
+
+`make_lqr_media.py <csv dir> <out dir>` draws `lqr-vs-pure-pursuit.mp4` (frames; then
+`ffmpeg -framerate 30 -i frames/frame_%04d.png -vf scale=720:-2,tpad=stop_mode=clone:stop_duration=1.5 ...`)
+and `lqr-vs-pure-pursuit.svg` from `data/{slalom,square,engineer}.csv`, the output of LQRPathing's
+`tools/compare_pure_pursuit` (branch `finish-mvp`) for these waypoints:
+
+    compare_pure_pursuit 0.4 0.5 3.2 0.9 0.8 1.9 3.4 2.9 0.6 3.9 > slalom.csv
+    compare_pure_pursuit 0.5 0.5 4.0 0.5 4.0 4.0 0.5 4.0 > square.csv
+    compare_pure_pursuit 0.93 4.10 2.2 3.4 3.54 2.70 > engineer.csv
