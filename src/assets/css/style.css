@@ -415,9 +415,11 @@ main.wrap:has(> .project, > .skill-page) { --wrap: 72rem; }
 .entry .row-media figure.tall { grid-column: auto; }
 .entry .row-media figure.tall:only-child,
 .entry .row-media figure:not(.tall) + figure.tall:last-child { grid-column: 1 / -1; justify-self: center; width: calc(50% - 0.5rem); }
+.entry .row-media figure.narrow { justify-self: center; width: 75%; }
 .entry .row-media img, .row-media video { width: 100%; margin: 0; }
 @media (max-width: 800px) {
   .row { grid-template-columns: minmax(0, 1fr); gap: 1rem; padding: 1.25rem 0; }
+  .entry .row-media figure.half { grid-column: 1 / -1; }   /* side by side only where there's room */
 }
 
 /* As each row scrolls into view its text rises in and its media slides in from
