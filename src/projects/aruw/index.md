@@ -18,6 +18,8 @@ highlights:
     entry: lqr-path-tracking
     skills: [C++, Control systems]
 links:
+  - label: ARUW
+    url: https://aruw.org/
   - label: Team code (GitLab)
     url: https://gitlab.com/aruw/controls/aruw-mcb
   - label: Odin characterization

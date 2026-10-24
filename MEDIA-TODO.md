@@ -18,10 +18,7 @@ delete its line here.
 
 ## Botswana
 
-- [ ] Photos: giving the embassy speech; speaking while the Botswana FLL team demos their robot;
-      explaining to students at Mogoditshane; a group photo there.
-- [ ] A hero (a wide shot of the embassy event, or the robot demo in low light) and a cover (at the
-      podium, or students around a laptop or the robot), ideally not from the trip blog.
+- [ ] A hero, if you want one (the page has none; the cover is the tree photo).
 - [ ] The Dare to Dream and BTV Facebook posts, for the BTV appearance (the overview and the embassy
       entry have a Placeholder line for it).
 - [ ] The exercises and coding guide written for teammates before the trip.
@@ -32,10 +29,13 @@ delete its line here.
       robot reveal at https://www.youtube.com/watch?v=FGh1yQdJGeM. YouTube is blocked from the cloud
       session: allow `www.youtube.com` and `*.googlevideo.com` in the environment's network settings, or
       send the MP4s.
-- [ ] A cover (sentry photos; SharePoint once a connector is set up, or a shared Drive folder).
-- [ ] The competition entry (`log/2025-10-01-the-competition.md`, a draft): what a match is, the ARC
-      competition, which robots you worked on, and the reveal clips.
-- [ ] The SLAM map for the error-model entry (another session is building it).
+- [ ] Photos from your zipped ARUW files (SharePoint didn't work): the brief for the agent going through
+      them was sent in chat on Oct 24. A cover, a hero still, the sentry and engineer, competition shots.
+- [ ] The competition entry (`log/2025-10-01-the-competition.md`, a draft): how a game is won, how ARUW
+      did at the last ARC, and the reveal clips.
+- [ ] The Odin depth image for the error-model entry (in place of the SLAM map, which didn't work out):
+      it came through in chat but not as a file, so send it again as an attachment or in Drive.
+- [ ] Check the ARUW link (https://aruw.org/, from UW ECE's news pages; the cloud session can't reach it).
 
 ## Fleet RL
 

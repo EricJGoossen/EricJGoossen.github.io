@@ -82,7 +82,10 @@ print(f"auto: {t[-1]:.1f} s, {np.sum(np.hypot(np.diff(x), np.diff(y))):.2f} m, e
 # Eric's 5 m sideways push (strafe.csv), replayed through his own filter replica with the pods
 # interpolated from their design values (rolling straight along the axes, 15.2 mm wheels, CAD
 # positions) to his tuned ones. The log's IMU heading is the check: the robot really turned
-# about 13 degrees while being pushed, and the wheels alone should say the same.
+# about 13 degrees while being pushed, and the wheels alone should say the same. The dashed
+# reference is the IMU's version of the push: moving straight sideways in the robot's own frame
+# (at the tuned wheels' speed) while turning as the IMU says, scaled to 5 m. A straight line
+# along the starting heading would ignore that turn and leave even a perfect estimate ~10 degrees off it.
 sys.path.insert(0, os.path.join(src, "odo_tuner"))
 spec = importlib.util.spec_from_file_location("replay", os.path.join(src, "odo_tuner", "field_odometry_replay.py"))
 rp = importlib.util.module_from_spec(spec); spec.loader.exec_module(rp)
@@ -94,25 +97,34 @@ ts = data["t"] - data["t"][0]
 tuned = rp.PODS
 design = {"p1": dict(theta=0.0, x=0.0, y=0.0777, radius=0.0152), "p2": dict(theta=0.0, x=0.0, y=-0.081, radius=0.0152),
           "perp": dict(theta=np.pi / 2, x=-0.1442, y=0.0, radius=0.0152)}
+def body_side_speed(pods):
+    AI = rp.build_AI(pods, rp.POD_ORDER)
+    raw = np.stack([data[n] for n in rp.POD_ORDER], 1) * np.array([pods[n]["radius"] for n in rp.POD_ORDER])
+    dt = np.minimum(np.diff(data["t"], prepend=data["t"][0]), rp.MAX_GAP_S)
+    return (raw @ AI.T)[:, 1] * dt
+step = body_side_speed(tuned)
+ref_x, ref_y = np.cumsum(-step * np.sin(np.radians(imu))), np.cumsum(step * np.cos(np.radians(imu)))
+scale = 5.0 / np.hypot(ref_x[-1], ref_y[-1]); ref_x, ref_y = ref_x * scale, ref_y * scale
 fracs = np.r_[0.0, (1 - np.cos(np.linspace(0, np.pi, 40))) / 2]
 runs = []
 for f in fracs:
     pods = {n: {k_: design[n][k_] + f * (tuned[n][k_] - design[n][k_]) for k_ in design[n]} for n in design}
     xs, ys, yaws = rp.simulate(data, pods=pods, init_yaw=0.0, init_pos=(0.0, 0.0))
-    runs.append((f, xs, ys, np.degrees(yaws), np.hypot(xs[-1], ys[-1])))
+    runs.append((f, xs, ys, np.degrees(yaws), np.hypot(xs[-1], ys[-1]), np.hypot(xs[-1] - ref_x[-1], ys[-1] - ref_y[-1])))
 os.makedirs(f"{out}/sweep", exist_ok=True)
 hold = {0: 30, len(fracs) - 1: 90}                                  # frames to hold first and last
 k = 0
-for j, (f, xs, ys, yd, dist) in enumerate(runs):
+for j, (f, xs, ys, yd, dist, miss) in enumerate(runs):
     for _ in range(hold.get(j, 2)):
         fig = plt.figure(figsize=(6.4, 6.4), dpi=150, facecolor=BG)
         ax = fig.add_axes([0.06, 0.36, 0.88, 0.58]); ax.set_facecolor(BG)
-        ax.plot([0, 0], [0, -5], "--", color=MUTED, lw=1.2)
+        ax.plot(ref_x, ref_y, "--", color=FG, lw=1.4)
         ax.plot(xs, ys, color=BLUE, lw=2.4)
         ax.plot(xs[0], ys[0], "o", color=GREEN, ms=8); ax.plot(xs[-1], ys[-1], "o", color=ORANGE, ms=8)
         ax.set_xlim(-3.3, 3.3); ax.set_ylim(-5.6, 0.6); ax.set_aspect("equal"); ax.axis("off")
         ax.text(-3.25, 0.35, "the 5 m push sideways, as the wheels see it", fontsize=10, color=MUTED)
-        ax.text(0.15, -5.0, "5 m", fontsize=9, color=MUTED)
+        m = np.searchsorted(-ref_y, 3.0)
+        ax.text(ref_x[m] + 0.25, ref_y[m], "dashed: where the\nIMU's heading\nsays it went", fontsize=9, color=MUTED, va="center")
         ax2 = fig.add_axes([0.13, 0.08, 0.82, 0.22], facecolor=BG)
         ax2.plot(ts, imu, "--", color=FG, lw=1.4, label="IMU")
         ax2.plot(ts, yd, color=BLUE, lw=2, label="wheels")
@@ -127,5 +139,5 @@ for j, (f, xs, ys, yd, dist) in enumerate(runs):
         fig.savefig(f"{out}/sweep/frame_{k:04d}.png", facecolor=BG)
         plt.close(fig)
         k += 1
-print("strafe: design %.2f m, heading %+.1f; tuned %.2f m, heading %+.1f; IMU %+.1f" %
-      (runs[0][4], runs[0][3][-1], runs[-1][4], runs[-1][3][-1], imu[-1]))
+print("strafe: design %.2f m, heading %+.1f, %.0f cm off the IMU's path; tuned %.2f m, heading %+.1f, %.0f cm off; IMU %+.1f" %
+      (runs[0][4], runs[0][3][-1], 100 * runs[0][5], runs[-1][4], runs[-1][3][-1], 100 * runs[-1][5], imu[-1]))

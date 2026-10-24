@@ -20,7 +20,8 @@ From Eric's own figures and screenshots (Oct 24), cropped only:
 from `Ozone_DataSampling_260630.csv` over `field.png`, with `path.yaml`'s stops, cut to the 4.2 s drive
 plus half a second either side) and `kf-tuning.mp4` (`odo_tuner/strafe.csv`, the 5 m sideways push,
 replayed by Eric's `odo_tuner/field_odometry_replay.py` with the pods moving from their design values to
-his tuned ones, against the same log's IMU heading). Frames to clips (960 px wide):
+his tuned ones, against the same log's IMU heading; the dashed reference is that IMU heading's version of the push, moving
+straight sideways in the robot's frame while turning as the IMU says, scaled to 5 m). Frames to clips (960 px wide):
 
     ffmpeg -framerate 30 -i auto/frame_%04d.png -vf scale=960:-2 -c:v libx264 -crf 26 -preset slow -pix_fmt yuv420p -an -movflags +faststart kf-competition-run.mp4
     ffmpeg -framerate 30 -i sweep/frame_%04d.png -vf scale=960:-2 -c:v libx264 -crf 26 -preset slow -pix_fmt yuv420p -an -movflags +faststart kf-tuning.mp4
@@ -40,3 +41,5 @@ A joint fit of all nine pod parameters to the square, the spin and the two pushe
 loop by breaking agreement with the IMU (strafe heading +48° against the IMU's −13°), so the square's
 true shape is unknown and it is left out. With the tuned pods the pushes come to 4.98 and 4.99 m and
 their headings to within 1° of the IMU's; with the design values the strafe reads 4.44 m and +79°.
+The tuned strafe ends 20 cm from the IMU's path (the design values, 3.7 m): the two headings wander a
+few degrees apart during the minute-long push and meet again at the end.
