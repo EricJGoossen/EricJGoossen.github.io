@@ -8,5 +8,5 @@ Detecting contacts is only half the battle; working out what happens next is the
 
 ½ (a − a₀)ᵀ M (a − a₀) + Σᵢ ½ Dᵢ (Jᵢ a − a_ref,ᵢ)²,
 
-staying close to the unconstrained acceleration a₀ while penalizing contact violations. It warm-starts from the previous frame's solution when that costs less, then runs a fixed 20 conjugate-gradient iterations to suit SIMD and GPUs, never building the mass matrix. The corrected acceleration then goes to the integrator.
+staying close to the unconstrained acceleration a₀ while penalizing contact violations. It warm-starts from the previous frame's solution when that costs less, then runs a fixed 20 conjugate-gradient iterations to suit SIMD and GPUs, never building the mass matrix. The corrected acceleration then goes to the integrator. [[Code](https://github.com/EricJGoossen/achilles/tree/EricG/collision-resolution)]
 {% endrow %}
