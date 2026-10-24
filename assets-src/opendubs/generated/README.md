@@ -53,8 +53,8 @@ resized. Placeholder: confirm they can be used here and who to credit.
 A two-arm handover of a can, planned with the unmodified ArmGroup planner (openarm's `Openarm`
 wrapper around mj_manipulator) in the OpenArm model plus a table (`scripts/handover_scene.py`):
 the right arm picks the can while the left gets in position, the right brings it over, the left
-takes it and sets it down while the right goes back to ready, then the same in mirror so the clip
-loops (both arms start and end at ready). The moves are planned one arm at a time (an idle arm
+takes it and sets it down while the right goes back to ready, then, after both arms rest at ready for
+a second, the same in mirror so the clip loops (both arms start and end at ready). The moves are planned one arm at a time (an idle arm
 held exactly still), then overlapped: each arm plays its own moves back to back and waits for the
 other only where the task needs it (the taker reaches in once the giver is there; the giver lets
 go once the taker has closed). Every overlapped frame that differs from the plan is re-checked

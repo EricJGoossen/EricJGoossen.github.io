@@ -648,6 +648,7 @@ for sd in ("left", "right"):          # start (and end) at the ready pose, so th
 mujoco.mj_forward(m, d)
 record(d.qpos[joint["left"]].copy(), d.qpos[joint["right"]].copy())
 pass_can("right", "left", SPOTS["right"], SPOTS["left"])
+hold(1.0)  # halfway: both arms back at ready and still for a second before the mirror pass
 state["mirror"] = True  # the mirror image of a grasp is the same grasp rolled 180°
 pass_can("left", "right", SPOTS["left"], SPOTS["right"])
 
