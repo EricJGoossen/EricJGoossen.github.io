@@ -3,25 +3,22 @@ layout: project.njk
 draft: true   # hidden from the site until this line is removed
 title: Fleet RL
 org: "WEIRD Lab"
-timeline: Placeholder timeline
-tools: [Placeholder tool, Placeholder tool]
+timeline: Sep 2026 – present
+tools: [Python, OpenCV, AprilTags, SO-101]
 order: 3
-summary: Placeholder one-line summary of Fleet RL.
-# cover: images/cover.jpg   # card image on the home page
-# hero: images/hero.jpg     # big image at the top of this page
+summary: Twelve low-cost robot arms learning one task together, with resets that need no human.
+# Placeholder: Eric will pick the hero (a fleet panorama) and the card (the twelve scene cameras).
+# The two images below, from the fleet handbook, hold their places until then.
+cover: images/scene-cams-all.jpg
+hero: images/fleet-panorama.jpg
+heroAlt: Placeholder description of the hero image
 highlights:
-  - label: Highlight one
-    entry: highlight-one
-    skills: [Reinforcement learning, PyTorch]
-  - label: Highlight two
-    entry: highlight-two
-    skills: [MuJoCo, Python]
+  - label: Automatic reset
+    entry: automatic-reset
+    skills: [Reinforcement learning, Motion planning, Python]
 links:
   - label: GitHub
-    url: "#"
-  - label: Paper
-    url: "#"
-  - label: Video
-    url: "#"
+    url: "https://github.com/knightnemo/fleet_so101_infra"
 ---
-Placeholder overview of Fleet RL. What the project is, why it matters, your role, and the headline result, in one short paragraph.
+{# From Eric (Oct 24): the overview is about cohesive learning across 12 arms, with an expected improvement of more than 12x. #}
+We're building a system in which twelve robot arms with diverse embodiments learn together: every arm's experience trains one shared policy. With the arms learning from each other, we expect more than a twelvefold improvement over a single arm. Online reinforcement learning only works if the arms can keep practising without a person resetting every trial, so my part so far is the automatic reset.

@@ -15,7 +15,7 @@
   {"name": "Public speaking", "best": "botswana/us-embassy"},
   {"name": "Outreach", "best": "botswana/us-embassy"},
   {"name": "PyTorch"},
-  {"name": "Reinforcement learning", "best": "fleet-rl/highlight-one"},
+  {"name": "Reinforcement learning", "best": "fleet-rl/automatic-reset"},
   {"name": "Embedded C"},
   {"name": "CAD"}
 ]
