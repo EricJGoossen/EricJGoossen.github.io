@@ -16,6 +16,16 @@ delete its line here.
       is one candidate.
 - [ ] A new quick teleop video: a short clip of the arms moving fast on teleop.
 
+## Botswana
+
+- [ ] Photos: giving the embassy speech; speaking while the Botswana FLL team demos their robot;
+      explaining to students at Mogoditshane; a group photo there.
+- [ ] A hero (a wide shot of the embassy event, or the robot demo in low light) and a cover (at the
+      podium, or students around a laptop or the robot), ideally not from the trip blog.
+- [ ] The Dare to Dream and BTV Facebook posts, for the BTV appearance (the overview and the embassy
+      entry have a Placeholder line for it).
+- [ ] The exercises and coding guide written for teammates before the trip.
+
 ## Still owed from earlier rounds
 
 - [ ] ARUW: LD19 lidar screenshots, sentry photos, LQR path-tracking footage.
@@ -25,5 +35,7 @@ delete its line here.
 
 ## Still to write
 
+- [ ] Botswana: the fundraising entry.
+- [ ] Botswana: the leadership entry.
 - [ ] HCRL: the "writing the paper" entry. The old draft and its page images are in
       `assets-src/hil-cap/writing-the-paper/`.

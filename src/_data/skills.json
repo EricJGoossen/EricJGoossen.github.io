@@ -12,6 +12,8 @@
   {"name": "VLA benchmarking", "best": "hil-cap/experiment-design"},
   {"name": "Experiment design", "best": "hil-cap/experiment-design"},
   {"name": "Python", "best": "hil-cap/harness"},
+  {"name": "Public speaking", "best": "botswana/us-embassy"},
+  {"name": "Outreach", "best": "botswana/us-embassy"},
   {"name": "PyTorch"},
   {"name": "Reinforcement learning", "best": "fleet-rl/highlight-one"},
   {"name": "Embedded C"},
