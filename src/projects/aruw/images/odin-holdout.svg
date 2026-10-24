@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 420" role="img" aria-labelledby="t d">
+  <title id="t">The error model&#x27;s hold-out check: every axis passes</title>
+  <desc id="d">For each axis, the Odin1&#x27;s real RMSE on a held-out 40 s session (dot) against the range the error model predicts for that session (bar: 5th to 95th percentile of 200 simulated runs along the same trajectory). Position: along-track 3.40 cm (predicted 0.83-3.54), cross-track 3.85 cm (0.86-8.93), vertical 0.59 cm (0.55-4.83). Rotation: roll 0.25 degrees (0.32-1.27), pitch 0.45 (0.26-1.61), yaw 0.33 (0.22-0.99). Every axis passes the rank test (family-wise alpha 0.10); roll sits just under its band.</desc>
+  <style>
+    svg { --text:#1c1917; --muted:#6b6560; --grid:#e7e5e4; --axis:#a8a29e;
+          --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#6250d6; --ref:#78716c; }
+    @media (prefers-color-scheme: dark) {
+      svg { --text:#f2f1ef; --muted:#a39d97; --grid:#33312e; --axis:#57534e;
+            --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#9085e9; --ref:#a8a29e; }
+    }
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: var(--text); font-size: 13px; }
+    .m { fill: var(--muted); } .s { font-size: 12px; } .b { font-weight: 650; }
+    .e { text-anchor: end; } .c { text-anchor: middle; }
+    .grid { stroke: var(--grid); stroke-width: 1; }
+    .axis { stroke: var(--axis); stroke-width: 1; }
+    .ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+    .dash { stroke-dasharray: 6 4; }
+    .guide { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+  </style>
+  <rect x="110" y="12" width="22" height="12" rx="3" style="fill:var(--s1)" fill-opacity="0.22"/><text class="s" x="138" y="22">predicted 5-95%</text><circle cx="268" cy="18" r="5.5" style="fill:var(--s2)"/><text class="s" x="280" y="22">real</text>
+  <g transform="translate(0,30)"><line class="grid" x1="110.0" x2="110.0" y1="40" y2="150"/>
+  <text class="s m c" x="110.0" y="168">0</text>
+  <line class="grid" x1="219.2" x2="219.2" y1="40" y2="150"/>
+  <text class="s m c" x="219.2" y="168">2</text>
+  <line class="grid" x1="328.4" x2="328.4" y1="40" y2="150"/>
+  <text class="s m c" x="328.4" y="168">4</text>
+  <line class="grid" x1="437.6" x2="437.6" y1="40" y2="150"/>
+  <text class="s m c" x="437.6" y="168">6</text>
+  <line class="grid" x1="546.8" x2="546.8" y1="40" y2="150"/>
+  <text class="s m c" x="546.8" y="168">8</text>
+  <line class="grid" x1="656.0" x2="656.0" y1="40" y2="150"/>
+  <text class="s m c" x="656.0" y="168">10</text>
+  <text class="s m c" x="383" y="184">RMSE (cm)</text>
+  <text class="b" x="10" y="22">Position</text>
+  <text class="s e" x="100" y="62.3">along-track</text>
+  <rect x="155.3" y="51.3" width="148.0" height="14" rx="3" style="fill:var(--s1)" fill-opacity="0.22"/>
+  <circle cx="295.6" cy="58.3" r="5.5" style="fill:var(--s2)"/>
+  <text class="s" x="304.6" y="49.3">3.4</text>
+  <text class="s e" x="100" y="99.0">cross-track</text>
+  <rect x="157.0" y="88.0" width="440.6" height="14" rx="3" style="fill:var(--s1)" fill-opacity="0.22"/>
+  <circle cx="320.2" cy="95.0" r="5.5" style="fill:var(--s2)"/>
+  <text class="s" x="329.2" y="86.0">3.85</text>
+  <text class="s e" x="100" y="135.7">vertical</text>
+  <rect x="140.0" y="124.7" width="233.7" height="14" rx="3" style="fill:var(--s1)" fill-opacity="0.22"/>
+  <circle cx="142.2" cy="131.7" r="5.5" style="fill:var(--s2)"/>
+  <text class="s" x="151.2" y="122.7">0.59</text></g>
+  <g transform="translate(0,225)"><line class="grid" x1="110.0" x2="110.0" y1="40" y2="150"/>
+  <text class="s m c" x="110.0" y="168">0</text>
+  <line class="grid" x1="246.5" x2="246.5" y1="40" y2="150"/>
+  <text class="s m c" x="246.5" y="168">0.5</text>
+  <line class="grid" x1="383.0" x2="383.0" y1="40" y2="150"/>
+  <text class="s m c" x="383.0" y="168">1</text>
+  <line class="grid" x1="519.5" x2="519.5" y1="40" y2="150"/>
+  <text class="s m c" x="519.5" y="168">1.5</text>
+  <line class="grid" x1="656.0" x2="656.0" y1="40" y2="150"/>
+  <text class="s m c" x="656.0" y="168">2</text>
+  <text class="s m c" x="383" y="184">RMSE (degrees)</text>
+  <text class="b" x="10" y="22">Rotation</text>
+  <text class="s e" x="100" y="62.3">roll</text>
+  <rect x="197.4" y="51.3" width="259.3" height="14" rx="3" style="fill:var(--s1)" fill-opacity="0.22"/>
+  <circle cx="178.2" cy="58.3" r="5.5" style="fill:var(--s2)"/>
+  <text class="s" x="187.2" y="49.3">0.25</text>
+  <text class="s e" x="100" y="99.0">pitch</text>
+  <rect x="181.0" y="88.0" width="368.5" height="14" rx="3" style="fill:var(--s1)" fill-opacity="0.22"/>
+  <circle cx="232.9" cy="95.0" r="5.5" style="fill:var(--s2)"/>
+  <text class="s" x="241.9" y="86.0">0.45</text>
+  <text class="s e" x="100" y="135.7">yaw</text>
+  <rect x="170.1" y="124.7" width="210.2" height="14" rx="3" style="fill:var(--s1)" fill-opacity="0.22"/>
+  <circle cx="200.1" cy="131.7" r="5.5" style="fill:var(--s2)"/>
+  <text class="s" x="209.1" y="122.7">0.33</text></g>
+</svg>

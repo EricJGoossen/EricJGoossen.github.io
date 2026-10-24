@@ -5,6 +5,7 @@
   {"name": "ROS 2", "best": "opendubs/lidar"},
   {"name": "State estimation", "best": "opendubs/optical-flow"},
   {"name": "Motion planning", "best": "opendubs/arm-group"},
+  {"name": "Control systems", "best": "aruw/lqr-path-tracking"},
   {"name": "Impedance control", "best": "opendubs/impedance-control"},
   {"name": "Teleoperation", "best": "opendubs/teleop"},
   {"name": "Docker", "best": "opendubs/bringup"},

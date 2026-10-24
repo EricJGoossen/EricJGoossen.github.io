@@ -6,17 +6,17 @@ org: "Advanced Robotics at UW"
 timeline: Oct 2025 – present
 tools: [C++, Python, ROS 2, Kalman filter, LQR, motion capture]
 order: 4
-summary: Control and localization for ARUW's competition robots, from Kalman-filter odometry and LQR path tracking to a mocap campaign that measures the sentry's localization.
+summary: Localization and control for ARUW's competition robots, from Kalman-filter odometry and LQR path tracking to measuring the sentry's localization against motion capture.
 highlights:
-  - label: Localization campaign
-    entry: odin-characterization
-    skills: [State estimation, Python, Experiment design]
+  - label: Odin error model
+    entry: odin-error-model
+    skills: [State estimation, Experiment design, Python]
   - label: LQR path tracking
     entry: lqr-path-tracking
-    skills: [C++]
+    skills: [C++, Control systems]
 links:
   - label: GitHub
     url: https://github.com/EricJGoossen/odin-characterization
 ---
-{# Placeholder: Eric to confirm the whole page, and to add photos or video of the robots. Drafted from his resume and EricJGoossen/odin-characterization (Sep 28 – Oct 8, 2026; much of it written with Claude Code, per the commit authors) and EricJGoossen/LQRPathing (May 2026, private). The ARUW team code (aruw-mcb, project-otto) isn't in any repo this session can read. Needed: a cover and a hero (robot photos or competition footage). #}
-I'm a control systems programmer on Advanced Robotics at UW, working on how the team's competition robots know where they are and how they follow a path. I implemented Kalman-filter odometry tuned on the physical robots, led a rewrite of path tracking on the embedded controller from pure pursuit to LQR, and built a motion-capture campaign that measures exactly how good the sentry's lidar-inertial localization is.
+{# Placeholder: Eric to confirm the whole page; the hero and card images are his to add. Overview from Eric (Oct 24): started on controls; after the sentry's autonomous navigation struggled at the ARC robotics competition, moved to vision to fix it; this year owns the sentry's path planning and state machine, and wants to look at learning-based control to counter opponents. #}
+I joined Advanced Robotics at UW, the university's RoboMaster team, as a control systems programmer: I reworked the chassis's Kalman-filter odometry for new odometry pods and led a rewrite of its path tracking from pure pursuit to LQR. At the ARC robotics competition, the sentry, our autonomous robot, didn't navigate as well as it needed to, so I switched to the vision team to be the one to fix that, starting by measuring exactly how good its localization is against motion capture. This year I own the sentry's path planning and state machine, and I want to look into learning-based control, so it can adapt to opponents as the match unfolds.
