@@ -42,7 +42,7 @@ Single scrolling page, in this order (a compact intro, then skills and projects 
 | `/projects/aruw/` | Advanced Robotics at UW | ARUW |
 | `/projects/achilles/` | Achilles | |
 | `/projects/botswana/` | Botswana | |
-| `/projects/assorted/` | Assorted projects | One page, several short sections |
+| `/projects/ftc/` | FTC (SKIDADDLE, Live View) | One page, one or two entries per project |
 
 ## How skills and highlights connect
 

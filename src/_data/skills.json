@@ -12,6 +12,7 @@
   {"name": "VLA benchmarking", "best": "hil-cap/experiment-design"},
   {"name": "Experiment design", "best": "hil-cap/experiment-design"},
   {"name": "Python", "best": "hil-cap/harness"},
+  {"name": "Java", "best": "ftc/skidaddle-library"},
   {"name": "Public speaking", "best": "botswana/us-embassy"},
   {"name": "Outreach", "best": "botswana/us-embassy"},
   {"name": "PyTorch"},
