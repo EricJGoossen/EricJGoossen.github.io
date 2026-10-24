@@ -18,7 +18,6 @@ permalink: /
 {% if collections.skillPages.length %}
 <section id="skills">
   <h2>Skills</h2>
-  <p class="muted">Pick a skill to see every log entry that shows it.</p>
   <nav class="chips" aria-label="Skills">
     {% for skill in collections.skillPages %}<a class="chip" href="/skills/{{ skill.slug }}/">{{ skill.name }} <span class="chip-count">{{ skill.uses.length }}</span></a>{% endfor %}
   </nav>

@@ -1,6 +1,7 @@
 /* ---------- Tokens ---------- */
 :root {
   --bg: #fcfcfb;
+  --bg-rgb: 252 252 251;   /* --bg as rgb channels, for fades into the page */
   --surface: #ffffff;
   --text: #1c1917;
   --muted: #6b6560;
@@ -19,6 +20,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #161514;
+    --bg-rgb: 22 21 20;
     --surface: #1f1e1c;
     --text: #f2f1ef;
     --muted: #a39d97;
@@ -252,6 +254,48 @@ main:focus { outline: none; }
 
 /* ---------- Project page ---------- */
 .back { display: inline-block; margin: 1rem 0; color: var(--muted); }
+/* On project and skill pages the way back stays on screen: in the margin beside
+   the column on wide screens, and as a round button in the bottom corner on
+   narrower ones (where the margin has no room). */
+.project > .back, .skill-page > .back {
+  position: fixed;
+  z-index: 10;
+  left: 1rem;
+  bottom: 1rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.12);
+  color: var(--text);
+  font-size: 0;
+  line-height: 2.6rem;
+  text-align: center;
+  text-decoration: none;
+}
+.project > .back::before, .skill-page > .back::before { content: "←"; font-size: 1.2rem; }
+.project > .back:hover, .skill-page > .back:hover { border-color: var(--muted); }
+@media (min-width: 1500px) {
+  .project > .back, .skill-page > .back {
+    top: 6rem;
+    bottom: auto;
+    left: calc(50% - var(--wrap) / 2 - 10.5rem);
+    width: 9rem;
+    height: auto;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    text-align: right;
+  }
+  .project > .back::before, .skill-page > .back::before { content: none; }
+  .project > .back:hover, .skill-page > .back:hover { color: var(--text); }
+}
 .project-nav {
   display: flex;
   justify-content: space-between;
@@ -271,9 +315,9 @@ main:focus { outline: none; }
 
 .highlights h2, .log > h2 { margin-bottom: 1rem; }
 
-/* Project intro over its hero image or video. The panel is always dark (a
-   gradient over the footage), so its text uses fixed light colors in both
-   themes. */
+/* Project intro over its hero image or video. The footage fades into the page's
+   own background on every side, so the hero has no visible edge, and the text
+   sits on the faded left side in the page's own colors (light or dark). */
 .project-hero {
   position: relative;
   isolation: isolate;
@@ -282,9 +326,8 @@ main:focus { outline: none; }
   min-height: min(82vh, 44rem);
   margin: 0.25rem 0 3rem;
   overflow: hidden;
-  border-radius: calc(var(--radius) * 1.6);
-  background: #0f1114;
-  color: #f3f2f0;
+  background: var(--bg);
+  color: var(--text);
 }
 .hero-bg { position: absolute; inset: 0; z-index: -2; }
 .hero-bg video, .hero-bg img {
@@ -294,7 +337,7 @@ main:focus { outline: none; }
   border-radius: 0;
   object-fit: cover;
   object-position: 30% 40%;
-  background: #0f1114;
+  background: var(--bg);
 }
 .hero-bg .still { display: none; }
 .project-hero::before {
@@ -303,34 +346,25 @@ main:focus { outline: none; }
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(90deg, rgb(11 12 15 / 0.94) 0%, rgb(11 12 15 / 0.82) 34%, rgb(11 12 15 / 0.3) 66%, rgb(11 12 15 / 0) 82%, rgb(11 12 15 / 0.55) 93%, rgb(11 12 15 / 0.95) 100%),
-    linear-gradient(0deg, rgb(11 12 15 / 1) 0%, rgb(11 12 15 / 0.8) 18%, rgb(11 12 15 / 0) 60%),
-    linear-gradient(180deg, rgb(11 12 15 / 1) 0%, rgb(11 12 15 / 0.6) 9%, rgb(11 12 15 / 0) 30%);
+    linear-gradient(90deg, rgb(var(--bg-rgb) / 0.94) 0%, rgb(var(--bg-rgb) / 0.82) 34%, rgb(var(--bg-rgb) / 0.3) 66%, rgb(var(--bg-rgb) / 0) 82%, rgb(var(--bg-rgb) / 0.55) 93%, rgb(var(--bg-rgb) / 1) 100%),
+    linear-gradient(0deg, rgb(var(--bg-rgb) / 1) 0%, rgb(var(--bg-rgb) / 0.8) 18%, rgb(var(--bg-rgb) / 0) 60%),
+    linear-gradient(180deg, rgb(var(--bg-rgb) / 1) 0%, rgb(var(--bg-rgb) / 0.6) 9%, rgb(var(--bg-rgb) / 0) 30%);
 }
 .hero-content { max-width: 40rem; padding: clamp(1.5rem, 4.5vw, 3.25rem); }
 .project-hero h1 { margin-bottom: 0.4rem; font-size: clamp(2.75rem, 8vw, 4.75rem); letter-spacing: -0.035em; line-height: 1; }
-.project-hero .meta { color: rgb(243 242 240 / 0.74); }
-.project-hero a { color: #b7cbff; }
-.project-hero .bracket-links a::before, .project-hero .bracket-links a::after { color: rgb(243 242 240 / 0.55); }
-.project-hero .overview { margin: 1.1rem 0 0; color: rgb(243 242 240 / 0.92); }
+.project-hero .meta { color: var(--muted); }
+.project-hero .overview { margin: 1.1rem 0 0; }
 .project-hero .overview > :last-child { margin-bottom: 0; }
 .project-hero .highlights { margin: 0; }
 .project-hero .highlights h2 {
   margin: 1.6rem 0 0.65rem;
-  color: rgb(243 242 240 / 0.66);
+  color: var(--muted);
   font-size: 0.75rem;
   font-weight: 650;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
-.project-hero .chip {
-  border-color: rgb(255 255 255 / 0.3);
-  background: rgb(255 255 255 / 0.1);
-  color: #fff;
-  backdrop-filter: blur(6px);
-}
-.project-hero .chip:hover, .project-hero .chip:focus-visible { border-color: #fff; background: rgb(255 255 255 / 0.22); color: #fff; }
-.project-hero :focus-visible { outline-color: #fff; }
+.project-hero .chip { background: rgb(var(--bg-rgb) / 0.7); backdrop-filter: blur(6px); }
 @media (max-width: 640px) {
   /* Phones: the footage is a band across the top that fades into the panel,
      and the text starts below it. */
@@ -338,7 +372,7 @@ main:focus { outline: none; }
   .hero-bg { bottom: auto; height: 19rem; }
   .hero-bg video, .hero-bg img { object-position: 45% 30%; }
   .project-hero::before {
-    background: linear-gradient(180deg, rgb(11 12 15 / 0) 0, rgb(11 12 15 / 0.2) 7rem, rgb(11 12 15 / 0.94) 15rem, #0b0c0f 19rem);
+    background: linear-gradient(180deg, rgb(var(--bg-rgb) / 0.6) 0, rgb(var(--bg-rgb) / 0.1) 3rem, rgb(var(--bg-rgb) / 0.2) 7rem, rgb(var(--bg-rgb) / 0.94) 15rem, var(--bg) 19rem);
   }
 }
 @media (prefers-reduced-motion: reduce) {
