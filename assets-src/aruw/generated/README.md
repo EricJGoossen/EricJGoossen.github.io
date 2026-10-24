@@ -15,3 +15,12 @@ From Eric's own figures and screenshots (Oct 24), cropped only:
 - `ld19-map.png`: map_01 from the LD19 test (Odin-posed LD19 scans, 5 cm cells, pushed path in red).
 - `sensor-coverage.png`: the sentry's sensor coverage, top-down, from the hand-eye mounting.
 - `odin-camera-view.jpg`: the view from the Odin's camera on the new mount.
+
+`make_kf_media.py <odom_data dir> <out dir>` draws the Kalman-filter clips from Eric's competition logs
+(`odom_data.zip`, sent Oct 24, kept out of the repo): `kf-competition-run.mp4` (the engineer's logged pose
+from `Ozone_DataSampling_260630.csv` over `field.png`, with `path.yaml`'s stops) and `kf-radius-sweep.mp4`
+(`odo_tuner/deadwheel_log.csv` replayed by Eric's `odo_tuner/field_odometry_replay.py` while pod `p1`'s
+radius sweeps 85–100% of its tuned value). Frames to clips:
+
+    ffmpeg -framerate 30 -i auto/frame_%04d.png -vf scale=720:-2 -c:v libx264 -crf 26 -preset slow -pix_fmt yuv420p -an -movflags +faststart kf-competition-run.mp4
+    ffmpeg -framerate 30 -i sweep/frame_%04d.png -vf scale=720:-2 -c:v libx264 -crf 26 -preset slow -pix_fmt yuv420p -an -movflags +faststart kf-radius-sweep.mp4

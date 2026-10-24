@@ -8,6 +8,9 @@ tools: [C++, Python, ROS 2, Kalman filter, LQR, motion capture]
 order: 4
 summary: Localization and control for ARUW's competition robots, from Kalman-filter odometry and LQR path tracking to measuring the sentry's localization against motion capture.
 highlights:
+  - label: Kalman-filter odometry
+    entry: kalman-filter
+    skills: [State estimation, C++]
   - label: Odin error model
     entry: odin-error-model
     skills: [State estimation, Experiment design, Python]
@@ -15,7 +18,9 @@ highlights:
     entry: lqr-path-tracking
     skills: [C++, Control systems]
 links:
-  - label: GitHub
+  - label: Team code (GitLab)
+    url: https://gitlab.com/aruw/controls/aruw-mcb
+  - label: Odin characterization
     url: https://github.com/EricJGoossen/odin-characterization
 ---
 {# Placeholder: Eric to confirm the whole page; the hero and card images are his to add. Overview from Eric (Oct 24): started on controls; after the sentry's autonomous navigation struggled at the ARC robotics competition, moved to vision to fix it; this year owns the sentry's path planning and state machine, and wants to look at learning-based control to counter opponents. #}
