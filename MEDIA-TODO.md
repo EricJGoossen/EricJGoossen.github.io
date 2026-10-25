@@ -4,10 +4,13 @@ Photos and videos Eric still needs to gather for the site, and entries still to 
 project's `images/` folder (see "Add images and videos" in `AGENTS.md`), wire it in, and
 delete its line here.
 
+## Home page
+
+- [ ] A higher-resolution headshot (the current `src/assets/photo.jpg` is small), so clicking the photo
+      on the home page can open it large.
+
 ## Achilles
 
-- [ ] A new block image of the simulator's design, to replace the current architecture
-      diagrams.
 - [ ] A new home page card image and a new hero image (the hero can wait until the full robot is
       modeled in Achilles).
 

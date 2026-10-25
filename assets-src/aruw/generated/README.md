@@ -44,10 +44,12 @@ their headings to within 1° of the IMU's; with the design values the strafe rea
 The tuned strafe ends 20 cm from the IMU's path (the design values, 3.7 m): the two headings wander a
 few degrees apart during the minute-long push and meet again at the end.
 - `hero-match.mp4`, `.jpg` (hero): "ARUW vs RoboGrinder | Match 113 | 3v3 ARC Championship 2026"
-  (YouTube PqSzhmRSAZA, MKV from Eric, Oct 25), 3:15.0–3:21.6, the side camera at our (red) end in
-  round 1: `crop=516:806:92:274`, which is the hero box's size and shape (heroSide: right) around
-  the sentry and another of our robots, so they show at full resolution in the hero's clear centre.
-  CRF 24, no audio. Round 2 is all the distant overhead camera.
+  (YouTube PqSzhmRSAZA, MKV from Eric, Oct 25), 16:40.5–16:46.0 (round 3, game clock 4:29–4:24), the
+  close side camera on the capture point: our red robot fighting two blue ones. Eric asked for combat
+  (Oct 25). `ffmpeg -ss 1000.5 -i match.mkv -t 5.5 -vf crop=516:806:600:0 -c:v libx264 -crf 24 -preset slow
+  -pix_fmt yuv420p -an -movflags +faststart`: the hero box's size and shape (heroSide: right) at full
+  resolution, centered on the clash; it stops before the broadcast's "Blue leads" banner. The poster is
+  the frame at 1003.8 s with the same crop.
 - `cover-reveal.mp4`, `.jpg` (card): three shots of the sentry from "ROBOT // REVEAL 2026"
   (FGh1yQdJGeM, WebM from Eric): 55.90–57.40 s, 67.00–68.85 s and 69.62–71.52 s, cut at the
   scene changes, cropped to 3:2 and scaled to 960×640, CRF 26, no audio.
