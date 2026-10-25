@@ -181,7 +181,7 @@ The checks can't judge content quality. Read what you wrote, and keep `Placehold
   - images and video do the visual work
   - restrained color
   - compact `[bracketed]` links
-- Home sections render only when their data has entries, in this order: Intro, Skills, Projects, Resume, Publications. The nav follows the same order.
+- Home sections render only when their data has entries, in this order: Intro, Skills, Projects, Publications, Resume. The nav follows the same order.
 - After a visual change, check:
   - light mode, dark mode, and a ~375px-wide phone
   - hover and keyboard focus on project tiles

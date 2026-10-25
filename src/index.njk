@@ -49,6 +49,14 @@ permalink: /
 </section>
 {% endif %}
 
+{% set pubs = publications | published %}
+{% if pubs.length %}
+<section id="publications">
+  <h2>Publications</h2>
+  {% for pub in pubs %}{% include "pub.njk" %}{% endfor %}
+</section>
+{% endif %}
+
 {% if resume.pdf and (resume.pdf | fileReady) %}
 <section id="resume">
   <div class="section-head">
@@ -58,14 +66,6 @@ permalink: /
   {% if resume.preview %}
   <a class="resume-page" href="{{ resume.pdf }}"><img src="{{ resume.preview }}" alt="{{ site.name }}'s resume (PDF)" width="1360" height="1760" loading="lazy"></a>
   {% endif %}
-</section>
-{% endif %}
-
-{% set pubs = publications | published %}
-{% if pubs.length %}
-<section id="publications">
-  <h2>Publications</h2>
-  {% for pub in pubs %}{% include "pub.njk" %}{% endfor %}
 </section>
 {% endif %}
 

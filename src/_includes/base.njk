@@ -34,8 +34,8 @@
         {#- Same order and conditions as the sections in index.njk -#}
         {% if collections.skillPages.length %}<a href="/#skills">Skills</a>{% endif %}
         {% if collections.projects.length %}<a href="/#projects">Projects</a>{% endif %}
-        {% if resume.pdf and (resume.pdf | fileReady) %}<a href="/#resume">Resume</a>{% endif %}
         {% if (publications | published).length %}<a href="/#publications">Publications</a>{% endif %}
+        {% if resume.pdf and (resume.pdf | fileReady) %}<a href="/#resume">Resume</a>{% endif %}
       </nav>
       {#- The results page has its own, larger box; the header one moves there (view transition in style.css) -#}
       {% if page.url != "/search/" %}{% include "search-form.njk" %}{% endif %}
