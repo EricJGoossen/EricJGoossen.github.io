@@ -1,4 +1,4 @@
-// The search box at the bottom of the home page (#search). The index is a JSON file built with the site
+// The search results page (/search/?q=...), opened from the box at the bottom of the home page. The index is a JSON file built with the site
 // (src/search-index.njk), so nothing leaves the site: every word typed has to
 // appear in a result's title, project or text. Titles count most.
 const root = new URL("../../", document.currentScript.src); // this file is /assets/js/search.js
@@ -47,11 +47,6 @@ function snippet(text, terms) {
 
 function render() {
   const query = input.value.trim();
-  const url = new URL(location.href);
-  if (query) url.searchParams.set("q", query);
-  else url.searchParams.delete("q");
-  history.replaceState(null, "", url);
-
   list.replaceChildren();
   if (!index) return;
   if (!query) {
@@ -80,7 +75,6 @@ function render() {
 }
 
 input.value = new URLSearchParams(location.search).get("q") ?? "";
-input.addEventListener("input", render);
 
 fetch(new URL("search-index.json", root))
   .then((response) => response.json())
@@ -89,5 +83,5 @@ fetch(new URL("search-index.json", root))
     render();
   })
   .catch(() => {
-    status.textContent = "Search couldn't load. Every project is listed above.";
+    status.textContent = "Search couldn't load. Every project is listed on the home page.";
   });

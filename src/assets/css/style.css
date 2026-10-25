@@ -574,9 +574,13 @@ figure .credit + figcaption { margin-top: 0.15rem; }
 /* ---------- Search ---------- */
 .search { padding-top: 1.5rem; }
 #search { scroll-margin-top: 4.75rem; }
+.search-form { display: flex; gap: 0.5rem; align-items: center; margin: 0.5rem 0 0.75rem; }
+.search-form .button { flex: none; padding: 0.7rem 1.1rem; font: inherit; font-weight: 550; color: var(--text); cursor: pointer; }
+.search-form .button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .search-input {
-  width: 100%;
-  margin: 0.5rem 0 0.75rem;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
   padding: 0.7rem 1rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);

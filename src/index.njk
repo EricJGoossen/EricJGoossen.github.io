@@ -1,7 +1,6 @@
 ---
 layout: base.njk
 permalink: /
-scripts: ["/assets/js/search.js"]
 ---
 {#- Each section only renders when its data file has something in it. -#}
 <section class="intro">
@@ -70,12 +69,8 @@ scripts: ["/assets/js/search.js"]
 </section>
 {% endif %}
 
-{#- Search, last, like the nav: the index is built with the site (search-index.json). -#}
+{#- Search, last, like the nav. A plain form: the results page (/search/) does the searching. -#}
 <section id="search" class="search">
   <h2>Search</h2>
-  <label class="visually-hidden" for="search-input">Search the site</label>
-  <input class="search-input" id="search-input" type="search" autocomplete="off" spellcheck="false" placeholder="Projects, log entries, skills, papers">
-  <p class="search-status muted" id="search-status" aria-live="polite"></p>
-  <ol class="search-results" id="search-results"></ol>
-  <noscript><p>Search needs JavaScript.</p></noscript>
+  {% include "search-form.njk" %}
 </section>

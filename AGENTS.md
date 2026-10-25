@@ -5,7 +5,7 @@ Eric J. Goossen's portfolio: Markdown + Eleventy, built into plain static HTML i
 ## Rules
 
 1. **Branch.** Work on `phase-1`, or whatever branch Eric names. **Never merge into or push to `main`.** `main` is the live site and only Eric decides when it changes. Pushing other branches is fine (Cloudflare builds a private preview).
-2. **Keep it static.** No server code, frameworks, databases, logins, analytics, trackers, third-party scripts or web fonts. The only JavaScript is `src/assets/js/search.js` (the search box on the home page, which reads `search-index.json`, built with the site). If Eric approves something that loads from another domain, also add that domain to `src/_headers` (the Content-Security-Policy), or browsers will block it.
+2. **Keep it static.** No server code, frameworks, databases, logins, analytics, trackers, third-party scripts or web fonts. The only JavaScript is `src/assets/js/search.js` (the search results page, `/search/`, which reads `search-index.json`, built with the site; the box on the home page is a plain form). If Eric approves something that loads from another domain, also add that domain to `src/_headers` (the Content-Security-Policy), or browsers will block it.
 3. **Eric's machine.** Node runs only in Docker (`compose.yaml`, preview on port 8090). Don't change that setup. Don't install anything without asking. If something does get installed (including a Docker image), add it to `INSTALLED.md` with an uninstall command.
 4. **Never invent facts about Eric.** Use only what Eric provides. Anything not provided yet stays as text starting with `Placeholder` (or a `"#"` link), so `npm run todo` can find it. That includes dates, numbers, results, co-authors, venues and awards.
 5. **Nothing unfinished is visible.** A project, log entry or publication that isn't ready gets `draft: true` in its front matter (or its object in `publications.json`), which leaves it out of the built site entirely. The build fails if any visible page still has `Placeholder` text, a gray placeholder box or a `#` link.
@@ -51,7 +51,7 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
   Add a highlight in one place and it shows up everywhere it should.
 - **Entries that aren't highlights** can still be tagged: add `skillTags: [C++, SIMD]` to the entry's front matter. (Not `skills:`, which is taken by `skills.json`.) An entry's tags are its highlight's skills plus its `skillTags`.
 - **Skills** in `skills.json` set the chip order and each skill's `best` example (`"<folder>/<entry id>"`), which leads its skill page. A skill no entry is tagged with yet has no page and is hidden (the build prints a warning).
-- **Search** (the box at the bottom of the home page, `/#search`) covers the intro, projects, log entries, skill pages and publications, from `search-index.json` (`src/search-index.njk`, `searchIndex` in `lib/skills.js`). Only published things are in it, and it updates itself with every build.
+- **Search**: the box at the bottom of the home page (`/#search`, `src/_includes/search-form.njk`) opens the results page (`/search/?q=...`, `src/search.njk`), which lists every matching entry with the matching text highlighted. It covers the intro, projects, log entries, skill pages and publications, from `search-index.json` (`src/search-index.njk`, `searchIndex` in `lib/skills.js`). Only published things are in it, and it updates itself with every build.
 
 ### Project front matter (`src/projects/<folder>/index.md`)
 
