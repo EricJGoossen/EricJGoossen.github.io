@@ -21,7 +21,7 @@ delete its line here.
 - [ ] A hero, if you want one (the page has none; the cover is the tree photo).
 - [ ] The Dare to Dream and BTV Facebook posts, for the BTV appearance (the overview and the embassy
       entry have a Placeholder line for it).
-- [ ] The exercises and coding guide written for teammates before the trip.
+- [ ] Later: the exercises and coding guide written for teammates before the trip.
 
 ## ARUW
 
@@ -51,8 +51,8 @@ delete its line here.
 
 ## Still to write
 
-- [ ] Botswana: the fundraising entry.
-- [ ] Botswana: the leadership entry.
+- [ ] Later: Botswana, the fundraising entry.
+- [ ] Later: Botswana, the leadership entry.
 - [ ] FTC: the overview (your captaining).
 - [ ] Atropos: everything. The draft project exists (`src/projects/atropos/`) and is off the site.
 - [ ] HCRL: the "writing the paper" entry. The old draft and its page images are in
