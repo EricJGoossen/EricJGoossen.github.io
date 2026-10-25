@@ -18,7 +18,6 @@ delete its line here.
 
 ## Botswana
 
-- [ ] A hero, if you want one (the page has none; the cover is the tree photo).
 - [ ] Later: the BTV appearance (a post, a link to the segment, or a line on what it was). Dare to Dream's
       post is in, as a link on the page and the embassy entry.
 - [ ] Later: the exercises and coding guide written for teammates before the trip.
