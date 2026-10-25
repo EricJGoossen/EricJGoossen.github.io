@@ -3,6 +3,7 @@ title: Advocating for STEM at the U.S. Embassy
 date: 2025-07-25 12:00:00
 summary: "Advocating to ministers and business leaders for STEM funding and lower tariffs at the U.S. Embassy, and giving the Introduction to FIRST speech."
 featured: true
+portfolio: true
 short: "Embassy event"
 skillTags: [Public speaking, Teaching & outreach]
 info:

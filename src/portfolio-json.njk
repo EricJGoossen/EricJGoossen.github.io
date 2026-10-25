@@ -1,0 +1,9 @@
+---
+permalink: /portfolio.json
+eleventyExcludeFromCollections: true
+# Everything tagged `portfolio: true`, gathered for the PDF (lib/portfolio.js),
+# which is laid out from this file once the build is done.
+eleventyImport:
+  collections: ["projects", "logEntries", "skillPages"]
+---
+{{ collections | portfolioData(site, publications, resume) | dump | safe }}

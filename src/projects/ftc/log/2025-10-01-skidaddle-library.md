@@ -3,6 +3,7 @@ title: "SKIDADDLE: a path follower that plans with physics"
 date: 2025-10-01
 summary: "A Java path-following library for FTC that plans with a physics model of the robot, with math I derived by hand."
 featured: true
+portfolio: true
 short: "SKIDADDLE"
 skillTags: [Motion planning, Java, Open source]
 info:

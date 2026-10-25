@@ -2,6 +2,7 @@
 layout: project.njk
 title: Advanced Robotics at UW
 short: ARUW
+portfolio: true
 org: "Advanced Robotics at UW"
 timeline: Oct 2025 – present
 tools: [C++, Python, ROS 2, Kalman filter, LQR, motion capture]

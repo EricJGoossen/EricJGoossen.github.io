@@ -146,6 +146,7 @@ html { scroll-padding-top: 5.5rem; }
 .button:hover { border-color: var(--accent); text-decoration: none; }
 
 /* The PDF's first page, rendered to an image; it links to the PDF */
+.section-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .resume-page { display: block; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgb(0 0 0 / 0.08); }
 .resume-page:hover { border-color: var(--accent); }
 .resume-page img { display: block; width: 100%; height: auto; margin: 0; }

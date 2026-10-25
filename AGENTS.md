@@ -51,6 +51,8 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
 
 - **For AI agents** (`lib/agents.js`, all built from the same content, nothing to maintain by hand): `/llms.txt` (who Eric is, instructions for an assistant summarizing his work, and an index of projects, skills and papers), `/llms-full.txt` (everything as Markdown), a Markdown copy of each project at `/projects/<folder>/index.md` (every entry in full, every image and video still as an absolute URL with its alt text and caption), schema.org data in every page's head, `/sitemap.xml` and `/robots.txt`. Keep alt text and captions specific: they're what an agent reads.
 
+- **PDF portfolio** (`/portfolio.pdf`, linked from the home page's Resume section): rebuilt from scratch on every build, so every deploy updates it. `lib/portfolio.js` gathers what's tagged into `/portfolio.json` during the build, then lays it out with pdfkit after (`eleventy.after` in `eleventy.config.js`): a cover (photo, headline, contacts, bio, skills, contents with page numbers), then each tagged project's overview and image, followed by its tagged entries oldest first, each with its facts, its image beside the text and a link to the full entry, then the publications. Tag with `portfolio: true` on a project's `index.md` (its overview) and on entries. Each item's image is `portfolioImage:` if set (relative to the project folder), else its first image: a video's poster, a JPEG/PNG, or an SVG chart rasterized with Inter (`assets-src/fonts/`) and its light-mode colors. WebP can't go in; give such an item a `portfolioImage`. It needs the `pdfkit` and `@resvg/resvg-js` packages (in `package.json`).
+
 ### Project front matter (`src/projects/<folder>/index.md`)
 
 | Field | Required | Notes |
@@ -59,6 +61,7 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
 | `draft` | no | `true` keeps the whole project (page, tile, skill links) off the site. New projects start as drafts. |
 | `title`, `summary` | yes | `summary` is the one-liner on the home page tile |
 | `short` | no | One or two words for the project, shown after an entry's label in skill-page chips |
+| `portfolio`, `portfolioImage` | no | `portfolio: true` puts the overview in the PDF portfolio; `portfolioImage` overrides its image (default: the hero's or cover's still) |
 | `org`, `timeline`, `tools` | no | Shown as the metadata line. `tools` is a list. |
 | `order` | no | Number. Lower comes first on the home page. Leave gaps (10, 20, 30) if you like. |
 | `cover` | no | Tile image or video, relative to the project folder: `images/cover.jpg` or `images/cover.mp4` |
@@ -97,6 +100,8 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
    summary: "One harness that runs any VLA on a Franka through DROID, whatever protocol its server speaks."
    short: "Eval framework"   # 1 or 2 words: its chip on the project page and skill pages
    featured: true            # optional: make its chip stand out
+   portfolio: true           # optional: include it in the PDF portfolio
+   portfolioImage: images/chart.svg   # optional: its image there (default: its first image or video still)
    skillTags: [Python, Robot learning]   # each in skills.json, and in that skill's rank
    ```
 

@@ -3,6 +3,7 @@ title: Kalman-filter odometry for three dead wheels
 date: 2026-06-30 12:00:00
 summary: "The engineer robot's Kalman-filter odometry rewritten for three dead wheels, split into three small filters and tuned offline from logged drives."
 featured: true
+portfolio: true
 short: "Kalman-filter odometry"
 skillTags: [State estimation, C++]
 info:

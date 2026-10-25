@@ -7,6 +7,7 @@ Everything installed for this project, so it can be moved into Docker or uninsta
 | Claude Code CLI 2.1.306 (needed for `claude plugin` commands) | Official installer: `curl -fsSL https://claude.ai/install.sh \| bash` → `~/.local/bin/claude` | `rm ~/.local/bin/claude && rm -rf ~/.local/share/claude` |
 | Docker image `node:22-alpine` (Node 22 for building/previewing the site) | Pulled by `docker run` / `docker compose up` | `docker compose down && docker rmi node:22-alpine` |
 | Eleventy 3.1.7 + deps | `npm install` inside the container → `node_modules/` in this folder (gitignored) | `rm -rf node_modules _site` |
+| pdfkit 0.17.2 and @resvg/resvg-js 2.6.2 (build the PDF portfolio; added Oct 25, 2026) | npm dependencies in `package.json`, installed by the same `npm install`/`npm ci` into `node_modules/` | Remove them from `package.json` and `lib/portfolio.js`, then `npm install` |
 
 ## Achilles V2 revival (`~/projects/TMP/achilles-v2-revival`)
 

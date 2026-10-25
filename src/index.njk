@@ -61,7 +61,10 @@ permalink: /
 <section id="resume">
   <div class="section-head">
     <h2>Resume</h2>
-    <a class="button" href="{{ resume.pdf }}" download="{{ site.name }} Resume.pdf">Download PDF</a>
+    <span class="section-actions">
+      <a class="button" href="/portfolio.pdf">Portfolio (PDF)</a>
+      <a class="button" href="{{ resume.pdf }}" download="{{ site.name }} Resume.pdf">Download PDF</a>
+    </span>
   </div>
   {% if resume.preview %}
   <a class="resume-page" href="{{ resume.pdf }}"><img src="{{ resume.preview }}" alt="{{ site.name }}'s resume (PDF)" width="1360" height="1760" loading="lazy"></a>

@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import { jsonLd, llmsFullTxt, llmsTxt, projectMarkdown } from "./lib/agents.js";
 import { checkSite } from "./lib/checks.js";
+import { buildPortfolioPdf, portfolioData } from "./lib/portfolio.js";
 import { isVideo, media, mediaUrl, rowShortcode, tileMedia, videoShortcode, youtubeShortcode } from "./lib/media.js";
 import { entryId, entryInfo, entrySkills, rebase, searchIndex, skillPages, skillSlug } from "./lib/skills.js";
 
@@ -127,6 +128,13 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("llmsTxt", (c, site, pubs, resume) => llmsTxt(agentArgs(c, site, pubs, resume)));
   eleventyConfig.addFilter("llmsFullTxt", (c, site, pubs) => llmsFullTxt(agentArgs(c, site, pubs)));
   eleventyConfig.addFilter("projectMarkdown", (project, entries, site) => projectMarkdown(project, entries, site));
+  // The PDF portfolio: gathered into /portfolio.json during the build, laid out
+  // as /portfolio.pdf once the build is done (lib/portfolio.js).
+  eleventyConfig.addFilter("portfolioData", (c, site, pubs, resume) => portfolioData(agentArgs(c, site, pubs, resume)));
+  eleventyConfig.on("eleventy.after", async ({ directories }) => {
+    const out = directories?.output ?? "_site";
+    if (fs.existsSync(`${out}/portfolio.json`)) await buildPortfolioPdf(`${out}/portfolio.json`, `${out}/portfolio.pdf`);
+  });
   eleventyConfig.addFilter("jsonLd", (site, skills, project) => jsonLd({ site, skills, project }));
 
   // An entry's skill tags (its `skillTags:` list).

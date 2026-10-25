@@ -2,6 +2,7 @@
 layout: project.njk
 title: FIRST Tech Challenge
 short: FTC
+portfolio: true
 org: "417 SKID, Swerve Robotics"
 timeline: May 2023 – May 2025
 tools: [Java, Android]

@@ -3,6 +3,7 @@ title: Collision response
 date: 2026-10-22 01:22:05
 summary: "A soft-contact solver with Coulomb friction that turns contacts into forces, run on a domino scene next to MuJoCo."
 featured: true
+portfolio: true
 short: "Contact solver"
 skillTags: [Kinematics & Dynamics, C++]
 info:

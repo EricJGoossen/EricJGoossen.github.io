@@ -28,6 +28,8 @@ delete its line here.
 
 ## ARUW
 
+- [ ] Two entries on the sub-teams you've worked on (controls, then vision): what each sub-team does,
+      what you did on it, and a photo or clip of each if you have one.
 - [ ] Is `08-working-adjusting-robot.jpeg` in aruw-picks.zip you? If so it can go on the page. (The
       competition entry's two photos are in, from the same zip.)
 

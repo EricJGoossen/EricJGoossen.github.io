@@ -3,6 +3,7 @@ title: Integrators that hold energy
 date: 2026-10-06 15:28:48
 summary: "Velocity Verlet and implicit midpoint replace drifting semi-implicit Euler, cutting the double pendulum's energy error by more than half."
 featured: true
+portfolio: true
 short: "Integrators"
 skillTags: [Kinematics & Dynamics, C++]
 info:
