@@ -23,5 +23,5 @@ links:
   - label: Live View
     url: "https://github.com/EricJGoossen/Live-View"
 ---
-{# From Eric (Oct 25): on 417 SKID May 2023 – May 2025, captain in the second year; Live View over Christmas break 2024–25; SKIDADDLE's first version at the end of summer 2025 and the rework at its commit dates. Eric is writing the overview. #}
-Placeholder overview of Eric's FTC work: his captaining (what the team did, what he led), then the two projects below, SKIDADDLE and Live View.
+{# From Eric (Oct 25): on 417 SKID May 2023 – May 2025, captain in the second year; Live View over Christmas break 2024–25; SKIDADDLE's first version at the end of summer 2025 and the rework at its commit dates. The overview is from Eric's captain notes (Oct 25); the teammate he mentored stays unnamed. #}
+I was on FIRST Tech Challenge team 417 SKID from May 2023 to May 2025, and captain in my second year. I ran every meeting, with an agenda for each member, set the project timelines that got us ready for competition, and oversaw both CAD and programming. I was most hands-on with software, mentoring our programmers and making sure each of them knew exactly what they were working on. I led the robot's early development (decision matrices, prototypes and the first CAD), our outreach, and our preparation for competition, from the engineering portfolio to presenting to the judges. The thing I'm proudest of is helping a teammate who had been on the edge of the team find projects he loved, by working with him directly, pairing him with an older mentor and asking for his ideas in meetings.

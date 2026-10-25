@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 290" role="img" aria-labelledby="t d">
+  <title id="t">Two robots, traded at each definition of done</title>
+  <desc id="d">A timeline in two rows, software and mechanical. While the CAD is finished, the drive trains are built. Then software tests on robot A, a bare drive train, while mechanical builds the lift on robot B. When the lift passes the definition of done the teams trade robots: software takes robot B with the lift, and mechanical builds the arm on robot A. At the next definition of done they trade again, and so on through the season.</desc>
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--text)"/></marker></defs>
+  <style>
+    svg { --text:#1c1917; --muted:#6b6560; --sw:#1d5fae; --me:#b8461c; --pre:#e7e5e4; }
+    @media (prefers-color-scheme: dark) {
+      svg { --text:#f2f1ef; --muted:#a39d97; --sw:#1d5fae; --me:#a8401a; --pre:#33312e; }
+    }
+    text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: var(--text); font-size: 13px; }
+    .m { fill: var(--muted); } .s { font-size: 12px; } .b { font-weight: 650; } .c { text-anchor: middle; } .e { text-anchor: end; }
+    .w { fill: #fff; }
+  </style>
+  <text x="130" y="26" class="m s">through the season →</text>
+  <text x="118" y="91" class="e b">Software</text>
+  <text x="118" y="181" class="e b">Mechanical</text>
+  <rect x="130" y="66" width="89.9" height="130" rx="6" fill="var(--pre)"/>
+  <text x="175.0" y="119.0" class="c s">CAD finished,</text>
+  <text x="175.0" y="135.0" class="c s">drive trains</text>
+  <text x="175.0" y="151.0" class="c s">built</text>
+  <rect x="227.9" y="66" width="151.4" height="40" rx="6" fill="var(--sw)"/>
+  <text x="303.6" y="91" class="c s w">Robot A: drive train</text>
+  <rect x="227.9" y="156" width="151.4" height="40" rx="6" fill="var(--me)"/>
+  <text x="303.6" y="181" class="c s w">Robot B: builds the lift</text>
+  <path d="M369.3 152 L395.3 110" stroke="var(--text)" stroke-width="1.5" fill="none" marker-end="url(#ar)"/>
+  <path d="M369.3 110 L395.3 152" stroke="var(--text)" stroke-width="1.5" fill="none" marker-end="url(#ar)"/>
+  <text x="383.3" y="218" class="c s m">lift done: trade</text>
+  <rect x="387.3" y="66" width="151.4" height="40" rx="6" fill="var(--sw)"/>
+  <text x="463.0" y="91" class="c s w">Robot B: + lift</text>
+  <rect x="387.3" y="156" width="151.4" height="40" rx="6" fill="var(--me)"/>
+  <text x="463.0" y="181" class="c s w">Robot A: builds the arm</text>
+  <path d="M528.6 152 L554.6 110" stroke="var(--text)" stroke-width="1.5" fill="none" marker-end="url(#ar)"/>
+  <path d="M528.6 110 L554.6 152" stroke="var(--text)" stroke-width="1.5" fill="none" marker-end="url(#ar)"/>
+  <text x="542.6" y="218" class="c s m">arm done: trade</text>
+  <rect x="546.6" y="66" width="151.4" height="40" rx="6" fill="var(--sw)"/>
+  <text x="622.3" y="91" class="c s w">Robot A: + arm</text>
+  <rect x="546.6" y="156" width="151.4" height="40" rx="6" fill="var(--me)"/>
+  <text x="622.3" y="181" class="c s w">Robot B: next feature</text>
+  <text x="130" y="276" class="m s">Software always tests on the more complete robot while mechanical builds on the other.</text>
+</svg>

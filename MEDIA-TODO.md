@@ -46,6 +46,11 @@ Not needed to publish (Eric, Oct 25); for later:
 - [ ] The hero and card photos sent on Oct 25 (the robot demo as the hero, the koala hat as the card)
       came through in chat but not as files: send them again as attachments.
 - [ ] Later: a better hero (the robot-demo photo holds the place; the card is final).
+- [ ] The two-robot entry's date (September 1, 2024 stands in for the start of the 2024–25 season).
+- [ ] Later: an entry on designing the robot, from the decision matrices and prototypes to the first CAD
+      and the gripper you designed yourself. Needs CAD screenshots or photos of the gripper.
+- [ ] Later: an entry on outreach: the events, mentoring FLL teams and helping found a rookie team.
+      Needs what the events were, roughly when, and what you did at them.
 - [ ] The SKIDADDLE technical presentation, for its own entry: a photo of it, the slides, and a few
       lines on what it covered and who it was for.
 
