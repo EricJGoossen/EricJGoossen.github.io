@@ -81,7 +81,6 @@ function render() {
 
 input.value = new URLSearchParams(location.search).get("q") ?? "";
 input.addEventListener("input", render);
-input.focus();
 
 fetch(new URL("search-index.json", root))
   .then((response) => response.json())
@@ -90,5 +89,5 @@ fetch(new URL("search-index.json", root))
     render();
   })
   .catch(() => {
-    status.textContent = "Search couldn't load. Every project is listed on the home page.";
+    status.textContent = "Search couldn't load. Every project is listed above.";
   });
