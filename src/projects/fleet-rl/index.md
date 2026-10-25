@@ -1,14 +1,13 @@
 ---
 layout: project.njk
-draft: true   # hidden from the site until this line is removed
 title: Fleet RL
 org: "WEIRD Lab"
 timeline: Sep 2026 – present
 tools: [Python, OpenCV, AprilTags, SO-101]
 order: 3
 summary: Twelve low-cost robot arms learning one task together, with resets that need no human.
-# Placeholder: Eric will pick the hero (a fleet panorama) and the card (the twelve scene cameras).
-# The two images below, from the fleet handbook, hold their places until then.
+# Eric (Oct 25): the page goes up as is; a new hero and card (ideally video) are for later.
+# The two images below are from the fleet handbook.
 cover: images/scene-cams-all.jpg
 hero: images/fleet-panorama.jpg
 heroAlt: Panorama of the fleet lab, with orange and blue low-cost robot arms at workstations along three walls, each under an aluminium frame holding its cameras, and a desk with a monitor in the foreground

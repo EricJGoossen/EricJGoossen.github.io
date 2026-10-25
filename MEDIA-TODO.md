@@ -33,9 +33,13 @@ delete its line here.
 
 ## Fleet RL
 
-- [ ] A hero (the fleet, wide) and a cover (the scene cameras). The handbook's
-      `fleet-panorama.jpg` and `scene-cams-all.jpg` hold their places for now.
-- [ ] Optional: a video of a real automatic reset, to stand beside the simulated one.
+Not needed to publish (Eric, Oct 25); for later:
+
+- [ ] Later: a hero and a card, ideally video (the fleet running for the hero, one or two arms for the
+      card). The handbook's `fleet-panorama.jpg` and `scene-cams-all.jpg` hold their places.
+- [ ] Later: a read-through of the overview and the automatic-reset entry, especially "more than a
+      twelvefold improvement" (expected, not measured) and the split of the tag work with the teammate.
+- [ ] Later: a video of a real automatic reset, to stand beside the simulated one.
 
 ## FTC
 
