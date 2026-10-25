@@ -78,7 +78,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addCollection("logEntries", publishedEntries);
 
   // One page per skill (src/skill.njk), composed from every entry whose
-  // highlight lists it. See lib/skills.js.
+  // skillTags list it. See lib/skills.js.
   eleventyConfig.addCollection("skillPages", (api) =>
     skillPages(api.getAll()[0]?.data.skills ?? [], publishedProjects(api), publishedEntries(api))
   );
@@ -117,7 +117,7 @@ export default function (eleventyConfig) {
     })
   );
 
-  // An entry's skill tags (its highlight's plus its own `skillTags:` list).
+  // An entry's skill tags (its `skillTags:` list).
   eleventyConfig.addFilter("entrySkills", entrySkills);
   // Its basic facts (`info:` in its front matter), as [{ label, value }].
   eleventyConfig.addFilter("entryInfo", entryInfo);

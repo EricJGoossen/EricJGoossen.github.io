@@ -1,6 +1,10 @@
 ---
 title: "Arm control: three impedance controllers, then a simpler one"
 date: 2026-07-13 00:12:00
+summary: "Three impedance controllers for the OpenArms, and why the robot runs the motors' own loop with 500 Hz gravity compensation instead."
+featured: true
+short: "Impedance control"
+skillTags: [Impedance control, C++, ROS 2]
 info:
   language: C++
   tools: [Pinocchio, ROS 2]

@@ -1,6 +1,10 @@
 ---
 title: Beating MuJoCo on throughput
 date: 2026-10-11 08:52:09
+summary: "Benchmarked against MuJoCo on the same scenes: batched across SIMD lanes, Achilles steps a seven-link arm 3.3× faster."
+featured: true
+short: "3× MuJoCo"
+skillTags: [Simulation (MuJoCo), Performance & SIMD, C++]
 info:
   language: [C++20, Python]
   tools: [MuJoCo]

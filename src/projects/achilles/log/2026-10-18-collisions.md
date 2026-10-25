@@ -1,6 +1,7 @@
 ---
 title: Collision detection
 date: 2026-10-18 14:43:13
+summary: "One sphere-swept-box shape for every body, and a two-phase search for contacts: a cheap broad phase, then exact narrow-phase tests."
 info:
   language: C++20
   tools: [xsimd]

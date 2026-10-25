@@ -11,25 +11,6 @@ hero: images/hero-pendulum.mp4
 heroAlt: A red and blue double pendulum swinging chaotically under gravity in the Achilles viewer
 heroPoster: images/hero-pendulum.jpg
 summary: A C++20 rigid-body simulator that steps 8 robots per SIMD instruction, about 3× MuJoCo's single-threaded throughput.
-highlights:
-  - label: SIMD batching
-    entry: simd
-    skills: [Performance & SIMD, C++]
-  - label: 3× MuJoCo
-    entry: mujoco-comparison
-    skills: [Simulation (MuJoCo), Performance & SIMD, C++]
-  - label: O(n) dynamics
-    entry: dynamics
-    skills: [Kinematics & Dynamics, C++]
-  - label: Contact solver
-    entry: collision-response
-    skills: [Kinematics & Dynamics, C++]
-  - label: Integrators
-    entry: integrators
-    skills: [Kinematics & Dynamics, C++]
-  - label: OpenGL renderer
-    entry: renderer
-    skills: [C++]
 links:
   - label: GitHub
     url: https://github.com/EricJGoossen/Achilles

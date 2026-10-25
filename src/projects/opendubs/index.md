@@ -10,22 +10,6 @@ cover: images/cover-arcs.jpg   # Eric with the robot at ARCS Night to Ignite. Ph
 hero: images/hero-handover.mp4
 heroAlt: The robot's two OpenArm arms, one blue and one orange, passing a red can between them over a table and setting it down, rendered in MuJoCo
 heroPoster: images/hero-handover.jpg
-highlights:
-  - label: Dual-arm planning
-    entry: arm-group
-    skills: [Motion planning, Python, Simulation (MuJoCo)]
-  - label: Impedance control
-    entry: impedance-control
-    skills: [Impedance control, C++, ROS 2]
-  - label: Quest teleop
-    entry: teleop
-    skills: [Teleoperation, Python]
-  - label: Upstream IK fix
-    entry: ik-fix
-    skills: [Open source, Kinematics & Dynamics, Python]
-  - label: Merged lidar
-    entry: lidar
-    skills: [State estimation, ROS 2, Hardware bring-up, Python]
 links:
   - label: Arm code (lab repo)
     url: https://github.com/EricJGoossen/openarm_robot-code

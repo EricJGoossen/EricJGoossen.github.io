@@ -12,16 +12,6 @@ hero: images/hero-robot-demo.webp
 heroAlt: Demonstrating 417 SKID's robot in a classroom, its long arm reaching up beside me, with a world map on the wall behind
 heroFade: strong
 heroSide: right
-highlights:
-  - label: SKIDADDLE pathing
-    entry: skidaddle-library
-    skills: [Motion planning, Java, Open source]
-  - label: Live View
-    entry: live-view
-    skills: [Java]
-  - label: Two-robot plan
-    entry: two-robots
-    skills: [Technical leadership]
 links:
   - label: SKIDADDLE
     url: "https://github.com/EricJGoossen/SKIDADDLE"

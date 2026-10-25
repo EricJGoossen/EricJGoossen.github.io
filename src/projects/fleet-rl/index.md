@@ -13,10 +13,6 @@ hero: images/fleet-panorama.jpg
 heroAlt: Panorama of the fleet lab, with orange and blue low-cost robot arms at workstations along three walls, each under an aluminium frame holding its cameras, and a desk with a monitor in the foreground
 heroFade: strong
 heroSide: right
-highlights:
-  - label: Automatic reset
-    entry: automatic-reset
-    skills: [Robot learning, Motion planning, Python]
 links:
   - label: GitHub
     url: "https://github.com/knightnemo/fleet_so101_infra"

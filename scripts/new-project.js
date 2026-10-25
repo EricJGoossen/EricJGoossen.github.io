@@ -46,11 +46,6 @@ order: ${order}
 summary: ${q(`Placeholder one-line summary of ${title}.`)}
 # cover: images/cover.jpg   # tile image (or .mp4) on the home page
 # hero: images/hero.jpg     # big image (or .mp4) at the top of this page
-highlights: []
-# To add a highlight, write a log entry first, then list it here:
-#  - label: SIMD optimization     # 1 to 3 words, shown as a chip
-#    entry: simd-optimization     # the log file name after the date
-#    skills: [C++, SIMD]          # each must be in src/_data/skills.json
 links: []
 #  - label: GitHub
 #    url: https://github.com/...

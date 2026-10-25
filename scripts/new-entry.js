@@ -1,7 +1,7 @@
 // Adds a progress log entry to a project.
 // Usage: node scripts/new-entry.js <project-folder> "Entry title" [YYYY-MM-DD]
 //   e.g. npm run new:entry -- opendubs "SIMD optimization"
-// The anchor (used by highlights and skill links) is made from the title.
+// The anchor (used by the entries list, skill pages and links) is made from the title.
 import fs from "node:fs";
 import path from "node:path";
 
@@ -33,6 +33,10 @@ fs.writeFileSync(
   file,
   `---
 title: ${JSON.stringify(title)}
+summary: "Placeholder: one or two sentences for the project's list of entries."
+# featured: true          # stand out in the list (and give it a short label:)
+# short: "SIMD batching"
+# skillTags: [C++]        # each in src/_data/skills.json, and added to that skill's rank
 ---
 Placeholder: what you did, what was hard, and how it turned out.
 
@@ -51,7 +55,5 @@ This note is a template comment and never shows on the site. Delete it when done
 
 console.log(`Created ${file}
 Anchor: #${id}  (link: /projects/${slug}/#${id})
-To make it a highlight, add to highlights in src/projects/${slug}/index.md:
-  - label: ${title}
-    entry: ${id}
-    skills: [...]`);
+It's listed under Entries on the project page, with its summary. To make it stand out
+there, add "featured: true" (and a "short" label) to its front matter.`);

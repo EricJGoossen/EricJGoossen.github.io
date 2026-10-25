@@ -1,6 +1,7 @@
 ---
 title: The competition and our robots
 date: 2026-06-28
+summary: "What ARC is, the eight robots we build each season, and how we placed at the 2026 championship."
 info:
   language: C++
   hardware: [Engineer, sentry]

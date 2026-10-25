@@ -16,19 +16,6 @@ heroFade: strong
 heroSide: right
 heroSize: large
 summary: Localization and control for ARUW's competition robots, from Kalman-filter odometry and LQR path tracking to measuring the sentry's localization against motion capture.
-highlights:
-  - label: Kalman-filter odometry
-    entry: kalman-filter
-    skills: [State estimation, C++]
-  - label: LQR path tracking
-    entry: lqr-path-tracking
-    skills: [Control systems, Technical leadership, C++]
-  - label: Odin error model
-    entry: odin-error-model
-    skills: [State estimation, Experiment design, Python]
-  - label: Mocap pipeline
-    entry: odin-characterization
-    skills: [Experiment design, Python]
 links:
   - label: ARUW
     url: https://aruw.org/

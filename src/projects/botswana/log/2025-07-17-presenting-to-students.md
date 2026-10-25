@@ -1,6 +1,10 @@
 ---
 title: Robotics with students in Gaborone
 date: 2025-07-17 12:00:00
+summary: "A FIRST LEGO League exchange with more than 50 students at a school in Gaborone, where I taught the robot code I'd written."
+featured: true
+short: "Students in Gaborone"
+skillTags: [Teaching & outreach, Public speaking]
 info:
   language: Python
   hardware: SPIKE Prime

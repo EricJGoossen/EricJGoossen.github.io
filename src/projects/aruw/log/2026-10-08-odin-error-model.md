@@ -1,13 +1,16 @@
 ---
 title: An error model for the Odin
 date: 2026-10-08 10:00:00
+summary: "An error model for the Odin, validated on a held-out session by Monte Carlo, that showed the sentry could rely on it alone."
+featured: true
+short: "Odin error model"
+skillTags: [State estimation, Experiment design, Python]
 info:
   language: Python
   tools: [NumPy, SciPy]
   hardware: Odin1
   role: Solo
   status: Done
-skillTags: [State estimation, Experiment design, Python]
 links:
   - label: "Analysis code"
     url: "https://github.com/EricJGoossen/odin-characterization/tree/2cf113f"

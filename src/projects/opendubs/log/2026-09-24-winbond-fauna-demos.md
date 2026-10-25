@@ -1,6 +1,7 @@
 ---
 title: Demos for Winbond and Fauna Robotics
 date: 2026-09-24 15:30:00
+summary: "Live demos of OpenDubs for Winbond's executives and for Fauna Robotics' team."
 info:
   hardware: OpenDubs
   role: Lead

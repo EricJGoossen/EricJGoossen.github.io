@@ -1,6 +1,10 @@
 ---
 title: A test platform against motion capture
 date: 2026-10-02 12:00:00
+summary: "A test platform that measures the sentry's lidar-inertial localization against motion capture, from guided driving to a fixed campaign protocol."
+featured: true
+short: "Mocap pipeline"
+skillTags: [Experiment design, Python]
 info:
   language: Python
   tools: [OptiTrack]

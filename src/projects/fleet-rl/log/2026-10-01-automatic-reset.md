@@ -1,6 +1,10 @@
 ---
 title: Resetting the peg without a person
 date: 2026-10-01
+summary: "A reset that finds the peg with AprilTags, plans a pick and place, and puts it back, so the arms can run online RL without a person."
+featured: true
+short: "Automatic reset"
+skillTags: [Robot learning, Motion planning, Python]
 info:
   language: Python
   tools: [AprilTags, MuJoCo]

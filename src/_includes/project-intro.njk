@@ -1,4 +1,4 @@
-{#- Title, metadata, links, overview and highlight chips: the top of a project page. -#}
+{#- Title, metadata, links and overview: the top of a project page. -#}
 <h1>{{ title }}</h1>
 <p class="meta">
   {% for item in [org, timeline, (tools | join(", ")) if tools] %}{% if item %}<span>{{ item }}</span>{% endif %}{% endfor %}
@@ -9,11 +9,3 @@
 </p>
 {% endif %}
 <div class="overview">{{ content | safe }}</div>
-{% if highlights.length %}
-<section class="highlights" aria-labelledby="highlights-title">
-  <h2 id="highlights-title">Highlights</h2>
-  <nav class="chips" aria-labelledby="highlights-title">
-    {% for h in highlights %}<a class="chip" href="#{{ h.entry }}">{{ h.label }}</a>{% endfor %}
-  </nav>
-</section>
-{% endif %}

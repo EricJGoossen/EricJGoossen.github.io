@@ -11,7 +11,7 @@ docker compose up -d      # preview at http://localhost:8090, reloads on save
 docker compose down       # stop it
 ```
 
-If something in the content would break a link (a highlight pointing at a missing log entry, a misspelled skill, a missing image), the preview shows a red box at the top of the page listing what to fix. A real build stops on the same problems.
+If something in the content would break a link (a misspelled skill, a skill rank missing an entry, a missing image), the preview shows a red box at the top of the page listing what to fix. A real build stops on the same problems.
 
 ## Handy commands
 
@@ -34,9 +34,9 @@ AI agents working on the site follow `AGENTS.md`, which has step-by-step recipes
 | Link preview image (LinkedIn/Slack) | `ogImage` in `site.json` for the home page, e.g. `"/assets/og.jpg"`. Project pages use their `cover` automatically. |
 | Resume section | PDF at `src/assets/resume.pdf` and an image of its first page at `src/assets/resume.png` (paths in `src/_data/resume.json`) |
 | Hide something that isn't ready | add `draft: true` to a project's `index.md`, a log entry, or a publication in `publications.json` |
-| Skills and each one's best example | `src/_data/skills.json` (each skill gets a page listing every entry tagged with it; tag an entry that isn't a highlight with `skillTags: [...]` in its front matter) |
+| Skills and each one's best example | `src/_data/skills.json` (each skill gets a page listing every entry tagged with it; tag an entry with `skillTags: [...]` in its front matter, and list it in that skill's `rank`) |
 | Publications | `src/_data/publications.json` (see below) |
-| A project's overview, highlights, links | `src/projects/<name>/index.md` |
+| A project's overview, links | `src/projects/<name>/index.md` |
 | A project's progress log | `src/projects/<name>/log/*.md` |
 | Project images and videos | `src/projects/<name>/images/` |
 | Look and feel | `src/assets/css/style.css` |
@@ -65,7 +65,7 @@ Add `more: [{ src: "images/chart.svg", alt: "..." }]` to stack more media under 
 {% youtube "VIDEO_ID", "What the video shows" %}
 ```
 
-Entries show newest first; add a time to the front matter (`date: 2026-09-19 11:02:53`) to order two entries from the same day. The part of the filename after the date (`short-name`) is the entry's anchor. To make it a highlight, add it to `highlights` in the project's `index.md` with `entry: short-name` and the skills it shows.
+Entries show newest first; add a time to the front matter (`date: 2026-09-19 11:02:53`) to order two entries from the same day. The part of the filename after the date (`short-name`) is the entry's anchor. Give it a one- or two-sentence `summary` for the project's list of entries, its `skillTags`, and `featured: true` (with a `short` label) to make it stand out in that list.
 
 Clips added with `{% video %}` loop silently like a GIF, with controls to pause. Add `{ play: true }` for a normal video with sound. Covers and hero images can be `.mp4` files too. Keep videos small (under ~5 MB); Cloudflare rejects files over 25 MB.
 

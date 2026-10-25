@@ -1,6 +1,10 @@
 ---
 title: Two robots, so software never waits
 date: 2024-09-01
+summary: "As captain, I had the team build two robots in parallel and trade them at each finished feature, so software always had a robot to test on."
+featured: true
+short: "Two-robot plan"
+skillTags: [Technical leadership]
 info:
   hardware: 2× FTC robot
   role: Captain

@@ -1,6 +1,10 @@
 ---
 title: "Designing the benchmark: what makes a VLA test fair"
 date: 2026-05-15 12:00:00
+summary: "How we made the VLA benchmark fair: eight tasks, randomized placements, three scores per rollout, and where the models failed."
+featured: true
+short: "VLA benchmark"
+skillTags: [Experiment design, Robot learning]
 info:
   tools: [YAML configs]
   hardware: Franka Panda

@@ -1,6 +1,7 @@
 ---
 title: Reworking SKIDADDLE's control
 date: 2026-01-03
+summary: "SKIDADDLE rebuilt around an acceleration allocator in motor space, and compared with Road Runner and Pedro Pathing on a hairpin."
 info:
   language: Java
   hardware: FTC robot

@@ -21,9 +21,9 @@ Single scrolling page, in this order (a compact intro, then skills and projects 
 ### Project page (`/projects/<name>/`)
 
 1. **Header.** Title, lab/org · timeline · tools, then the bracketed links, one-paragraph overview, hero image.
-2. **Highlights.** Chips of 1 to 2 words naming the most impressive parts (e.g. *Sim comparison*, *SIMD optimization*, *Matrix library*). Each one jumps to the spot in the log where that work is explained, so it's read in context.
+2. **Entries.** Every log entry as a card with its one- or two-sentence summary, linking to it in the log; the most impressive ones are featured (accent edge, bold title, a label).
 3. **Publication.** The related publication card, if there is one. (Links like `[GitHub] [Paper] [Video] [Demo]` sit in the header, under the metadata line.)
-4. **Progress log.** Blog-style entries, newest first, each paragraph beside its own image or video (stacked on phones) with a thin line between them; rows rise into view as you scroll, text first and media sliding in from the right (CSS only, off with reduced motion). A project with a `hero` opens with its intro (title, metadata, links, overview, highlights) laid over that footage. Each entry: date, title, text, any number of images. Entries tied to a highlight get an anchor so the highlight chips can link straight to them. An entry's skill tags link to the skill pages.
+4. **Progress log.** Blog-style entries, newest first, each paragraph beside its own image or video (stacked on phones) with a thin line between them; rows rise into view as you scroll, text first and media sliding in from the right (CSS only, off with reduced motion). A project with a `hero` opens with its intro (title, metadata, links, overview, highlights) laid over that footage. Each entry: date, title, text, any number of images, and an anchor the entries list links to. An entry's skill tags link to the skill pages.
 5. **Back to all projects** link.
 
 ### Also
@@ -44,30 +44,30 @@ Single scrolling page, in this order (a compact intro, then skills and projects 
 | `/projects/botswana/` | Botswana | |
 | `/projects/ftc/` | FTC (SKIDADDLE, Live View) | One page, one or two entries per project |
 
-## How skills and highlights connect
+## How skills connect
 
-Each highlight is defined once, in its project's header block, with the skills it shows:
+Each entry lists its skills once, in its front matter, and can be featured:
 
 ```yaml
-highlights:
-  - label: SIMD optimization
-    entry: simd-optimization      # the log entry it jumps to
-    skills: [C++, SIMD]
+summary: "Structure-of-arrays storage so one SIMD instruction steps eight robots."
+featured: true
+short: SIMD batching
+skillTags: [C++, Performance & SIMD]
 ```
 
-`skills.json` lists each skill and which entry is its best example:
+`skills.json` lists each skill and its entries in a fixed order, best first:
 
 ```json
-{ "name": "C++", "rank": ["opendubs/simd-optimization", "..."] }
+{ "name": "C++", "rank": ["achilles/collision-response", "..."] }
 ```
 
-Entries that aren't highlights can be tagged too, with `skillTags: [C++, SIMD]` in their front matter. The site builds everything else from these: the skill pages, the highlight chips, the entry tags and the anchor links. Add a highlight in one place and it shows up everywhere it should.
+The site builds everything else from these: the skill pages, the entries list, the entry tags and the anchor links.
 
 ## How content gets written
 
 **Markdown + Eleventy** (a small static site generator).
 
-- Each project is a folder. The overview is one Markdown file with a header block (title, org, summary, cover image, highlights, links). Each log entry is its own Markdown file with a date. Adding an update = drop in a new `.md` file and images, `git push`.
+- Each project is a folder. The overview is one Markdown file with a header block (title, org, summary, cover image, links). Each log entry is its own Markdown file with a date. Adding an update = drop in a new `.md` file and images, `git push`.
 - Bio, resume, and skills live in small data files, so the home page builds itself from them.
 - Output is still plain static HTML, so security is unchanged. No server, no database, no login. The only JavaScript is the search results page; the box in the header is a plain form that opens it.
 - **Node runs in Docker**, not on the machine. `docker compose up` starts a live-reloading preview at localhost:8090. Cloudflare runs the same build itself on each push.
@@ -87,7 +87,7 @@ src/
   _includes/                 shared layouts (page shell, project page, publication card)
   projects/
     opendubs/
-      index.md               overview, cover, highlights, links
+      index.md               overview, cover, links
       log/
         2026-10-21-first-prototype.md
       images/                images and videos
