@@ -1,6 +1,7 @@
 ---
 layout: project.njk
 title: Benchmarking VLAs for ARCHITECT
+short: HCRL
 org: "Human Centered Robotics Lab"
 timeline: Apr 2026 – present
 tools: [Python, DROID, Franka Panda, openpi, GR00T, MolmoAct2, WebSocket, ZMQ]

@@ -3,7 +3,7 @@ title: An error model for the Odin
 date: 2026-10-08 10:00:00
 summary: "An error model for the Odin, validated on a held-out session by Monte Carlo, that showed the sentry could rely on it alone."
 featured: true
-short: "Odin error model"
+short: "Error model"
 skillTags: [State estimation, Experiment design, Python]
 info:
   language: Python

@@ -1,4 +1,4 @@
-{#- Title, metadata, links and overview: the top of a project page. -#}
+{#- Title, metadata, links, overview and entry chips: the top of a project page. -#}
 <h1>{{ title }}</h1>
 <p class="meta">
   {% for item in [org, timeline, (tools | join(", ")) if tools] %}{% if item %}<span>{{ item }}</span>{% endif %}{% endfor %}
@@ -9,3 +9,13 @@
 </p>
 {% endif %}
 <div class="overview">{{ content | safe }}</div>
+{#- Every entry as a chip, newest first like the log; featured ones stand out,
+    and each one's summary shows on hover. -#}
+{% if entries.length %}
+<section class="highlights" aria-labelledby="entries-title">
+  <h2 id="entries-title">Entries</h2>
+  <nav class="chips" aria-labelledby="entries-title">
+    {% for entry in entries %}<a class="chip{% if entry.data.featured %} chip-featured{% endif %}" href="#{{ entry | entryId }}"{% if entry.data.summary %} title="{{ entry.data.summary }}"{% endif %}>{{ entry.data.short or entry.data.title }}</a>{% endfor %}
+  </nav>
+</section>
+{% endif %}

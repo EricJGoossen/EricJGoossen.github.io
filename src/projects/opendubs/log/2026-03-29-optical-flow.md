@@ -2,6 +2,7 @@
 title: Optical flow odometry, checked against mocap
 date: 2026-03-29 00:58:00
 summary: "Optical-flow odometry fed into ArduPilot's EKF, with a motion-capture pipeline to tune it until it stayed within 5 mm."
+short: "Optical flow"
 info:
   language: [C++, Python]
   tools: [micro-ROS, ArduPilot]

@@ -1,6 +1,7 @@
 ---
 layout: project.njk
 title: Fleet RL
+short: Fleet RL
 org: "WEIRD Lab"
 timeline: Sep 2026 – present
 tools: [Python, OpenCV, AprilTags, SO-101]

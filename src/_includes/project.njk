@@ -2,6 +2,7 @@
 layout: base.njk
 ---
 {% set slug = page.fileSlug %}
+{% set entries = collections.logEntries | entriesFor(slug) %}
 <article class="project">
   <a class="back" href="/#projects">← All projects</a>
 
@@ -18,24 +19,6 @@ layout: base.njk
   <header class="project-header">
     {% include "project-intro.njk" %}
   </header>
-  {% endif %}
-
-  {#- Every entry, newest first like the log, with its one- or two-sentence summary:
-      a map of the project. Featured entries stand out. -#}
-  {% set entries = collections.logEntries | entriesFor(slug) %}
-  {% if entries.length %}
-  <section class="contents" aria-labelledby="contents-title">
-    <h2 id="contents-title">Entries</h2>
-    <ol class="entry-list">
-      {% for entry in entries %}
-      <li{% if entry.data.featured %} class="featured"{% endif %}><a href="#{{ entry | entryId }}">
-        <span class="entry-list-title">{{ entry.data.title }}</span>{% if entry.data.featured %}<span class="entry-list-badge">Featured</span>{% endif %}
-        {% if entry.data.summary %}<span class="entry-list-summary">{{ entry.data.summary }}</span>{% endif %}
-        <span class="entry-list-date">{{ entry.date | readableDate }}</span>
-      </a></li>
-      {% endfor %}
-    </ol>
-  </section>
   {% endif %}
 
   {% set projectPubs = [] %}

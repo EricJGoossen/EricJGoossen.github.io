@@ -43,7 +43,7 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
 
 - **The folder name is the URL**: `src/projects/fleet-rl/` becomes `/projects/fleet-rl/`.
 - **Entry anchors**: the filename after the date is the entry's anchor. `log/2026-03-20-sim-comparison.md` is `/projects/<folder>/#sim-comparison`.
-- **Entries list**: under its intro, every project page lists all its entries (newest first, like the log), each with its `summary` (one or two sentences, in the entry's front matter) and a link to it. An entry with `featured: true` stands out there (accent edge, bolder title, a "Featured" label); its `short` label (1 to 3 words) is used where space is tight, like the chips on skill pages and in a project's search card.
+- **Entry chips**: in its intro, every project page has a chip per entry (newest first, like the log) labelled with the entry's `short` (1 or 2 words), linking to it; its `summary` (one or two sentences) shows on hover and is used by search, agents and the PDF portfolio. An entry with `featured: true` gets a bold, accent-edged chip. Skill pages use the same short labels, followed by the project's own `short` name.
 - **Skill tags**: an entry's skills are its `skillTags: [C++, SIMD]` (not `skills:`, which is taken by `skills.json`). From those the site builds the tags on the entry and a page per skill (`/skills/<name>/`, from `src/skill.njk`) showing every tagged entry in full, in the skill's `rank`; the home page skill chips link there.
 - **Skills** in `skills.json` set the chip order and each skill's `rank`: every entry tagged with it (`"<folder>/<entry id>"`), in the fixed order its skill page shows them. The first is its best example. The search card for a skill opens that first entry. A skill no entry is tagged with yet has no page and is hidden (the build prints a warning). Every skill has a `description` (what it is, and where Eric has used it, from the entries), shown at the top of its page and searchable.
 - **Hidden skills** (`"hidden": true` in `skills.json`) get a page and a search result, but no chip on the home page and no tag on entries: they're reachable only by URL (`/skills/<name>/`) or search. They're tagged by their `rank` alone (not `skillTags`). Add one whenever an entry clearly shows a skill, method or tool not already listed; the description must stick to what the entries say.
@@ -56,6 +56,7 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
 | `layout` | yes | Always `project.njk` |
 | `draft` | no | `true` keeps the whole project (page, tile, skill links) off the site. New projects start as drafts. |
 | `title`, `summary` | yes | `summary` is the one-liner on the home page tile |
+| `short` | no | One or two words for the project, shown after an entry's label in skill-page chips |
 | `org`, `timeline`, `tools` | no | Shown as the metadata line. `tools` is a list. |
 | `order` | no | Number. Lower comes first on the home page. Leave gaps (10, 20, 30) if you like. |
 | `cover` | no | Tile image or video, relative to the project folder: `images/cover.jpg` or `images/cover.mp4` |
@@ -89,11 +90,11 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
      status: On the robot       # how far it got: In simulation, In main, On a branch, Used at competition, In the paper, Done
    ```
 4. Entries show newest first. Two entries on the same day are ordered by a time in the front matter, e.g. `date: 2026-09-19 11:02:53` (the time is only used for ordering; the page shows the date).
-5. Give it a `summary` (one or two sentences: what it is and the result) for the project's entries list, and its skills:
+5. Give it a `short` chip label, a `summary` (one or two sentences: what it is and the result), and its skills:
    ```yaml
    summary: "One harness that runs any VLA on a Franka through DROID, whatever protocol its server speaks."
-   featured: true            # optional: make it stand out in the entries list
-   short: "Eval framework"   # with featured: 1 to 3 words, for chips
+   short: "Eval framework"   # 1 or 2 words: its chip on the project page and skill pages
+   featured: true            # optional: make its chip stand out
    skillTags: [Python, Robot learning]   # each in skills.json, and in that skill's rank
    ```
 

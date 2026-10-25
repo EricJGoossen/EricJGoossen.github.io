@@ -20,7 +20,7 @@ eleventyComputed:
     {% if skill.description %}<p class="skill-description">{{ skill.description }}</p>{% endif %}
     <p class="meta"><span>{{ skill.uses.length }} log {{ "entry" if skill.uses.length == 1 else "entries" }}</span><span>{{ skill.projectCount }} {{ "project" if skill.projectCount == 1 else "projects" }}</span></p>
     <nav class="chips" aria-label="Entries on this page">
-      {% for use in skill.uses %}<a class="chip" href="#{{ use.key | replace('/', '-') }}">{{ use.label }}</a>{% endfor %}
+      {% for use in skill.uses %}<a class="chip" href="#{{ use.key | replace('/', '-') }}"{% if use.entry.data.summary %} title="{{ use.entry.data.summary }}"{% endif %}>{{ use.label }} <span class="chip-project">{{ use.project.data.short or use.project.data.title }}</span></a>{% endfor %}
     </nav>
   </header>
 

@@ -1,6 +1,7 @@
 ---
 layout: project.njk
 title: Achilles
+short: Achilles
 org: Orchid Robotics
 timeline: 2026 – present
 tools: [C++20, xsimd (SIMD), CMake, GoogleTest, OpenGL/GLFW, Valgrind, MuJoCo (benchmarks)]

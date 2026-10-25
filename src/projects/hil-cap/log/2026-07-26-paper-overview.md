@@ -3,7 +3,7 @@ title: "The paper: A Few Words Go a Long Way"
 date: 2026-07-26 12:00:00
 summary: "The paper my benchmark fed: ARCHITECT, which fixes LLM-written robot code with a few words from a person, succeeded 70 to 100% of the time on all eight tasks."
 featured: true
-short: "1.75× over VLAs"
+short: "ARCHITECT paper"
 skillTags: [Robot learning]
 info:
   hardware: Franka Panda

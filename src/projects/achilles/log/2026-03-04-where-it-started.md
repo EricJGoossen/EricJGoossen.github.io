@@ -2,6 +2,7 @@
 title: Where it started
 date: 2026-03-04
 summary: "Why I started an in-house simulator for my club, and why the first version, written without a design, had to be thrown away."
+short: "Origins"
 info:
   language: C++
   hardware: Laptop

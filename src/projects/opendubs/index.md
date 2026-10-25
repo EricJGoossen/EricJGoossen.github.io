@@ -1,6 +1,7 @@
 ---
 layout: project.njk
 title: OpenDubs
+short: OpenDubs
 org: "Personal Robotics Lab"
 timeline: Oct 2025 – present
 tools: [ROS 2, Python, C++, ArduPilot / MAVROS, Pinocchio, MuJoCo, Docker, WebXR]

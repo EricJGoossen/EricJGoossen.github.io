@@ -2,6 +2,7 @@
 title: Running both arms at once
 date: 2026-09-01 19:59:00
 summary: "Both arms start a plan from one shared timestamp, halving the run time and staying inside what the planner checked."
+short: "Parallel arms"
 info:
   language: Python
   tools: [ROS 2, MuJoCo]

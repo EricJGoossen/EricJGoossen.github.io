@@ -3,7 +3,7 @@ title: "Path tracking: from pure pursuit to LQR"
 date: 2026-05-16 12:00:00
 summary: "I led replacing the chassis's pure pursuit with LQR path tracking that models the robot's accelerations: within 3.2 cm of the path in simulation."
 featured: true
-short: "LQR path tracking"
+short: "LQR tracking"
 skillTags: [Control systems, Technical leadership, C++]
 info:
   language: C++

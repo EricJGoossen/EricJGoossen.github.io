@@ -1,6 +1,7 @@
 ---
 layout: project.njk
 title: Swerve Robotics in Botswana
+short: Botswana
 org: Swerve Robotics
 timeline: July 2025
 order: 6
