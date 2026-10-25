@@ -672,3 +672,83 @@ main.wrap:has(> .search-page) { --wrap: 72rem; }
 :root { view-transition-name: none; }
 .search-form { view-transition-name: site-search; }
 ::view-transition-group(site-search) { animation-duration: 0.35s; animation-timing-function: ease-in-out; }
+
+/* ---------- Motion ----------
+   Page load: the intro (home), project intro, skill header and search results
+   settle in, one line after another; a project's hero footage eases in from
+   slightly zoomed. Scroll: home sections and tiles rise into view as they
+   arrive, the header gains a hairline once the page scrolls, and project and
+   skill pages show a thin reading-progress bar. All CSS (scroll-driven where
+   supported), and none of it runs with reduced motion. The log entries keep
+   their own rise and slide above. */
+@keyframes settle-in {
+  from { opacity: 0; translate: 0 0.9rem; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes photo-in {
+  from { opacity: 0; scale: 0.9; }
+  to { opacity: 1; scale: 1; }
+}
+@keyframes hero-in {
+  from { opacity: 0; scale: 1.05; }
+  to { opacity: 1; scale: 1; }
+}
+@keyframes header-line {
+  to { border-bottom-color: var(--border); box-shadow: 0 8px 24px -18px rgb(0 0 0 / 0.35); }
+}
+@keyframes progress {
+  from { scale: 0 1; }
+  to { scale: 1 1; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .intro > img, .intro > .ph { animation: photo-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .intro-text > *,
+  .hero-content > *,
+  .project-header > *,
+  .skill-header > *,
+  .search-page > h1 {
+    animation: settle-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  :is(.intro-text, .hero-content, .project-header, .skill-header) > :nth-child(2) { animation-delay: 0.07s; }
+  :is(.intro-text, .hero-content, .project-header, .skill-header) > :nth-child(3) { animation-delay: 0.14s; }
+  :is(.intro-text, .hero-content, .project-header, .skill-header) > :nth-child(4) { animation-delay: 0.21s; }
+  :is(.intro-text, .hero-content, .project-header, .skill-header) > :nth-child(5) { animation-delay: 0.28s; }
+  :is(.intro-text, .hero-content, .project-header, .skill-header) > :nth-child(n + 6) { animation-delay: 0.35s; }
+  .project-hero .hero-bg { animation: hero-in 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  /* Search results arrive one after another as you type. */
+  .search-results li { animation: settle-in 0.35s ease-out both; }
+  .search-results li:nth-child(2) { animation-delay: 0.03s; }
+  .search-results li:nth-child(3) { animation-delay: 0.06s; }
+  .search-results li:nth-child(4) { animation-delay: 0.09s; }
+  .search-results li:nth-child(n + 5) { animation-delay: 0.12s; }
+
+  @supports (animation-timeline: view()) {
+    main > section:not(.intro) > h2,
+    main > section > .section-head,
+    #skills .chips,
+    .tile,
+    .pub,
+    .resume-page,
+    .project-nav {
+      animation: settle-in linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 55%;
+    }
+    /* The second tile in a row comes in a beat after the first. */
+    .tile:nth-child(even) { animation-range: entry 15% entry 65%; }
+  }
+  @supports (animation-timeline: scroll()) {
+    .site-header { animation: header-line linear both; animation-timeline: scroll(root); animation-range: 0 6rem; }
+    main:has(> .project, > .skill-page)::before {
+      content: "";
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 30;
+      height: 2px;
+      background: var(--accent);
+      transform-origin: 0 50%;
+      animation: progress linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
