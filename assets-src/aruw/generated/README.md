@@ -46,9 +46,10 @@ few degrees apart during the minute-long push and meet again at the end.
 - `hero-match.mp4`, `.jpg` (hero): "ARUW vs RoboGrinder | Match 113 | 3v3 ARC Championship 2026"
   (YouTube PqSzhmRSAZA, MKV from Eric, Oct 25), 16:40.5–16:46.0 (round 3, game clock 4:29–4:24), the
   close side camera on the capture point: our red robot fighting two blue ones. Eric asked for combat
-  (Oct 25). `ffmpeg -ss 1000.5 -i match.mkv -t 5.5 -vf crop=516:806:600:0 -c:v libx264 -crf 24 -preset slow
-  -pix_fmt yuv420p -an -movflags +faststart`: the hero box's size and shape (heroSide: right) at full
-  resolution, centered on the clash; it stops before the broadcast's "Blue leads" banner. The poster is
+  (Oct 25). `ffmpeg -ss 1000.5 -i match.mkv -t 5.5 -vf crop=690:960:525:0 -c:v libx264 -crf 25 -preset slow
+  -pix_fmt yuv420p -an -movflags +faststart`: full resolution, zoomed out for the larger hero (heroSize:
+  large, Eric Oct 25), centered on the clash and cut above the broadcast's bottom banner; it stops
+  before the "Blue leads" banner. The poster is
   the frame at 1003.8 s with the same crop.
 - `cover-reveal.mp4`, `.jpg` (card): three shots of the sentry from "ROBOT // REVEAL 2026"
   (FGh1yQdJGeM, WebM from Eric): 55.90–57.40 s, 67.00–68.85 s and 69.62–71.52 s, cut at the

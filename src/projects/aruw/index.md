@@ -14,6 +14,7 @@ heroPoster: images/hero-match.jpg
 heroAlt: Our red robot fighting two blue robots on the capture point in round 3 of the 3v3 match against RoboGrinder at the 2026 ARC Championship, with the broadcast's damage numbers over them
 heroFade: strong
 heroSide: right
+heroSize: large
 summary: Localization and control for ARUW's competition robots, from Kalman-filter odometry and LQR path tracking to measuring the sentry's localization against motion capture.
 highlights:
   - label: Kalman-filter odometry

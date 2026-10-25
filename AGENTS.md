@@ -69,6 +69,7 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
 | `links` | no | List of `{ label, url }`, shown as `[GitHub] [Paper] ...` |
 | `heroFade` | no | `strong` fades the hero into an oval vignette, for footage whose edges would otherwise show. |
 | `heroSide` | no | `right` keeps the hero footage in the right half, so the intro text sits on plain background. |
+| `heroSize` | no | `large`, with `heroFade: strong`: the footage stays fully visible much further out before it fades, so more of the scene shows. |
 
 ## Recipes
 

@@ -11,6 +11,7 @@ coverPoster: images/compare-banana-under-cloth.jpg
 hero: images/hero-architect.mp4
 heroAlt: A Franka Panda arm in a dark lab putting an apple and bread into a bowl, closing a drawer, and folding a cloth into a triangle
 heroFade: strong
+heroSize: large
 heroPoster: images/hero-architect.jpg
 highlights:
   - label: 1.75× over VLAs
