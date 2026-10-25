@@ -51,3 +51,6 @@ few degrees apart during the minute-long push and meet again at the end.
 - `cover-reveal.mp4`, `.jpg` (card): three shots of the sentry from "ROBOT // REVEAL 2026"
   (FGh1yQdJGeM, WebM from Eric): 55.90–57.40 s, 67.00–68.85 s and 69.62–71.52 s, cut at the
   scene changes, cropped to 3:2 and scaled to 960×640, CRF 26, no audio.
+- `reveal.mp4`, `.jpg` (competition entry): the whole "ROBOT // REVEAL 2026" (WebM from Eric),
+  click to play with sound: scaled to 854×480, CRF 31, AAC 80 kb/s (18.7 MB; the YouTube thumbnail
+  didn't work for Eric). Poster: the sentry's title card at 0:55.

@@ -3,7 +3,7 @@ layout: project.njk
 title: FIRST Tech Challenge
 org: "417 SKID, Swerve Robotics"
 timeline: May 2023 – May 2025
-tools: [Java, OpenCV, Android]
+tools: [Java, Android]
 order: 7
 summary: On FTC team 417 SKID, captain in 2024–25, I built Live View, a rules-legal camera feed for the drivers, and SKIDADDLE, a path follower that plans with physics.
 cover: images/cover-koala.jpg

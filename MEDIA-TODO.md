@@ -26,7 +26,6 @@ delete its line here.
 
 - [ ] Is `08-working-adjusting-robot.jpeg` in aruw-picks.zip you? If so it can go on the page. (The
       competition entry's two photos are in, from the same zip.)
-- [ ] The reveal's date, for the competition entry (October 1, 2025 is a stand-in).
 
 ## Fleet RL
 
@@ -73,7 +72,6 @@ Every other entry has links under its title. These still need one: find a link f
 
 ## Published Oct 25 with gaps
 
-- [ ] HCRL, the experiment-design entry: what lighting did to the models and how the out-of-distribution
-      placements were chosen, and what you took away about benchmarking (taken out to publish).
-- [ ] Stand-in dates now visible: ARUW's competition entry (October 1, 2025), FTC's two-robot entry
-      (September 1, 2024) and HCRL's experiment design (July 20, 2026). Send the real ones.
+- [ ] Optional: how the HCRL benchmark's out-of-distribution placements were chosen.
+- [ ] Stand-in dates now visible: FTC's two-robot entry (September 1, 2024) and HCRL's experiment
+      design (July 20, 2026). Send the real ones.
