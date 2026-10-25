@@ -8,7 +8,7 @@ permalink: "/skills/{{ skill.slug }}/"
 eleventyExcludeFromCollections: true
 eleventyComputed:
   title: "{{ skill.name }}"
-  summary: "Every project log entry where {{ site.name }} used {{ skill.name }}."
+  summary: "{{ skill.description or ('Every project log entry where ' + site.name + ' used ' + skill.name + '.') }}"
 ---
 {#- One page per skill: every log entry tagged with it, shown in full. Tags come
     from each entry's `skillTags:` list (lib/skills.js). -#}
@@ -17,6 +17,7 @@ eleventyComputed:
   <header class="skill-header">
     <p class="eyebrow">Skill</p>
     <h1>{{ skill.name }}</h1>
+    {% if skill.description %}<p class="skill-description">{{ skill.description }}</p>{% endif %}
     <p class="meta"><span>{{ skill.uses.length }} log {{ "entry" if skill.uses.length == 1 else "entries" }}</span><span>{{ skill.projectCount }} {{ "project" if skill.projectCount == 1 else "projects" }}</span></p>
     <nav class="chips" aria-label="Entries on this page">
       {% for use in skill.uses %}<a class="chip" href="#{{ use.key | replace('/', '-') }}">{{ use.label }}</a>{% endfor %}

@@ -1,9 +1,6 @@
 # Old URLs that moved, so links people already have keep working. Cloudflare
 # reads this file when it deploys _site/; the file itself is never served.
 # Syntax: old path, new path, status.
-# Skills renamed or merged on Oct 25, 2026:
-/skills/mujoco/ /skills/simulation-mujoco/ 301
-/skills/docker/ /skills/hardware-bring-up/ 301
-/skills/vla-benchmarking/ /skills/robot-learning/ 301
-/skills/reinforcement-learning/ /skills/robot-learning/ 301
+# Skills renamed or merged on Oct 25, 2026 (mujoco, docker, vla-benchmarking and
+# reinforcement-learning are their own pages again, as hidden skills):
 /skills/outreach/ /skills/teaching-outreach/ 301

@@ -19,7 +19,7 @@ permalink: /
 <section id="skills">
   <h2>Skills</h2>
   <nav class="chips" aria-label="Skills">
-    {% for skill in collections.skillPages %}<a class="chip" href="/skills/{{ skill.slug }}/">{{ skill.name }} <span class="chip-count">{{ skill.uses.length }}</span></a>{% endfor %}
+    {% for skill in collections.skillPages %}{% if not skill.hidden %}<a class="chip" href="/skills/{{ skill.slug }}/">{{ skill.name }} <span class="chip-count">{{ skill.uses.length }}</span></a>{% endif %}{% endfor %}
   </nav>
 </section>
 {% endif %}
