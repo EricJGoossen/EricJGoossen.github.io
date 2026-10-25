@@ -69,7 +69,7 @@ Entries that aren't highlights can be tagged too, with `skillTags: [C++, SIMD]` 
 
 - Each project is a folder. The overview is one Markdown file with a header block (title, org, summary, cover image, highlights, links). Each log entry is its own Markdown file with a date. Adding an update = drop in a new `.md` file and images, `git push`.
 - Bio, resume, and skills live in small data files, so the home page builds itself from them.
-- Output is still plain static HTML, so security is unchanged. No server, no database, no login. The only JavaScript is the search results page; the box on the home page is a plain form that opens it.
+- Output is still plain static HTML, so security is unchanged. No server, no database, no login. The only JavaScript is the search results page; the box in the header is a plain form that opens it.
 - **Node runs in Docker**, not on the machine. `docker compose up` starts a live-reloading preview at localhost:8090. Cloudflare runs the same build itself on each push.
 
 ## Folder layout
