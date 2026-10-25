@@ -16,7 +16,7 @@ heroSide: right
 highlights:
   - label: Automatic reset
     entry: automatic-reset
-    skills: [Reinforcement learning, Motion planning, Python]
+    skills: [Robot learning, Motion planning, Python]
 links:
   - label: GitHub
     url: "https://github.com/knightnemo/fleet_so101_infra"

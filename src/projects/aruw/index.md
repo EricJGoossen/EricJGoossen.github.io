@@ -19,12 +19,15 @@ highlights:
   - label: Kalman-filter odometry
     entry: kalman-filter
     skills: [State estimation, C++]
+  - label: LQR path tracking
+    entry: lqr-path-tracking
+    skills: [Control systems, Technical leadership, C++]
   - label: Odin error model
     entry: odin-error-model
     skills: [State estimation, Experiment design, Python]
-  - label: LQR path tracking
-    entry: lqr-path-tracking
-    skills: [C++, Control systems]
+  - label: Mocap pipeline
+    entry: odin-characterization
+    skills: [Experiment design, Python]
 links:
   - label: ARUW
     url: https://aruw.org/

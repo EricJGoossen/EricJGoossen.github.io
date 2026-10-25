@@ -15,10 +15,13 @@ heroSide: right
 highlights:
   - label: SKIDADDLE pathing
     entry: skidaddle-library
-    skills: [Motion planning, Java]
+    skills: [Motion planning, Java, Open source]
   - label: Live View
     entry: live-view
     skills: [Java]
+  - label: Two-robot plan
+    entry: two-robots
+    skills: [Technical leadership]
 links:
   - label: SKIDADDLE
     url: "https://github.com/EricJGoossen/SKIDADDLE"

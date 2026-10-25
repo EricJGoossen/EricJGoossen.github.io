@@ -140,7 +140,7 @@ Add an object to `publications.json`:
 
 **Reorder, rename or remove**
 - Reorder projects by changing their `order` numbers.
-- Renaming a project folder or a log entry changes its URL or anchor. Update every highlight `entry`, every skill `best`, and every publication `project` that points at it. The build lists any you miss. Avoid renames once the site is live, because people may have links to them.
+- Renaming a project folder or a log entry changes its URL or anchor. Update every highlight `entry`, every skill `best`, and every publication `project` that points at it. The build lists any you miss. Avoid renames once the site is live, because people may have links to them; when one is needed, add the old path to `src/_redirects` (renaming a skill moves its page, `/skills/<name>/`, too).
 - To remove a project, delete its folder and fix whatever the build reports.
 
 ## Checks (what keeps the site from breaking)

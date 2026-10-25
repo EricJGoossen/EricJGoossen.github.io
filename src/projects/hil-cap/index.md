@@ -13,15 +13,15 @@ heroAlt: A Franka Panda arm in a dark lab putting an apple and bread into a bowl
 heroFade: strong
 heroPoster: images/hero-architect.jpg
 highlights:
-  - label: Eval harness
-    entry: harness
-    skills: [Python, VLA benchmarking]
-  - label: Experiment design
-    entry: experiment-design
-    skills: [Experiment design, VLA benchmarking]
-  - label: The paper
+  - label: 1.75× over VLAs
     entry: paper-overview
-    skills: [VLA benchmarking]
+    skills: [Robot learning]
+  - label: Eval framework
+    entry: harness
+    skills: [Python, Robot learning]
+  - label: VLA benchmark
+    entry: experiment-design
+    skills: [Experiment design, Robot learning]
 links:
   - label: GitHub
     url: https://github.com/EricJGoossen/VLA_benchmarking

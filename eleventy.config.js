@@ -6,6 +6,7 @@ import { entryId, entrySkills, rebase, searchIndex, skillPages, skillSlug } from
 export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy("src/_headers"); // security headers, read by Cloudflare
+  eleventyConfig.addPassthroughCopy("src/_redirects"); // moved URLs, read by Cloudflare
   // Each project's images/ folder. Copied as a directory (not a glob) so images
   // added while the preview is running show up without a restart. A draft
   // project's images stay out too, so nothing of it is reachable by URL
