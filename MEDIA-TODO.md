@@ -19,8 +19,8 @@ delete its line here.
 ## Botswana
 
 - [ ] A hero, if you want one (the page has none; the cover is the tree photo).
-- [ ] The Dare to Dream and BTV Facebook posts, for the BTV appearance (the overview and the embassy
-      entry have a Placeholder line for it).
+- [ ] Later: the BTV appearance (a post, a link to the segment, or a line on what it was). Dare to Dream's
+      post is in, as a link on the page and the embassy entry.
 - [ ] Later: the exercises and coding guide written for teammates before the trip.
 
 ## ARUW
