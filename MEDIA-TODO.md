@@ -69,6 +69,30 @@ Every other entry has links under its title. These still need one: find a link f
 - [ ] OpenDubs, "Two 2D lidars, merged into one scan" (the team repo's URL names a teammate, so it isn't linked).
 - [ ] Atropos, "Project kickoff" (the project is still a draft).
 
+## Resume skills the site doesn't show yet
+
+From the resume of Oct 25. Each is on the resume but nowhere on the site (or only in a hidden comment).
+For each, say which project it belongs to and what you did, or drop it.
+
+- [ ] Rust: no project uses it. Which work shows it?
+- [ ] Isaac Sim: never mentioned. Where did you use it (OpenDubs, Fleet RL)?
+- [ ] ESP32: never mentioned. What did you build or program on one?
+- [ ] Oscilloscope: never mentioned. A debugging story (what you probed and found) would show it, ideally with a photo or scope capture.
+- [ ] Embedded RTOS (ARUW): the resume says the LQR rewrite is on the robot's embedded RTOS; the site says
+      the comparison ran in simulation. Is it running on the robot? If so, a line and a clip.
+- [ ] Sim-to-real tuning pipeline, about 5 mm accuracy (OpenDubs): not on the site. Needs a paragraph,
+      or its own entry, with how the 5 mm was measured.
+- [ ] 8-stage operator-gated hardware validation suite (OpenDubs): only in a hidden note. A paragraph in the
+      parallel-arms or impedance entry would show it.
+- [ ] Linux and Git: not shown anywhere. Probably fine left implicit; say if you want them as skills.
+- [ ] Smaller details from the resume I can add to existing entries if you say so: Pinocchio's RNEA for the
+      500 Hz gravity compensation, the planner's 125 Hz retiming, the Gauss-Markov model and its Monte Carlo
+      check (ARUW error model), and Achilles's CI death tests and replacing Eigen with xsimd.
+- [ ] Achilles speed: the resume says 1.65M robot-steps/s and 2× MuJoCo's per-robot rate; the site says up to
+      3.3× (seven-link arm, 64 robots batched). Which run should both use?
+- Already on this list: the $50,000+ fundraising and the curriculum for 50+ students (Botswana), and
+  fine-tuning π0, π0.5 and MolmoAct2 on Quest demonstrations (HCRL).
+
 ## Published Oct 25 with gaps
 
 - [ ] Optional: how the HCRL benchmark's out-of-distribution placements were chosen.
