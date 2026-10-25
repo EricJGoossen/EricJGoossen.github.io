@@ -40,7 +40,6 @@ Not needed to publish (Eric, Oct 25); for later:
 ## FTC
 
 - [ ] Later: a photo to replace the hero (the robot-demo photo is up for now; the koala card is final).
-- [ ] The two-robot entry's date (September 1, 2024 stands in for the start of the 2024–25 season).
 - [ ] Later: an entry on designing the robot, from the decision matrices and prototypes to the first CAD
       and the gripper you designed yourself. Needs CAD screenshots or photos of the gripper.
 - [ ] Later: an entry on outreach: the events, mentoring FLL teams and helping found a rookie team.
@@ -73,5 +72,4 @@ Every other entry has links under its title. These still need one: find a link f
 ## Published Oct 25 with gaps
 
 - [ ] Optional: how the HCRL benchmark's out-of-distribution placements were chosen.
-- [ ] Stand-in dates now visible: FTC's two-robot entry (September 1, 2024) and HCRL's experiment
-      design (July 20, 2026). Send the real ones.
+- [ ] Stand-in date still visible: HCRL's experiment design (July 20, 2026). Send the real one.
