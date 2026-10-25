@@ -109,7 +109,7 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
 - Short clip that loops like a GIF (muted, with pause controls): `{% video "images/clip.mp4", "What it shows" %}`
 - Longer video with sound (click to play): `{% video "images/talk.mp4", "What it shows", { play: true, poster: "images/talk.jpg" } %}`
 - Optional caption on either: add `caption: "..."` to the options. A photo credit goes in `credit: "Photo: ..."` (on `{% row %}` and `{% video %}`, and in each `more` item), a small line right under the media, so the caption stays about the picture.
-- YouTube: `{% youtube "VIDEO_ID or full link", "Title" %}`. This shows a thumbnail that links to YouTube; no YouTube code runs on the site. In a `{% row %}`, a YouTube link in place of the file does the same, with the alt text as its title.
+- YouTube: `{% youtube "VIDEO_ID or full link", "Title", { poster: "images/still.jpg" } %}`. This shows a thumbnail that opens the video on YouTube in a new tab; no YouTube code runs on the site. Give it a `poster` (a still from the video, in the project's `images/`) so the thumbnail is local: otherwise it loads from YouTube's image server, which the artifact preview blocks. In a `{% row %}`, a YouTube link in place of the file does the same, with the alt text as its title (and `poster` in its options).
 - Covers, heroes and publication teasers can be `.mp4` too. Give a video cover a `coverPoster`.
 - Sizes: aim for images under about 1 MB (2000px on the long side) and clips under 5 MB. Cloudflare rejects any file over 25 MB, and the build stops on it.
 - Use MP4 (H.264) for video so every browser plays it. To shrink a clip, ffmpeg in Docker works:
