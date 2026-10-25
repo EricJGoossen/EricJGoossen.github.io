@@ -1,6 +1,11 @@
 ---
 title: Where it started
 date: 2026-03-04
+info:
+  language: C++
+  hardware: Laptop CPU
+  role: Solo
+  status: Replaced by V2
 links:
   - label: "First commit"
     url: "https://github.com/EricJGoossen/achilles/commit/0dc8cfb"

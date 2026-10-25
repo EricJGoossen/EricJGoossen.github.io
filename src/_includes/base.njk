@@ -37,7 +37,8 @@
         {% if resume.pdf and (resume.pdf | fileReady) %}<a href="/#resume">Resume</a>{% endif %}
         {% if (publications | published).length %}<a href="/#publications">Publications</a>{% endif %}
       </nav>
-      {% include "search-form.njk" %}
+      {#- The results page has its own, larger box; the header one moves there (view transition in style.css) -#}
+      {% if page.url != "/search/" %}{% include "search-form.njk" %}{% endif %}
     </div>
   </header>
 

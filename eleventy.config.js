@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import { checkSite } from "./lib/checks.js";
 import { isVideo, media, mediaUrl, rowShortcode, tileMedia, videoShortcode, youtubeShortcode } from "./lib/media.js";
-import { entryId, entrySkills, rebase, searchIndex, skillPages, skillSlug } from "./lib/skills.js";
+import { entryId, entryInfo, entrySkills, rebase, searchIndex, skillPages, skillSlug } from "./lib/skills.js";
 
 export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets");
@@ -111,6 +111,8 @@ export default function (eleventyConfig) {
 
   // An entry's skill tags (its highlight's plus its own `skillTags:` list).
   eleventyConfig.addFilter("entrySkills", entrySkills);
+  // Its basic facts (`info:` in its front matter), as [{ label, value }].
+  eleventyConfig.addFilter("entryInfo", entryInfo);
   eleventyConfig.addFilter("projectFor", (projects, slug) => projects.find((p) => p.fileSlug === slug));
 
   eleventyConfig.addFilter("readableDate", (date) =>

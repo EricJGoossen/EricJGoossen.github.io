@@ -83,6 +83,15 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
 1. Run `npm run new:entry -- <folder> "What happened" [date]`. Use the date the work happened, not today, if Eric gives one.
 2. Replace the `Placeholder:` text with the real write-up, and delete the template comment. (Add `draft: true` to its front matter to keep a half-written entry off the site.) Give each paragraph its own image or video with `{% row %}` (next recipe): the paragraph sits on the left, the media on the right (below it on phones), with a thin line between rows.
 3. Give it links, shown as `[Code] [Paper]` under its title: `links:` in its front matter, a list of `{ label, url }`. Link the specific code the entry is about (a commit, a pull request, or a folder at a commit), or the repo if nothing narrower fits. Every entry should have at least one; if there's nothing to link, say so in the handoff.
+   Give it its basic facts too, shown on one line under the links (the build warns about a published entry without them). Leave out any field that doesn't apply (an event has no language), and any Eric hasn't confirmed or the entry doesn't already say:
+   ```yaml
+   info:
+     language: C++              # or a list: [C++, Python]
+     tools: [xsimd, Valgrind]   # the libraries and tools that matter for this entry
+     hardware: Franka Panda     # what it ran on, or "Laptop CPU", "OpenArm (simulated)"
+     role: Solo                 # or "Lead", "Co-author", "Team of 4 (my part: the planner)"
+     status: On the robot       # how far it got: In simulation, In main, Used at competition, In the paper
+   ```
 4. Entries show newest first. Two entries on the same day are ordered by a time in the front matter, e.g. `date: 2026-09-19 11:02:53` (the time is only used for ordering; the page shows the date).
 5. To feature it, add a highlight to the project's `index.md`:
    ```yaml

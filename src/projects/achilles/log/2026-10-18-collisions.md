@@ -1,6 +1,12 @@
 ---
 title: Collision detection
 date: 2026-10-18 14:43:13
+info:
+  language: C++20
+  tools: [xsimd]
+  hardware: Laptop CPU
+  role: Solo
+  status: In main
 skillTags: [C++]
 links:
   - label: "Pull request"

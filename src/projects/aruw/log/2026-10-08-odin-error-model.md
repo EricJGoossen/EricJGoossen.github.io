@@ -1,6 +1,12 @@
 ---
 title: An error model for the Odin
 date: 2026-10-08 10:00:00
+info:
+  language: Python
+  tools: [NumPy, SciPy]
+  hardware: Odin1 on the sentry
+  role: Solo
+  status: Recommended the Odin as the sentry's only localization
 skillTags: [State estimation, Experiment design, Python]
 links:
   - label: "Analysis code"

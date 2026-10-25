@@ -1,6 +1,12 @@
 ---
 title: Reworking SKIDADDLE's control
 date: 2026-01-03
+info:
+  language: Java
+  tools: [Road Runner and Pedro Pathing (for comparison)]
+  hardware: Mecanum FTC robot (simulated)
+  role: Solo
+  status: In progress; compared in simulation
 skillTags: [Motion planning, Java]
 links:
   - label: "Code"

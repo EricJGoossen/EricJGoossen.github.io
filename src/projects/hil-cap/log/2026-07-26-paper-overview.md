@@ -1,6 +1,10 @@
 ---
 title: "The paper: A Few Words Go a Long Way"
 date: 2026-07-26 12:00:00
+info:
+  hardware: Franka Panda
+  role: Co-author (the VLA benchmark)
+  status: On arXiv
 links:
   - label: "Paper"
     url: "https://arxiv.org/abs/2607.23784"

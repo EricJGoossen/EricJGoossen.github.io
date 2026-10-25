@@ -422,6 +422,11 @@ main.wrap:has(> .project, > .skill-page) { --wrap: 72rem; }
 .entry h3, .entry > h2 { font-size: 1.3rem; margin-top: 0.15rem; }
 .entry h3 a, .entry > h2 a { color: inherit; }
 .entry-links { margin: 0.15rem 0 0.4rem; font-size: 0.92rem; }
+/* Basic facts under the links: "Language C++ · Tools xsimd · Role Solo". */
+.entry-info { display: flex; flex-wrap: wrap; gap: 0.15rem 1.1rem; margin: 0 0 0.5rem; font-size: 0.88rem; }
+.entry-info div { display: flex; gap: 0.35rem; }
+.entry-info dt { color: var(--muted); }
+.entry-info dd { margin: 0; }
 .entry-skills { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; font-size: 0.85rem; }
 .tag { padding: 0.05rem 0.55rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
 .entry-skills a.tag { text-decoration: none; }
@@ -460,7 +465,7 @@ main.wrap:has(> .project, > .skill-page) { --wrap: 72rem; }
 .log { overflow-x: clip; }
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
-    .row-text, .row-media, .entry > time, .entry > h3, .entry > h2, .entry > .entry-source, .entry > .entry-skills {
+    .row-text, .row-media, .entry > time, .entry > h3, .entry > h2, .entry > .entry-source, .entry > .entry-info, .entry > .entry-skills {
       animation: rise-in linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 75%;
@@ -599,4 +604,29 @@ figure .credit + figcaption { margin-top: 0.15rem; }
 .result-meta { margin: 0; color: var(--muted); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
 .result-title { font-size: 1.15rem; font-weight: 600; }
 .result-snippet { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.95rem; }
-.result-snippet mark { background: var(--accent-soft); color: var(--text); border-radius: 3px; padding: 0 0.1em; }
+.result-snippet mark, .result-entry mark { background: var(--accent-soft); color: var(--text); border-radius: 3px; padding: 0 0.1em; }
+.search-results li:has(.result-snippet) .result-snippet { cursor: pointer; }
+
+/* The results page: a larger box in the middle of the column (lower down
+   until something is typed), and room for an opened entry's media beside its text. */
+main.wrap:has(> .search-page) { --wrap: 72rem; }
+.search-page > :not(.search-results) { max-width: 46rem; margin-inline: auto; }
+.search-results li > :not(.result-entry) { max-width: 46rem; }
+.search-page { padding-top: 2.5rem; text-align: center; transition: padding-top 0.3s ease; }
+.search-page.empty { padding-top: 22vh; }
+.search-page .search-results { text-align: left; overflow-x: clip; } /* like .log: media slide in from the right */
+.search-page .search-form { width: 100%; margin-bottom: 0.75rem; }
+.search-page .search-input { padding: 0.75rem 1.1rem; font-size: 1.15rem; }
+.search-page .search-form .button { padding: 0.75rem 1.2rem; font-size: 1rem; }
+.search-results li.open { padding-bottom: 0; }
+.result-entry { padding: 0.5rem 0 1rem; border-top: 0; }
+
+/* Pressing Enter in the header box moves it into the middle of the results
+   page (and back when leaving): a cross-page view transition on the box alone,
+   so the rest of the page swaps as usual. Browsers without it skip the motion. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+:root { view-transition-name: none; }
+.search-form { view-transition-name: site-search; }
+::view-transition-group(site-search) { animation-duration: 0.35s; animation-timing-function: ease-in-out; }

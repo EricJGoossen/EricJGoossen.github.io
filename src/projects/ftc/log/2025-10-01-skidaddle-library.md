@@ -1,6 +1,12 @@
 ---
 title: "SKIDADDLE: a path follower that plans with physics"
 date: 2025-10-01
+info:
+  language: Java
+  tools: [Its own simulator]
+  hardware: Built for mecanum FTC robots
+  role: Solo
+  status: Open source
 links:
   - label: "Code"
     url: "https://github.com/EricJGoossen/SKIDADDLE/tree/7d3240c"

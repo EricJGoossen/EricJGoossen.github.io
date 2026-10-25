@@ -1,6 +1,11 @@
 ---
 title: The competition and our robots
 date: 2026-06-28
+info:
+  language: C++
+  hardware: The engineer, then the sentry
+  role: "Software: odometry and path tracking"
+  status: 3rd in the 3v3 at the 2026 ARC Championship
 links:
   - label: "Robot reveal"
     url: "https://www.youtube.com/watch?v=FGh1yQdJGeM"

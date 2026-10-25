@@ -39,6 +39,7 @@ layout: base.njk
       <time datetime="{{ entry.date.toISOString() }}">{{ entry.date | readableDate }}</time>
       <h3><a href="#{{ entry | entryId }}">{{ entry.data.title }}</a></h3>
       {% if entry.data.links %}<p class="bracket-links entry-links">{% for link in entry.data.links | readyLinks %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}</p>{% endif %}
+      {% set e = entry %}{% include "entry-info.njk" %}
       {% if tags.length %}
       <p class="entry-skills"><span class="muted">Skills:</span> {% for skill in tags %}<a class="tag" href="/skills/{{ skill | skillSlug }}/">{{ skill }}</a>{% endfor %}</p>
       {% endif %}

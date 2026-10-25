@@ -1,6 +1,8 @@
 ---
 title: Advocating for STEM at the U.S. Embassy
 date: 2025-07-25 12:00:00
+info:
+  role: One of four speakers
 links:
   - label: "Dare to Dream's post"
     url: "https://www.facebook.com/daretodreamhub/posts/%F0%9D%90%93%F0%9D%90%81%F0%9D%90%93-%F0%9D%90%96%F0%9D%90%A1%F0%9D%90%9E%F0%9D%90%A7-%F0%9D%90%82%F0%9D%90%AE%F0%9D%90%A5%F0%9D%90%AD%F0%9D%90%AE%F0%9D%90%AB%F0%9D%90%9E-%F0%9D%90%8C%F0%9D%90%9E%F0%9D%90%AD-%F0%9D%90%82%F0%9D%90%A8%F0%9D%90%9D%F0%9D%90%9E-what-an-incredible-moment-of-innovation-and-exchange-d/1108658294809404/"
