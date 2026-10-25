@@ -8,7 +8,8 @@ delete its line here.
 
 - [ ] A new block image of the simulator's design, to replace the current architecture
       diagrams.
-- [ ] A new hero video, once the full robot is modeled in Achilles.
+- [ ] A new home page card image and a new hero image (the hero can wait until the full robot is
+      modeled in Achilles).
 
 ## OpenDubs
 
@@ -33,8 +34,8 @@ Not needed to publish (Eric, Oct 25); for later:
 
 - [ ] Later: a hero and a card, ideally video (the fleet running for the hero, one or two arms for the
       card). The handbook's `fleet-panorama.jpg` and `scene-cams-all.jpg` hold their places.
-- [ ] Later: a read-through of the overview and the automatic-reset entry, especially "more than a
-      twelvefold improvement" (expected, not measured) and the split of the tag work with the teammate.
+- [ ] Later: a read-through of the overview, especially "more than a twelvefold improvement" (expected,
+      not measured).
 - [ ] Later: a video of a real automatic reset, to stand beside the simulated one.
 
 ## FTC
@@ -49,15 +50,15 @@ Not needed to publish (Eric, Oct 25); for later:
 
 ## Still owed from earlier rounds
 
-- [ ] HCRL: a video of collecting a teleoperated demonstration with the Quest controller (for
-      the fine-tuning entry, along with what fine-tuning changed), and GR00T and MolmoAct2
-      rollout videos.
+- [ ] HCRL: a video of collecting a teleoperated demonstration with the Quest controller, for the
+      fine-tuning entry (under "Still to write").
 
 ## Still to write
 
 - [ ] Later: Botswana, the fundraising entry.
 - [ ] Later: Botswana, the leadership entry.
 - [ ] Atropos: everything. The draft project exists (`src/projects/atropos/`) and is off the site.
+- [ ] HCRL: an entry on fine-tuning π0, π0.5 and MolmoAct2 on the Quest demonstrations.
 - [ ] HCRL: the "writing the paper" entry. The old draft and its page images are in
       `assets-src/hil-cap/writing-the-paper/`.
 
@@ -87,8 +88,3 @@ belongs to and what you did with it (a sentence, plus a photo or clip if there i
       impedance entry: what the stages are and what each one gates.
 - Already on this list: the $50,000+ fundraising and the curriculum for 50+ students (Botswana), and
   fine-tuning π0, π0.5 and MolmoAct2 on Quest demonstrations (HCRL).
-
-## Published Oct 25 with gaps
-
-- [ ] Optional: how the HCRL benchmark's out-of-distribution placements were chosen.
-- [ ] Stand-in date still visible: HCRL's experiment design (July 20, 2026). Send the real one.
