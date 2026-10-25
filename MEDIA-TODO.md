@@ -25,15 +25,12 @@ delete its line here.
 
 ## ARUW
 
-- [ ] The hero: round 2 of the match at https://www.youtube.com/watch?v=PqSzhmRSAZA, or clips from the
-      robot reveal at https://www.youtube.com/watch?v=FGh1yQdJGeM. YouTube is blocked from the cloud
-      session: allow `www.youtube.com` and `*.googlevideo.com` in the environment's network settings, or
-      send the MP4s.
+- [ ] The two videos as MP4s: round 2 of the match (https://www.youtube.com/watch?v=PqSzhmRSAZA) for the
+      hero, and the robot reveal (https://www.youtube.com/watch?v=FGh1yQdJGeM) for the competition entry's
+      clips. YouTube blocks downloads from the cloud session even with the network open.
 - [ ] Photos from your zipped ARUW files (SharePoint didn't work): the brief for the agent going through
       them was sent in chat on Oct 24. A cover, a hero still, the sentry and engineer, competition shots.
-- [ ] The competition entry (`log/2025-10-01-the-competition.md`, a draft): how a game is won, how ARUW
-      did at the last ARC, and the reveal clips.
-- [ ] Check the ARUW link (https://aruw.org/, from UW ECE's news pages; the cloud session can't reach it).
+- [ ] The reveal's date, for the competition entry (October 1, 2025 is a stand-in).
 
 ## Fleet RL
 
