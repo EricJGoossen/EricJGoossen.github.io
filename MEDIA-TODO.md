@@ -26,7 +26,8 @@ delete its line here.
 
 - [ ] The two videos as MP4s: round 2 of the match (https://www.youtube.com/watch?v=PqSzhmRSAZA) for the
       hero, and the robot reveal (https://www.youtube.com/watch?v=FGh1yQdJGeM) for the competition entry's
-      clips. YouTube blocks downloads from the cloud session even with the network open.
+      clips and the card. YouTube blocks downloads from the cloud session even with the network open.
+      (The Drive link sent Oct 25 was aruw-picks.zip again, not the videos.)
 - [ ] Is `08-working-adjusting-robot.jpeg` in aruw-picks.zip you? If so it can go on the page. (The
       cover, hero and the competition entry's two photos are in, from the same zip.)
 - [ ] The reveal's date, for the competition entry (October 1, 2025 is a stand-in).
@@ -43,9 +44,7 @@ Not needed to publish (Eric, Oct 25); for later:
 
 ## FTC
 
-- [ ] The hero and card photos sent on Oct 25 (the robot demo as the hero, the koala hat as the card)
-      came through in chat but not as files: send them again as attachments.
-- [ ] Later: a better hero (the robot-demo photo holds the place; the card is final).
+- [ ] Later: a photo to replace the hero (the robot-demo photo is up for now; the koala card is final).
 - [ ] The two-robot entry's date (September 1, 2024 stands in for the start of the 2024–25 season).
 - [ ] Later: an entry on designing the robot, from the decision matrices and prototypes to the first CAD
       and the gripper you designed yourself. Needs CAD screenshots or photos of the gripper.
@@ -64,7 +63,6 @@ Not needed to publish (Eric, Oct 25); for later:
 
 - [ ] Later: Botswana, the fundraising entry.
 - [ ] Later: Botswana, the leadership entry.
-- [ ] FTC: the overview (your captaining).
 - [ ] Atropos: everything. The draft project exists (`src/projects/atropos/`) and is off the site.
 - [ ] HCRL: the "writing the paper" entry. The old draft and its page images are in
       `assets-src/hil-cap/writing-the-paper/`.
@@ -83,6 +81,5 @@ there is one:
 
 - [ ] HCRL, the experiment-design entry: what lighting did to the models and how the out-of-distribution
       placements were chosen, and what you took away about benchmarking (taken out to publish).
-- [ ] FTC: the card is the SKIDADDLE simulator clip until your photo arrives as a file.
 - [ ] Stand-in dates now visible: ARUW's competition entry (October 1, 2025), FTC's two-robot entry
       (September 1, 2024) and HCRL's experiment design (July 20, 2026). Send the real ones.

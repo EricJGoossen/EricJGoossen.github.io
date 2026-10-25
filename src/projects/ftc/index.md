@@ -6,9 +6,12 @@ timeline: May 2023 – May 2025
 tools: [Java, OpenCV, Android]
 order: 7
 summary: On FTC team 417 SKID, captain in 2024–25, I built Live View, a rules-legal camera feed for the drivers, and SKIDADDLE, a path follower that plans with physics.
-# The SKIDADDLE simulator clip stands in as the card until Eric's photo (sent Oct 25, not received as a file) arrives.
-cover: images/skidaddle-sim.mp4
-coverPoster: images/skidaddle-sim.jpg
+cover: images/cover-koala.jpg
+# The demo photo is the hero for now; Eric wants a better one later (MEDIA-TODO.md).
+hero: images/hero-robot-demo.jpg
+heroAlt: Demonstrating 417 SKID's robot in a classroom, its long arm reaching up beside me, with a world map on the wall behind
+heroFade: strong
+heroSide: right
 highlights:
   - label: SKIDADDLE pathing
     entry: skidaddle-library
