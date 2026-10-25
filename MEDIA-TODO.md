@@ -24,10 +24,6 @@ delete its line here.
 
 ## ARUW
 
-- [ ] The two videos as MP4s: round 2 of the match (https://www.youtube.com/watch?v=PqSzhmRSAZA) for the
-      hero, and the robot reveal (https://www.youtube.com/watch?v=FGh1yQdJGeM) for the competition entry's
-      clips and the card. YouTube blocks downloads from the cloud session even with the network open.
-      (The Drive link sent Oct 25 was aruw-picks.zip again, not the videos.)
 - [ ] Is `08-working-adjusting-robot.jpeg` in aruw-picks.zip you? If so it can go on the page. (The
       cover, hero and the competition entry's two photos are in, from the same zip.)
 - [ ] The reveal's date, for the competition entry (October 1, 2025 is a stand-in).

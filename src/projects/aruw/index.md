@@ -5,9 +5,13 @@ org: "Advanced Robotics at UW"
 timeline: Oct 2025 – present
 tools: [C++, Python, ROS 2, Kalman filter, LQR, motion capture]
 order: 4
-cover: images/cover-sentry.jpg
-hero: images/hero-fleet.jpg
-heroAlt: Three of ARUW's 2026 robots side by side on a brick path under blossoming cherry trees, the sentry on the right, with visitors walking behind them
+# Card: the sentry in ARUW's 2026 robot reveal (YouTube FGh1yQdJGeM, 0:56, 1:07, 1:10). Hero: round 2 of
+# "ARUW vs RoboGrinder | Match 113 | 3v3 ARC Championship 2026" (PqSzhmRSAZA, 8:38), which ARUW (red) won. MP4s from Eric, Oct 25.
+cover: images/cover-reveal.mp4
+coverPoster: images/cover-reveal.jpg
+hero: images/hero-match.mp4
+heroPoster: images/hero-match.jpg
+heroAlt: Overhead view of our 3v3 match against RoboGrinder at the 2026 ARC Championship, red and blue robots fighting over the capture point in the middle of the field under the broadcast's health bars
 heroFade: strong
 summary: Localization and control for ARUW's competition robots, from Kalman-filter odometry and LQR path tracking to measuring the sentry's localization against motion capture.
 highlights:

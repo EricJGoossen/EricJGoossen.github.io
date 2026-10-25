@@ -43,3 +43,9 @@ true shape is unknown and it is left out. With the tuned pods the pushes come to
 their headings to within 1° of the IMU's; with the design values the strafe reads 4.44 m and +79°.
 The tuned strafe ends 20 cm from the IMU's path (the design values, 3.7 m): the two headings wander a
 few degrees apart during the minute-long push and meet again at the end.
+- `hero-match.mp4`, `.jpg` (hero): round 2 of "ARUW vs RoboGrinder | Match 113 | 3v3 ARC
+  Championship 2026" (YouTube PqSzhmRSAZA, MKV from Eric, Oct 25), 8:38–8:50, cropped to the
+  center of the field (`crop=1000:1000:400:60`, scaled to 900), CRF 27, no audio.
+- `cover-reveal.mp4`, `.jpg` (card): three shots of the sentry from "ROBOT // REVEAL 2026"
+  (FGh1yQdJGeM, WebM from Eric): 55.90–57.40 s, 67.00–68.85 s and 69.62–71.52 s, cut at the
+  scene changes, cropped to 3:2 and scaled to 960×640, CRF 26, no audio.
