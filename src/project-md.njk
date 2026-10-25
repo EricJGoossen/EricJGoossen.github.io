@@ -1,0 +1,12 @@
+---
+pagination:
+  data: collections.projects
+  size: 1
+  alias: project
+permalink: "{{ project.url }}index.md"
+eleventyExcludeFromCollections: true
+eleventyImport:
+  collections: ["projects", "logEntries"]
+---
+{#- A Markdown copy of each project page, for AI agents (lib/agents.js). -#}
+{{ project | projectMarkdown(collections.logEntries, site) | safe }}

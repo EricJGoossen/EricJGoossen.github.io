@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
+import { jsonLd, llmsFullTxt, llmsTxt, projectMarkdown } from "./lib/agents.js";
 import { checkSite } from "./lib/checks.js";
 import { isVideo, media, mediaUrl, rowShortcode, tileMedia, videoShortcode, youtubeShortcode } from "./lib/media.js";
 import { entryId, entryInfo, entrySkills, rebase, searchIndex, skillPages, skillSlug } from "./lib/skills.js";
@@ -116,6 +117,17 @@ export default function (eleventyConfig) {
       publications,
     })
   );
+
+  // For AI agents (lib/agents.js): /llms.txt, /llms-full.txt, a Markdown copy
+  // of each project, and schema.org data in every page's head.
+  const agentArgs = (collections, site, publications, resume) => ({
+    site, resume, publications: publications ?? [],
+    projects: collections.projects, entries: collections.logEntries, skills: collections.skillPages,
+  });
+  eleventyConfig.addFilter("llmsTxt", (c, site, pubs, resume) => llmsTxt(agentArgs(c, site, pubs, resume)));
+  eleventyConfig.addFilter("llmsFullTxt", (c, site, pubs) => llmsFullTxt(agentArgs(c, site, pubs)));
+  eleventyConfig.addFilter("projectMarkdown", (project, entries, site) => projectMarkdown(project, entries, site));
+  eleventyConfig.addFilter("jsonLd", (site, skills, project) => jsonLd({ site, skills, project }));
 
   // An entry's skill tags (its `skillTags:` list).
   eleventyConfig.addFilter("entrySkills", entrySkills);

@@ -1,0 +1,8 @@
+---
+permalink: /llms.txt
+eleventyExcludeFromCollections: true
+# Built after these, so their content is ready (lib/agents.js)
+eleventyImport:
+  collections: ["projects", "logEntries", "skillPages"]
+---
+{{ collections | llmsTxt(site, publications, resume) | safe }}

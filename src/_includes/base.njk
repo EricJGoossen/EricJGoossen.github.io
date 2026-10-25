@@ -23,6 +23,11 @@
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | versioned }}">
+  {#- For AI agents: instructions and the whole site as Markdown (lib/agents.js) -#}
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="For AI assistants: llms.txt">
+  {% set isProject = layout == "project.njk" %}
+  {% if isProject %}<link rel="alternate" type="text/markdown" href="{{ page.url }}index.md" title="This project as Markdown">{% endif %}
+  <script type="application/ld+json">{{ site | jsonLd(skills, ({ title: title, summary: summary, org: org, url: page.url }) if isProject else null) | safe }}</script>
 </head>
 <body>
   {% checkBanner %}
@@ -48,7 +53,7 @@
 
   <footer class="site-footer">
     <div class="wrap">
-      <span>© {{ site.name }}</span>
+      <span>© {{ site.name }} <span class="muted">· for AI assistants: <a href="/llms.txt">llms.txt</a></span></span>
       <span class="bracket-links">
         {% for link in site.links | readyLinks %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}
       </span>

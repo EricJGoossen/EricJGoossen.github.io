@@ -1,0 +1,7 @@
+---
+permalink: /llms-full.txt
+eleventyExcludeFromCollections: true
+eleventyImport:
+  collections: ["projects", "logEntries", "skillPages"]
+---
+{{ collections | llmsFullTxt(site, publications) | safe }}
