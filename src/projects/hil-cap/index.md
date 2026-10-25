@@ -1,6 +1,5 @@
 ---
 layout: project.njk
-draft: true   # hidden from the site until this line is removed
 title: Benchmarking VLAs for ARCHITECT
 org: "Human Centered Robotics Lab"
 timeline: Apr 2026 – present

@@ -78,3 +78,11 @@ there is one:
 - [ ] OpenDubs, "Two 2D lidars, merged into one scan" (the team repo's URL names a teammate, so it isn't linked).
 - [ ] OpenDubs, "ARCS Night to Ignite Science" (an event page or the ARCS news post).
 - [ ] Atropos, "Project kickoff" (the project is still a draft).
+
+## Published Oct 25 with gaps
+
+- [ ] HCRL, the experiment-design entry: what lighting did to the models and how the out-of-distribution
+      placements were chosen, and what you took away about benchmarking (taken out to publish).
+- [ ] FTC: the card is the SKIDADDLE simulator clip until your photo arrives as a file.
+- [ ] Stand-in dates now visible: ARUW's competition entry (October 1, 2025), FTC's two-robot entry
+      (September 1, 2024) and HCRL's experiment design (July 20, 2026). Send the real ones.

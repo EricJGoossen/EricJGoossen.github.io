@@ -1,6 +1,5 @@
 ---
 layout: project.njk
-draft: true   # hidden from the site until this line is removed
 title: OpenDubs
 org: "Personal Robotics Lab"
 timeline: Oct 2025 – present

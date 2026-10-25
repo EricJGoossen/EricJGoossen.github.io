@@ -1,15 +1,14 @@
 ---
 layout: project.njk
-draft: true   # hidden from the site until this line is removed
 title: FIRST Tech Challenge
 org: "417 SKID, Swerve Robotics"
 timeline: May 2023 – May 2025
 tools: [Java, OpenCV, Android]
 order: 7
 summary: On FTC team 417 SKID, captain in 2024–25, I built Live View, a rules-legal camera feed for the drivers, and SKIDADDLE, a path follower that plans with physics.
-# Placeholder: Eric will pick a hero and a card image from his time in FTC (not specific to either project).
-# cover: images/cover.jpg
-# hero: images/hero.jpg
+# The SKIDADDLE simulator clip stands in as the card until Eric's photo (sent Oct 25, not received as a file) arrives.
+cover: images/skidaddle-sim.mp4
+coverPoster: images/skidaddle-sim.jpg
 highlights:
   - label: SKIDADDLE pathing
     entry: skidaddle-library

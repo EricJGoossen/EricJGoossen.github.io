@@ -1,6 +1,5 @@
 ---
 layout: project.njk
-draft: true   # hidden from the site until this line is removed
 title: Advanced Robotics at UW
 org: "Advanced Robotics at UW"
 timeline: Oct 2025 – present
