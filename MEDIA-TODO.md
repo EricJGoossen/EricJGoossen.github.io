@@ -43,8 +43,11 @@ Not needed to publish (Eric, Oct 25); for later:
 
 ## FTC
 
-- [ ] A hero and a cover from your time in FTC (not specific to SKIDADDLE or Live View).
-- [ ] The team name and the years, for the metadata line.
+- [ ] The hero and card photos sent on Oct 25 (the robot demo as the hero, the koala hat as the card)
+      came through in chat but not as files: send them again as attachments.
+- [ ] Later: a better hero (the robot-demo photo holds the place; the card is final).
+- [ ] The SKIDADDLE technical presentation, for its own entry: a photo of it, the slides, and a few
+      lines on what it covered and who it was for.
 
 ## Still owed from earlier rounds
 
