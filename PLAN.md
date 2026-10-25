@@ -69,7 +69,7 @@ Entries that aren't highlights can be tagged too, with `skillTags: [C++, SIMD]` 
 
 - Each project is a folder. The overview is one Markdown file with a header block (title, org, summary, cover image, highlights, links). Each log entry is its own Markdown file with a date. Adding an update = drop in a new `.md` file and images, `git push`.
 - Bio, resume, and skills live in small data files, so the home page builds itself from them.
-- Output is still plain static HTML, so security is unchanged. No server, no database, no login. The only JavaScript is the search page.
+- Output is still plain static HTML, so security is unchanged. No server, no database, no login. The only JavaScript is the search box on the home page.
 - **Node runs in Docker**, not on the machine. `docker compose up` starts a live-reloading preview at localhost:8090. Cloudflare runs the same build itself on each push.
 
 ## Folder layout
@@ -78,8 +78,7 @@ Entries that aren't highlights can be tagged too, with `skillTags: [C++, SIMD]` 
 src/
   index.njk                  home page template
   skill.njk                  one page per skill (/skills/<name>/)
-  search.njk                 the search page (/search/)
-  search-index.njk           search-index.json, what the search page searches
+  search-index.njk           search-index.json, what the search box searches
   _data/
     site.json                name, headline, bio, photo, links
     skills.json              skill list + best example for each
@@ -95,7 +94,7 @@ src/
     ...
   assets/
     css/style.css
-    js/search.js             the search page, the only JavaScript
+    js/search.js             the home page's search box, the only JavaScript
     resume.pdf
   _headers                   security headers, read by Cloudflare
 lib/

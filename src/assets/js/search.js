@@ -1,4 +1,4 @@
-// The search page (/search/). The index is a JSON file built with the site
+// The search box at the bottom of the home page (#search). The index is a JSON file built with the site
 // (src/search-index.njk), so nothing leaves the site: every word typed has to
 // appear in a result's title, project or text. Titles count most.
 const root = new URL("../../", document.currentScript.src); // this file is /assets/js/search.js

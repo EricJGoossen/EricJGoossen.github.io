@@ -92,7 +92,9 @@ section > h2 { margin-bottom: 1rem; }
 .skip-link { position: absolute; left: 16px; top: -3rem; z-index: 20; padding: 0.4rem 0.8rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
 .skip-link:focus { top: 0.75rem; }
 main:focus { outline: none; }
-.site-header { padding: 1.25rem 0; }
+/* The header stays at the top of the window; anchors stop below it. */
+.site-header { position: sticky; top: 0; z-index: 20; padding: 1.25rem 0; background: var(--bg); border-bottom: 1px solid transparent; }
+html { scroll-padding-top: 4.75rem; }
 .site-header .wrap { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
 .site-name { color: var(--text); font-weight: 650; }
 .site-header nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
@@ -529,7 +531,9 @@ figure .credit + figcaption { margin-top: 0.15rem; }
   .tiles { grid-template-columns: 1fr; gap: 1.75rem; }
   .tile:last-child:nth-child(odd) .tile-media { aspect-ratio: 3 / 2; }
   .pub { grid-template-columns: 1fr; gap: 1rem; padding: 1rem; }
-  .site-header { padding: 0.9rem 0 0.25rem; }
+  .site-header { padding: 0.75rem 0 0.5rem; }
+  html { scroll-padding-top: 6rem; }
+  #search { scroll-margin-top: 6rem; }
   .site-header .wrap { gap: 0.15rem 1rem; }
   .site-header nav { gap: 0.1rem 0.65rem; font-size: 0.95rem; }
   .meta { flex-direction: column; }
@@ -559,18 +563,17 @@ figure .credit + figcaption { margin-top: 0.15rem; }
 /* ---------- Skill pages ---------- */
 /* Every log entry that shows one skill, in full, under a short header. */
 .skill-header { padding-bottom: 1.5rem; }
-.skill-page > .back { margin-bottom: 0.5rem; }
 .eyebrow { margin: 0 0 0.25rem; color: var(--muted); font-size: 0.8rem; font-weight: 650; letter-spacing: 0.12em; text-transform: uppercase; }
 .skill-header .meta { margin-bottom: 1rem; }
 .skill-page .log { border-top: 1px solid var(--border); }
 .skill-page .entry:first-of-type { padding-top: 2rem; }
 .entry-source { display: flex; flex-wrap: wrap; align-items: center; gap: 0.2rem 0.5rem; margin: 0; color: var(--muted); font-size: 0.9rem; }
 .skill-page .entry-source a { font-weight: 600; text-decoration: none; }
-.skill-page > .back { display: block; width: 100%; }
 .entry-source .badge { margin-left: 0.25rem; }
 
 /* ---------- Search ---------- */
 .search { padding-top: 1.5rem; }
+#search { scroll-margin-top: 4.75rem; }
 .search-input {
   width: 100%;
   margin: 0.5rem 0 0.75rem;
