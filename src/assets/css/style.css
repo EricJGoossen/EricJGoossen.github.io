@@ -678,8 +678,8 @@ main.wrap:has(> .search-page) { --wrap: 72rem; }
    Page load: the intro (home), project intro, skill header and search results
    settle in, one line after another; a project's hero footage eases in from
    slightly zoomed. Scroll: home sections and tiles rise into view as they
-   arrive, the header gains a hairline once the page scrolls, and project and
-   skill pages show a thin reading-progress bar. All CSS (scroll-driven where
+   arrive, the header gains a hairline once the page scrolls, and every page
+   shows a thin reading-progress bar at the top in place of the scrollbar. All CSS (scroll-driven where
    supported), and none of it runs with reduced motion. The log entries keep
    their own rise and slide above. */
 @keyframes settle-in {
@@ -740,7 +740,7 @@ main.wrap:has(> .search-page) { --wrap: 72rem; }
   }
   @supports (animation-timeline: scroll()) {
     .site-header { animation: header-line linear both; animation-timeline: scroll(root); animation-range: 0 6rem; }
-    main:has(> .project, > .skill-page)::before {
+    body::before {
       content: "";
       position: fixed;
       inset: 0 0 auto 0;
@@ -752,4 +752,22 @@ main.wrap:has(> .search-page) { --wrap: 72rem; }
       animation-timeline: scroll(root);
     }
   }
+}
+
+/* The scrollbar is hidden (the page still scrolls as usual); the blue bar at
+   the top shows how far down you are instead. */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+/* Things you can click grow a little under the pointer, like the project tiles. */
+@media (prefers-reduced-motion: no-preference) {
+  .chip, .tag, .button, .search-form .button, .bracket-links a, .project-nav a, .back,
+  .entry .row-media img, .entry .row-media video, .pub img, .pub video, .resume-page, .result-title {
+    transition: scale 0.18s ease, border-color 0.15s, color 0.15s, box-shadow 0.18s;
+  }
+  .chip:hover, .tag:hover, .button:hover, .search-form .button:hover { scale: 1.05; }
+  .bracket-links a:hover, .project-nav a:hover, .back:hover, .result-title:hover { scale: 1.03; }
+  .bracket-links a, .project-nav a, .back, .result-title { display: inline-block; }
+  .entry .row-media img:hover, .entry .row-media video:hover, .pub img:hover, .pub video:hover { scale: 1.015; }
+  .resume-page:hover { scale: 1.01; box-shadow: 0 8px 28px -12px rgb(0 0 0 / 0.3); }
 }
