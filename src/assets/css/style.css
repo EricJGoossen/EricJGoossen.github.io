@@ -359,15 +359,24 @@ html { scroll-padding-top: 5.5rem; }
   mask-image: radial-gradient(ellipse 49% 46% at 50% 48%, #000 0%, rgb(0 0 0 / 0.75) 30%, rgb(0 0 0 / 0.45) 52%, rgb(0 0 0 / 0.2) 72%, rgb(0 0 0 / 0.06) 88%, transparent 100%);
 }
 /* heroSize: large keeps the footage fully visible much further out before it
-   fades (same outer edge, so still no visible edge): more of the scene shows. */
-.hero-fade-strong.hero-large .hero-bg {
-  -webkit-mask-image: radial-gradient(ellipse 31% 48% at 69% 49%, #000 0%, #000 42%, rgb(0 0 0 / 0.8) 58%, rgb(0 0 0 / 0.45) 74%, rgb(0 0 0 / 0.14) 89%, transparent 100%);
-  mask-image: radial-gradient(ellipse 31% 48% at 69% 49%, #000 0%, #000 42%, rgb(0 0 0 / 0.8) 58%, rgb(0 0 0 / 0.45) 74%, rgb(0 0 0 / 0.14) 89%, transparent 100%);
-}
-.hero-side-right.hero-fade-strong.hero-large .hero-bg {
-  left: 50%;
-  -webkit-mask-image: radial-gradient(ellipse 50% 49% at 50% 49%, #000 0%, #000 42%, rgb(0 0 0 / 0.8) 58%, rgb(0 0 0 / 0.45) 74%, rgb(0 0 0 / 0.14) 89%, transparent 100%);
-  mask-image: radial-gradient(ellipse 50% 49% at 50% 49%, #000 0%, #000 42%, rgb(0 0 0 / 0.8) 58%, rgb(0 0 0 / 0.45) 74%, rgb(0 0 0 / 0.14) 89%, transparent 100%);
+   fades (same outer edge, so still no visible edge): more of the scene shows.
+   The side footage also starts further left, so the dimming under the text
+   reaches a little further. Desktop only; phones keep the band at the top. */
+@media (min-width: 641px) {
+  .hero-fade-strong.hero-large .hero-bg {
+    -webkit-mask-image: radial-gradient(ellipse 31% 48% at 69% 49%, #000 0%, #000 42%, rgb(0 0 0 / 0.8) 58%, rgb(0 0 0 / 0.45) 74%, rgb(0 0 0 / 0.14) 89%, transparent 100%);
+    mask-image: radial-gradient(ellipse 31% 48% at 69% 49%, #000 0%, #000 42%, rgb(0 0 0 / 0.8) 58%, rgb(0 0 0 / 0.45) 74%, rgb(0 0 0 / 0.14) 89%, transparent 100%);
+  }
+  .hero-side-right.hero-fade-strong.hero-large .hero-bg {
+    left: 41%;
+    -webkit-mask-image: radial-gradient(ellipse 50% 49% at 50% 49%, #000 0%, #000 42%, rgb(0 0 0 / 0.8) 58%, rgb(0 0 0 / 0.45) 74%, rgb(0 0 0 / 0.14) 89%, transparent 100%);
+    mask-image: radial-gradient(ellipse 50% 49% at 50% 49%, #000 0%, #000 42%, rgb(0 0 0 / 0.8) 58%, rgb(0 0 0 / 0.45) 74%, rgb(0 0 0 / 0.14) 89%, transparent 100%);
+  }
+  /* The larger side footage reaches under the ends of the text lines, so the
+     dimming under the text reaches a little further too. */
+  .hero-side-right.hero-large::before {
+    background: linear-gradient(90deg, rgb(var(--bg-rgb) / 0.92) 0%, rgb(var(--bg-rgb) / 0.85) 46%, rgb(var(--bg-rgb) / 0) 66%);
+  }
 }
 .hero-bg video, .hero-bg img {
   width: 100%;

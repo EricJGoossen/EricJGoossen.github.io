@@ -1,7 +1,8 @@
 # Link preview image
 
 `src/assets/og-image.jpg` (1200×630, `ogImage` in `src/_data/site.json`) is the picture shown when the
-home page is shared. It is `og.html` rendered by a browser at 1200×630: the headshot, name and headline,
+home page is shared. It is `og.html` rendered by a browser at 1200×630: the headshot, name, headline,
+site address, GitHub and LinkedIn,
 and four project tiles from `tiles/` (Eric's picks, Oct 25), each cropped to the card's shape around
 its subject:
 

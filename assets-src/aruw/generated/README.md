@@ -46,7 +46,7 @@ few degrees apart during the minute-long push and meet again at the end.
 - `hero-match.mp4`, `.jpg` (hero): "ARUW vs RoboGrinder | Match 113 | 3v3 ARC Championship 2026"
   (YouTube PqSzhmRSAZA, MKV from Eric, Oct 25), 16:40.5–16:46.0 (round 3, game clock 4:29–4:24), the
   close side camera on the capture point: our red robot fighting two blue ones. Eric asked for combat
-  (Oct 25). `ffmpeg -ss 1000.5 -i match.mkv -t 5.5 -vf crop=690:960:525:0 -c:v libx264 -crf 25 -preset slow
+  (Oct 25). `ffmpeg -ss 1000.5 -i match.mkv -t 5.5 -vf crop=820:960:455:0 -c:v libx264 -crf 25 -preset slow
   -pix_fmt yuv420p -an -movflags +faststart`: full resolution, zoomed out for the larger hero (heroSize:
   large, Eric Oct 25), centered on the clash and cut above the broadcast's bottom banner; it stops
   before the "Blue leads" banner. The poster is
