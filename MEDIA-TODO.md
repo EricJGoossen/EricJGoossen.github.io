@@ -25,7 +25,7 @@ delete its line here.
 ## ARUW
 
 - [ ] Is `08-working-adjusting-robot.jpeg` in aruw-picks.zip you? If so it can go on the page. (The
-      cover, hero and the competition entry's two photos are in, from the same zip.)
+      competition entry's two photos are in, from the same zip.)
 - [ ] The reveal's date, for the competition entry (October 1, 2025 is a stand-in).
 
 ## Fleet RL
