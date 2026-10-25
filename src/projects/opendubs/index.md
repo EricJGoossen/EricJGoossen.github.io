@@ -27,7 +27,7 @@ highlights:
     entry: arm-group
     skills: [Motion planning, Python, MuJoCo]
 links:
-  - label: Arm code
+  - label: Arm code (lab repo)
     url: https://github.com/EricJGoossen/openarm_robot-code
   - label: OpenDubs
     url: https://github.com/UW-Allen-School-Robotics/opendubs
