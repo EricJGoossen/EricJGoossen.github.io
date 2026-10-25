@@ -29,6 +29,7 @@ eleventyComputed:
     <article class="entry" id="{{ use.key | replace('/', '-') }}">
       <p class="entry-source"><a href="{{ use.project.url }}">{{ use.project.data.title }}</a><span aria-hidden="true">·</span><time datetime="{{ use.entry.date.toISOString() }}">{{ use.entry.date | readableDate }}</time>{% if use.best %}<span class="badge">Best example</span>{% endif %}</p>
       <h2><a href="{{ use.project.url }}#{{ id }}">{{ use.entry.data.title }}</a></h2>
+      {% if use.entry.data.links %}<p class="bracket-links entry-links">{% for link in use.entry.data.links | readyLinks %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}</p>{% endif %}
       {% if use.otherSkills.length %}
       <p class="entry-skills"><span class="muted">Also shows:</span> {% for s in use.otherSkills %}<a class="tag" href="/skills/{{ s | skillSlug }}/">{{ s }}</a>{% endfor %}</p>
       {% endif %}

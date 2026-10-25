@@ -1,6 +1,11 @@
 ---
 title: "The paper: A Few Words Go a Long Way"
 date: 2026-07-26 12:00:00
+links:
+  - label: "Paper"
+    url: "https://arxiv.org/abs/2607.23784"
+  - label: "Website"
+    url: "https://robo-architect.github.io/"
 ---
 {# Placeholder: Eric to confirm. Everything here is from the paper (arXiv 2607.23784v1); ARCHITECT itself is the lab's system, by Daphne Chen and the co-authors, not Eric's work. Numbers: Table 1; human evaluation with N = 6: queries per trial 4.67 to 0.83 (p = 0.036), Task 2 success 0/6 without skills, 4/6 with. Media (Oct 24, per Eric: one chart and one 2×2 video): the paper's human-evaluation chart and the website's banana-under-cloth comparison. #}
 {% row "images/compare-banana-under-cloth.mp4", "Four rollouts in a two-by-two grid of moving a cloth off a banana and putting the banana on a plate: ARCHITECT, Code as Policies, π0 and π0.5", { poster: "images/compare-banana-under-cloth.jpg", caption: "Banana under a cloth: ARCHITECT, Code as Policies, π0 and π0.5.", more: [{ src: "images/human-eval-queries.png", alt: "Bar chart of human queries per trial with and without a skill library: about 4.7 without, under 1 with, one line per participant", caption: "Corrections needed, without and with skills from an earlier task (N = 6)." }] } %}

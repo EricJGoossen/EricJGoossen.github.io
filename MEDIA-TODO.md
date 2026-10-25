@@ -68,3 +68,13 @@ Not needed to publish (Eric, Oct 25); for later:
 - [ ] Atropos: everything. The draft project exists (`src/projects/atropos/`) and is off the site.
 - [ ] HCRL: the "writing the paper" entry. The old draft and its page images are in
       `assets-src/hil-cap/writing-the-paper/`.
+
+## Entries with no link yet
+
+Every entry now has links under its title. These have nothing obvious to link to; send a link if
+there is one:
+
+- [ ] FTC, "Two robots, so software never waits" (a team doc or photo of the schedule, if any).
+- [ ] OpenDubs, "Two 2D lidars, merged into one scan" (the team repo's URL names a teammate, so it isn't linked).
+- [ ] OpenDubs, "ARCS Night to Ignite Science" (an event page or the ARCS news post).
+- [ ] Atropos, "Project kickoff" (the project is still a draft).

@@ -2,6 +2,9 @@
 title: Running both arms at once
 date: 2026-09-01 19:59:00
 skillTags: [Python, ROS 2, Motion planning]
+links:
+  - label: "Bimanual refactor"
+    url: "https://github.com/EricJGoossen/mj_manipulator_ros/commit/c7bedb6"
 ---
 {# Placeholder: Eric to confirm. Git: EricJGoossen/mj_manipulator_ros (bimanual refactor Sep 1, hardware fixes Sep 9 and 22), EricJGoossen/openarm (hardware validation stages Sep 7–9, thread-safety lock). The chart is the ArmGroup crossing plan run through the old sequential schedule and together, with MuJoCo's signed distance between the closest left and right collision geoms (scripts/clearance.py).  97 of 1,400: scripts/check_sequential.py replays the crossing plan the old way (left arm, then right) and checks every 4th of the 2,798 samples with openarm's contact oracle. Thread safety: Openarm._sim_step_lock (openarm, Sep 9) serializes the two arms' threads' access to the shared MuJoCo model and data after concurrent runs segfaulted. From Eric (Oct 24): mention only that he built a HIL bring-up protocol, not its stages or the soak test. #}
 {% row "images/parallel-clearance.svg", "Line chart of the closest distance between the two arms over time for one crossing plan. Run left then right or right then left, it takes 44.8 seconds and dips below zero, the arms overlapping, near the end. Run together from one start stamp, it finishes at 22.4 seconds without overlapping", { caption: "The same plan run the old way and together: how close the arms come, and when each run finishes.", more: [{ src: "images/parallel-arms-reach-out.mp4", poster: "images/parallel-arms-reach-out.jpg", alt: "On the robot, both arms extend out to the sides at the same time", caption: "Both arms moving at once on the robot, September 22." }] } %}

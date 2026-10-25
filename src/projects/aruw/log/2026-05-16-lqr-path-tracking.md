@@ -1,6 +1,9 @@
 ---
 title: "Path tracking: from pure pursuit to LQR"
 date: 2026-05-16 12:00:00
+links:
+  - label: "The LQR study"
+    url: "https://ieeexplore.ieee.org/document/9517448"
 ---
 {# Placeholder: Eric to confirm. From Eric (Oct 24): led the feature from idea to implementation, wrote the proposal and gathered its resources; the driver-assist retargeting never happened and is left out. The MVP was finished on Oct 24 (EricJGoossen/LQRPathing, branch finish-mvp, commit e0212d7; the repo is private, so it isn't linked: add the link if it goes public) and compared, in simulation, against a reimplementation of aruw-mcb's ChassisAutoNavController (pure pursuit: 0.2 m lookahead, speed ramped at 1 m/s^2). The simulated chassis's mass (20 kg), yaw inertia (0.6 kg m^2) and traction limit (4 m/s^2) are picked, not measured; both controllers get the same path and a 2 m/s top speed. Media: assets-src/aruw/generated/make_lqr_media.py. #}
 {% row "images/lqr-vs-pure-pursuit.mp4", "Two dots racing along an S-shaped path with hairpin turns: the blue one, LQR, stays on the path; the orange one, pure pursuit, swings out in a loop at every hairpin and finishes later", { narrow: true, poster: "images/lqr-vs-pure-pursuit.jpg", caption: "The same slalom, the same simulated chassis and the same 2 m/s top speed: LQR (blue) against the team's pure pursuit (orange), in real time.", more: [{ src: "images/lqr-vs-pure-pursuit.svg", alt: "Bar charts for three paths: LQR finishes each sooner and stays within about 3 cm of the path, against 33 to 46 cm for pure pursuit", caption: "Three paths: LQR finishes 1.5 to 2.1 s sooner and stays within 3.2 cm of the path; pure pursuit strays up to 46 cm." }] } %}

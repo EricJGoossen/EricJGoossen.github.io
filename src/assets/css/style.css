@@ -419,6 +419,7 @@ main.wrap:has(> .project, > .skill-page) { --wrap: 72rem; }
 .entry time { color: var(--muted); font-size: 0.9rem; }
 .entry h3, .entry > h2 { font-size: 1.3rem; margin-top: 0.15rem; }
 .entry h3 a, .entry > h2 a { color: inherit; }
+.entry-links { margin: 0.15rem 0 0.4rem; font-size: 0.92rem; }
 .entry-skills { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; font-size: 0.85rem; }
 .tag { padding: 0.05rem 0.55rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
 .entry-skills a.tag { text-decoration: none; }

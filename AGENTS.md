@@ -67,6 +67,8 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
 | `hero`, `heroAlt`, `heroPoster` | no | Image or video behind the project intro: title, metadata, links, overview and highlight chips sit over it on a dark gradient (the poster replaces a video for reduced motion). Pick footage with its subject on the right and a dark background. Without a hero the intro is plain. |
 | `highlights` | no | List of `{ label, entry, skills: [...] }`. `entry` must match a log entry anchor, and every skill must be in `skills.json`. |
 | `links` | no | List of `{ label, url }`, shown as `[GitHub] [Paper] ...` |
+| `heroFade` | no | `strong` fades the hero into an oval vignette, for footage whose edges would otherwise show. |
+| `heroSide` | no | `right` keeps the hero footage in the right half, so the intro text sits on plain background. |
 
 ## Recipes
 
@@ -80,8 +82,9 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
 **Add a progress log entry**
 1. Run `npm run new:entry -- <folder> "What happened" [date]`. Use the date the work happened, not today, if Eric gives one.
 2. Replace the `Placeholder:` text with the real write-up, and delete the template comment. (Add `draft: true` to its front matter to keep a half-written entry off the site.) Give each paragraph its own image or video with `{% row %}` (next recipe): the paragraph sits on the left, the media on the right (below it on phones), with a thin line between rows.
-3. Entries show newest first. Two entries on the same day are ordered by a time in the front matter, e.g. `date: 2026-09-19 11:02:53` (the time is only used for ordering; the page shows the date).
-4. To feature it, add a highlight to the project's `index.md`:
+3. Give it links, shown as `[Code] [Paper]` under its title: `links:` in its front matter, a list of `{ label, url }`. Link the specific code the entry is about (a commit, a pull request, or a folder at a commit), or the repo if nothing narrower fits. Every entry should have at least one; if there's nothing to link, say so in the handoff.
+4. Entries show newest first. Two entries on the same day are ordered by a time in the front matter, e.g. `date: 2026-09-19 11:02:53` (the time is only used for ordering; the page shows the date).
+5. To feature it, add a highlight to the project's `index.md`:
    ```yaml
    highlights:
      - label: SIMD optimization     # 1 to 3 words

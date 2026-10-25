@@ -1,6 +1,11 @@
 ---
 title: The competition and our robots
 date: 2025-10-01
+links:
+  - label: "Robot reveal"
+    url: "https://www.youtube.com/watch?v=FGh1yQdJGeM"
+  - label: "ARUW"
+    url: "https://aruw.org/"
 ---
 {# Placeholder: Eric to confirm. Eric suggested this entry (Oct 24) and asked to publish it (Oct 25). The date is a stand-in (Eric to give the reveal's date; YouTube blocks the cloud session, so it couldn't be read). From aruw.org (Oct 25): "What is ARC Robotics?" (DJI hosts it; operators drive through an onboard camera; 17 mm and 42 mm projectiles; pressure-sensitive armor plates; take down the robots and/or disarm the base), "Our Robots" (eight robots, a team deathmatch "that resembles paintball and League of Legends", most redesigned every season; the engineer can't launch projectiles and collects minerals to exchange for coins; the sentry is the only fully autonomous robot, a base defender whose base shield drops if it dies or leaves the base, and navigates by its own sensors), "ARUW Achievements" (champions 2020–21 through 2023–24, third in the 1v1, 3v3 and Engineer Challenge in 2024–25) and the RMNA 2025 news post (first Engineer Challenge; RMNA 2026 at Purdue). Best of three: Eric (Oct 24). The match video is titled "ARUW vs RoboGrinder | Match 113 | 3v3 ARC Championship 2026"; the reveal, "ROBOT // REVEAL 2026". Eric (Oct 25): aruw.org is out of date, there are no bases any more, the game is king of the hill around a capture point in the center of the field; in 2026 ARUW was 3rd in the 3v3, 2nd in dart, 3rd in drone, and off the podium in the other events. Photos from Eric's ARUW files (aruw-picks.zip, Oct 25: the Quad, Mar 21, 2026); the reveal is linked in the text until Eric sends the MP4 for clips. #}
 {% row "images/fleet-lineup.jpg", "Three of ARUW's 2026 robots side by side on the grass, two with long launcher barrels and the black-shelled sentry on the right, with visitors' legs in the background", { caption: "The sentry (right) and two of our other 2026 robots on the Quad in cherry blossom season.", more: [{ src: "images/sentry.jpg", alt: "The sentry on the grass: a round black faceted body with an anvil logo on its armor and a jointed arm holding a camera and launcher on top", caption: "The sentry." }] } %}

@@ -1,6 +1,9 @@
 ---
 title: Robotics with students in Gaborone
 date: 2025-07-17 12:00:00
+links:
+  - label: "Trip blog"
+    url: "https://teams.swerverobotics.org/news/botswana_2025/2025_botswana_blog.html"
 ---
 {# Confirmed by Eric (Oct 25). From the trip blog, days 4–5 (Jul 16–17, 2025). Eric (Oct 24): he wrote the SPIKE Prime code; he also put together exercises and a coding guide for his teammates (to find; it could go here). Photo from Eric (Oct 24); he had no second one from the school that features him, so the FLL team's prep got its own entry instead. #}
 {% row "images/mogoditshane-code.jpg", "Eric holding up a laptop of block code for a group of students in school uniforms, with teammates beside him", { caption: "Going through the robot's code with students at Mogoditshane." } %}
