@@ -13,3 +13,16 @@
 - `live-view-demo.mp4`, `.jpg` (Live View entry): the demo video from the Live-View repo's history
   (`git show 406ded7:live_view_demo.mp4`; the README links the same video), cropped to the camera
   pane with `crop=560:440:610:110`, audio dropped, CRF 27.
+- `skidaddle-hairpin.svg` (rework entry): `make_hairpin_compare.py data <out.svg>`. The traces in
+  `data/` come from `harness/Compare.java` (Oct 25, 2026): Road Runner 1.0.1 core and Pedro
+  Pathing 3.0.2 core built from their GitHub source, and SKIDADDLE at 1584b3b, all driving one
+  simulated mecanum robot (per-axis DC motor model, |forward| + |strafe| <= 1, each wheel's grip
+  |ax| + |ay| <= 50 in/s², 10 ms steps). Pedro was tuned with its ForesightTuner steps run on the
+  sim; Road Runner and SKIDADDLE's tracking gains were picked by a grid search on a gentle S-curve.
+  SKIDADDLE's planner and allocator run unchanged with `SIMULATING = false`, and its plan is
+  tracked with feedforward plus a position term (its reworked controller never reports itself
+  finished). `run.sh` shows the classpath; `-Damax=30` gives the lower-limit Road Runner run.
+  `data/summary-accel*.csv` holds every path: on the 45° and 90° corners and the gentle curve,
+  Road Runner at 30 in/s² tracked closer (0.1 to 0.2 in) but took longer. The 45° and diagonal
+  paths need the allocator fix on Eric's local branch `fix-allocator-loop` (efed84b, not yet
+  pushed); at 1584b3b they loop forever. The hairpin trace is the same with or without it.

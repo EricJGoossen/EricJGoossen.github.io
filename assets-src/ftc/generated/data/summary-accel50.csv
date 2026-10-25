@@ -1,0 +1,16 @@
+scenario,follower,max_dev_in,stop_s,end_err_in,plan_ms
+hairpin,Road Runner,21.56,8.92,0.36,0.6734
+hairpin,Pedro Pathing,8.10,7.16,0.01,0.6344
+hairpin,SKIDADDLE,4.52,6.50,3.10,0.0171
+corner,Road Runner,5.55,6.22,0.00,1.9082
+corner,Pedro Pathing,9.80,5.62,0.00,0.0939
+corner,SKIDADDLE,7.31,8.81,0.61,0.0015
+corner90,Road Runner,0.25,5.65,0.00,1.4521
+corner90,Pedro Pathing,18.49,6.33,0.00,0.0736
+corner90,SKIDADDLE,1.11,6.13,0.56,0.0009
+gentle,Road Runner,6.21,5.76,0.00,0.8260
+gentle,Pedro Pathing,10.62,5.77,0.00,0.0146
+gentle,SKIDADDLE,2.41,4.93,2.22,0.0192
+moving,Road Runner,19.59,5.75,0.00,0.9765
+moving,Pedro Pathing,20.94,5.66,0.00,0.0072
+moving,SKIDADDLE,18.71,5.72,16.96,0.0153
