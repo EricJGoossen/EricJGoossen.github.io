@@ -10,6 +10,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy("src/_headers"); // security headers, read by Cloudflare
   eleventyConfig.addPassthroughCopy("src/_redirects"); // moved URLs, read by Cloudflare
+  eleventyConfig.addPassthroughCopy("src/resume.pdf"); // at /resume.pdf, beside /portfolio.pdf
   // Each project's images/ folder. Copied as a directory (not a glob) so images
   // added while the preview is running show up without a restart. A draft
   // project's images stay out too, so nothing of it is reachable by URL
@@ -93,7 +94,7 @@ export default function (eleventyConfig) {
     entries.filter((e) => e.inputPath.includes(`/projects/${slug}/log/`))
   );
 
-  // Links to files that aren't in src/ yet (e.g. /assets/resume.pdf) are left
+  // Links to files that aren't in src/ yet (e.g. /resume.pdf) are left
   // out until the file is added, so the site never shows a dead link.
   const fileReady = (url = "") => !/^\/.+\.[a-z0-9]+$/i.test(url) || fs.existsSync(`src${url}`);
   eleventyConfig.addFilter("fileReady", fileReady);

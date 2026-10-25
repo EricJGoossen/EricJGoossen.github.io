@@ -37,7 +37,7 @@ src/projects/<folder>/
   index.md                   project front matter + one-paragraph overview
   log/YYYY-MM-DD-<id>.md     progress log entries, shown newest first; <id> is the anchor
   images/                    that project's images and videos
-src/assets/resume.pdf        resume (the Resume links stay hidden until this file exists)
+src/resume.pdf               resume (at /resume.pdf, beside /portfolio.pdf) (the Resume links stay hidden until this file exists)
 assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.pdf is compiled from it
 ```
 
@@ -147,9 +147,9 @@ Add an object to `publications.json`:
 
 **Bio, photo, links, resume**
 - Bio, headline, photo and links go in `site.json`. `photo` and `ogImage` paths start at `src/`, e.g. `/assets/photo.jpg`.
-- The resume PDF goes at `src/assets/resume.pdf`. The Resume links appear automatically once it exists.
+- The resume PDF goes at `src/resume.pdf`. The Resume links appear automatically once it exists.
 - The home page Resume section shows the PDF itself: an image of its first page (`src/assets/resume.png`) that opens the PDF, and a Download PDF button. Nothing from the resume is copied onto the page.
-- To update the resume, replace `src/assets/resume.pdf` with Eric's new PDF (or edit `assets-src/resume/resume.tex` and recompile it with `pdflatex` in a cloud session; Eric's machine has no TeX), then regenerate the page image: `pdftoppm -png -r 160 -singlefile src/assets/resume.pdf page && convert page.png -colors 16 PNG8:src/assets/resume.png` (poppler and ImageMagick, in a cloud session).
+- To update the resume, replace `src/resume.pdf` with Eric's new PDF (or edit `assets-src/resume/resume.tex` and recompile it with `pdflatex` in a cloud session; Eric's machine has no TeX), then regenerate the page image: `pdftoppm -png -r 160 -singlefile src/resume.pdf page && convert page.png -colors 16 PNG8:src/assets/resume.png` (poppler and ImageMagick, in a cloud session).
 
 **Reorder, rename or remove**
 - Reorder projects by changing their `order` numbers.

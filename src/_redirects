@@ -4,3 +4,5 @@
 # Skills renamed or merged on Oct 25, 2026 (mujoco, docker, vla-benchmarking and
 # reinforcement-learning are their own pages again, as hidden skills):
 /skills/outreach/ /skills/teaching-outreach/ 301
+# The resume moved beside /portfolio.pdf on Oct 25, 2026:
+/assets/resume.pdf /resume.pdf 301
