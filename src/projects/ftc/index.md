@@ -8,7 +8,7 @@ order: 7
 summary: On FTC team 417 SKID, captain in 2024–25, I built Live View, a rules-legal camera feed for the drivers, and SKIDADDLE, a path follower that plans with physics.
 cover: images/cover-koala.jpg
 # The demo photo is the hero for now; Eric wants a better one later (MEDIA-TODO.md).
-hero: images/hero-robot-demo.jpg
+hero: images/hero-robot-demo.webp
 heroAlt: Demonstrating 417 SKID's robot in a classroom, its long arm reaching up beside me, with a world map on the wall behind
 heroFade: strong
 heroSide: right

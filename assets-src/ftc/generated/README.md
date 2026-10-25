@@ -26,3 +26,6 @@
   Road Runner at 30 in/s² tracked closer (0.1 to 0.2 in) but took longer. The 45° and diagonal
   paths need the allocator fix on Eric's local branch `fix-allocator-loop` (efed84b, not yet
   pushed); at 1584b3b they loop forever. The hairpin trace is the same with or without it.
+- `hero-robot-demo.webp` (hero): `make_ftc_hero.py ../robot-demo-photo.jpg <out.webp>`. Eric's demo
+  photo (Oct 25) cropped to the robot and Eric and centred on a transparent canvas with feathered
+  edges, so the hero's strong fade leaves the whole robot visible.
