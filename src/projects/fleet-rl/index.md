@@ -11,6 +11,8 @@ summary: Twelve low-cost robot arms learning one task together, with resets that
 cover: images/scene-cams-all.jpg
 hero: images/fleet-panorama.jpg
 heroAlt: Panorama of the fleet lab, with orange and blue low-cost robot arms at workstations along three walls, each under an aluminium frame holding its cameras, and a desk with a monitor in the foreground
+heroFade: strong
+heroSide: right
 highlights:
   - label: Automatic reset
     entry: automatic-reset

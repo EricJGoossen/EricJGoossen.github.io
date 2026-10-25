@@ -9,6 +9,7 @@ order: 4
 cover: images/cover-sentry.jpg
 hero: images/hero-fleet.jpg
 heroAlt: Three of ARUW's 2026 robots side by side on a brick path under blossoming cherry trees, the sentry on the right, with visitors walking behind them
+heroFade: strong
 summary: Localization and control for ARUW's competition robots, from Kalman-filter odometry and LQR path tracking to measuring the sentry's localization against motion capture.
 highlights:
   - label: Kalman-filter odometry

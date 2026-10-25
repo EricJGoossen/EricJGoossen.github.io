@@ -8,7 +8,7 @@ layout: base.njk
   {% if hero %}
   {#- The intro sits over the hero image or video, which loops in the background
       (the still image instead, with reduced motion). -#}
-  <header class="project-hero">
+  <header class="project-hero{% if heroFade == "strong" %} hero-fade-strong{% endif %}{% if heroSide == "right" %} hero-side-right{% endif %}">
     <div class="hero-bg" aria-hidden="true">{% tileMedia hero, { poster: heroPoster, title: title } %}</div>
     <div class="hero-content">
       {% include "project-intro.njk" %}

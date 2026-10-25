@@ -8,6 +8,7 @@ summary: Two weeks in Botswana with Swerve Robotics and Dare to Dream, advocatin
 cover: images/cover-tree.jpg   # Eric in a tree, one of his favorite photos from the trip (Oct 24)
 hero: images/hero-panel.jpg
 heroAlt: The embassy event under a thatched roof, guests in rows of folding chairs facing a panel with our coach at a table in front of a backdrop of American flags, a TV camera at the left
+heroFade: strong
 highlights:
   - label: U.S. Embassy event
     entry: us-embassy
