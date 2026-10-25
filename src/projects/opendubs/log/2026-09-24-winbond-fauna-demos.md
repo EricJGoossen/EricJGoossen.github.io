@@ -2,9 +2,8 @@
 title: Demos for Winbond and Fauna Robotics
 date: 2026-09-24 15:30:00
 info:
-  tools: [My Quest teleop]
   hardware: OpenDubs
-  role: Prepared and led both demos
+  role: Lead
 skillTags: [Teleoperation]
 links:
   - label: "UW News"

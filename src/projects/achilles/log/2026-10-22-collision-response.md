@@ -3,10 +3,10 @@ title: Collision response
 date: 2026-10-22 01:22:05
 info:
   language: C++20
-  tools: [MuJoCo (as the reference)]
-  hardware: Laptop CPU
+  tools: [MuJoCo]
+  hardware: Laptop
   role: Solo
-  status: On a branch, not merged yet
+  status: On a branch
 links:
   - label: "Code"
     url: "https://github.com/EricJGoossen/achilles/tree/223af7c"

@@ -4,7 +4,7 @@ Eric J. Goossen's portfolio: Markdown + Eleventy, built into plain static HTML i
 
 ## Rules
 
-1. **Branch.** Work on `phase-1`, or whatever branch Eric names. **Never merge into or push to `main`.** `main` is the live site and only Eric decides when it changes. Pushing other branches is fine (Cloudflare builds a private preview).
+1. **Branch.** Work on `phase-1`, or whatever branch Eric names. `main` is the live site. Eric's standing instruction (Oct 25, 2026): publish every change right away. Once `npm run check` passes and the change is committed and pushed to `phase-1`, push it to `main` too (a fast-forward), then confirm it on the live site.
 2. **Keep it static.** No server code, frameworks, databases, logins, analytics, trackers, third-party scripts or web fonts. The only JavaScript is `src/assets/js/search.js` (the search results page, `/search/`, which reads `search-index.json`, built with the site; the box in the header is a plain form). If Eric approves something that loads from another domain, also add that domain to `src/_headers` (the Content-Security-Policy), or browsers will block it.
 3. **Eric's machine.** Node runs only in Docker (`compose.yaml`, preview on port 8090). Don't change that setup. Don't install anything without asking. If something does get installed (including a Docker image), add it to `INSTALLED.md` with an uninstall command.
 4. **Never invent facts about Eric.** Use only what Eric provides. Anything not provided yet stays as text starting with `Placeholder` (or a `"#"` link), so `npm run todo` can find it. That includes dates, numbers, results, co-authors, venues and awards.
@@ -83,14 +83,14 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
 1. Run `npm run new:entry -- <folder> "What happened" [date]`. Use the date the work happened, not today, if Eric gives one.
 2. Replace the `Placeholder:` text with the real write-up, and delete the template comment. (Add `draft: true` to its front matter to keep a half-written entry off the site.) Give each paragraph its own image or video with `{% row %}` (next recipe): the paragraph sits on the left, the media on the right (below it on phones), with a thin line between rows.
 3. Give it links, shown as `[Code] [Paper]` under its title: `links:` in its front matter, a list of `{ label, url }`. Link the specific code the entry is about (a commit, a pull request, or a folder at a commit), or the repo if nothing narrower fits. Every entry should have at least one; if there's nothing to link, say so in the handoff.
-   Give it its basic facts too, shown on one line under the links (the build warns about a published entry without them). Leave out any field that doesn't apply (an event has no language), and any Eric hasn't confirmed or the entry doesn't already say:
+   Give it its basic facts too, shown on one line under the links (the build warns about a published entry without them). Keep each to a word or two from the lists below, so none wraps: the build stops on one over 24 characters. Leave out any field that doesn't apply (an event has no language), and any Eric hasn't confirmed or the entry doesn't already say:
    ```yaml
    info:
      language: C++              # or a list: [C++, Python]
      tools: [xsimd, Valgrind]   # the libraries and tools that matter for this entry
      hardware: Franka Panda     # what it ran on, or "Laptop CPU", "OpenArm (simulated)"
-     role: Solo                 # or "Lead", "Co-author", "Team of 4 (my part: the planner)"
-     status: On the robot       # how far it got: In simulation, In main, Used at competition, In the paper
+     role: Solo                 # Solo, Lead, Team, Captain, Co-author, Presenter, Speaker or Teacher
+     status: On the robot       # how far it got: In simulation, In main, On a branch, Used at competition, In the paper, Done
    ```
 4. Entries show newest first. Two entries on the same day are ordered by a time in the front matter, e.g. `date: 2026-09-19 11:02:53` (the time is only used for ordering; the page shows the date).
 5. To feature it, add a highlight to the project's `index.md`:
@@ -194,5 +194,5 @@ The checks can't judge content quality. Read what you wrote, and keep `Placehold
 
 1. `npm run check` passes.
 2. Visual check done, if templates or CSS changed.
-3. Committed and pushed to the working branch (not `main`).
+3. Committed and pushed to the working branch, then published to `main` (rule 1).
 4. Tell Eric what changed and paste the short version of `npm run todo`.

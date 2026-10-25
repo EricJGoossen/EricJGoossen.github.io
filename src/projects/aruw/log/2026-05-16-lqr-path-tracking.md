@@ -4,9 +4,9 @@ date: 2026-05-16 12:00:00
 info:
   language: C++
   tools: [Eigen]
-  hardware: Engineer robot (simulated chassis)
-  role: Led it; designed it and built the framework
-  status: MVP, tested in simulation
+  hardware: Engineer robot
+  role: Lead
+  status: In simulation
 links:
   - label: "The LQR study"
     url: "https://ieeexplore.ieee.org/document/9517448"

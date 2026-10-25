@@ -3,8 +3,8 @@ title: Kalman-filter odometry for three dead wheels
 date: 2026-06-30 12:00:00
 info:
   language: [C++, Python]
-  tools: [aruw-mcb, an offline replay tool]
-  hardware: Engineer robot, three dead-wheel pods
+  tools: [aruw-mcb]
+  hardware: Engineer robot
   role: Solo
   status: Used at competition
 links:

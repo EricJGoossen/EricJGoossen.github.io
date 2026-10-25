@@ -3,10 +3,10 @@ title: "Arm control: three impedance controllers, then a simpler one"
 date: 2026-07-13 00:12:00
 info:
   language: C++
-  tools: [Pinocchio, ROS 2, MuJoCo]
-  hardware: [OpenArm (Damiao motors over CAN-FD), NVIDIA Jetson Thor]
+  tools: [Pinocchio, ROS 2]
+  hardware: 2× OpenArm
   role: Solo
-  status: The simpler controller runs on the robot
+  status: On the robot
 links:
   - label: "Cartesian control"
     url: "https://github.com/EricJGoossen/openarm_cartesian_control/tree/176f011"

@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import fs from "node:fs";
 import { checkSite } from "./lib/checks.js";
 import { isVideo, media, mediaUrl, rowShortcode, tileMedia, videoShortcode, youtubeShortcode } from "./lib/media.js";
@@ -94,6 +95,13 @@ export default function (eleventyConfig) {
   // out until the file is added, so the site never shows a dead link.
   const fileReady = (url = "") => !/^\/.+\.[a-z0-9]+$/i.test(url) || fs.existsSync(`src${url}`);
   eleventyConfig.addFilter("fileReady", fileReady);
+  // "?v=<hash of the file>" on the stylesheet and scripts, so browsers fetch a
+  // changed file fresh instead of running a cached old copy.
+  eleventyConfig.addFilter("versioned", (url) => {
+    const file = `src${url}`;
+    if (!fs.existsSync(file)) return url;
+    return `${url}?v=${crypto.createHash("sha1").update(fs.readFileSync(file)).digest("hex").slice(0, 8)}`;
+  });
   eleventyConfig.addFilter("readyLinks", (links = []) => links.filter((link) => fileReady(link.url)));
 
   eleventyConfig.addFilter("entryId", entryId);

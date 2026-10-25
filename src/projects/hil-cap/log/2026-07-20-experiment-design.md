@@ -2,9 +2,9 @@
 title: "Designing the benchmark: what makes a VLA test fair"
 date: 2026-07-20 12:00:00
 info:
-  tools: [My eval harness, YAML task configs]
+  tools: [YAML configs]
   hardware: Franka Panda
-  role: Designed with the team; ran every VLA rollout
+  role: Team
   status: In the paper
 links:
   - label: "Task configs"

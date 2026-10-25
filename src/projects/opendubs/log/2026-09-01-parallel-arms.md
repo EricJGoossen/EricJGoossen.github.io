@@ -3,9 +3,9 @@ title: Running both arms at once
 date: 2026-09-01 19:59:00
 info:
   language: Python
-  tools: [ROS 2, MuJoCo, mj_manipulator_ros]
-  hardware: [Two OpenArms, NVIDIA Jetson Thor]
-  role: Solo (in the lab's library)
+  tools: [ROS 2, MuJoCo]
+  hardware: 2× OpenArm
+  role: Solo
   status: On the robot
 skillTags: [Python, ROS 2, Motion planning]
 links:

@@ -53,7 +53,8 @@ for (const page of pages) {
       filler.push(`${pageUrl}: a link that goes nowhere ("#")`);
       continue;
     }
-    const [urlPath, hash] = url.split("#");
+    const [withQuery, hash] = url.split("#");
+    const urlPath = withQuery.split("?")[0]; // "?v=..." on assets, "?q=..." on search links
     const base = pageUrl.endsWith("/") ? pageUrl : path.posix.dirname(pageUrl) + "/";
     const absolute = urlPath === "" ? pageUrl : urlPath.startsWith("/") ? urlPath : path.posix.join(base, urlPath);
     const target = targetFile(absolute);

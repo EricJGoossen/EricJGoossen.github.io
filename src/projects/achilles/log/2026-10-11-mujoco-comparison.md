@@ -3,8 +3,8 @@ title: Beating MuJoCo on throughput
 date: 2026-10-11 08:52:09
 info:
   language: [C++20, Python]
-  tools: [MuJoCo 3.15]
-  hardware: Intel Core Ultra 9 285H laptop, one core
+  tools: [MuJoCo]
+  hardware: Laptop
   role: Solo
   status: Measured
 links:

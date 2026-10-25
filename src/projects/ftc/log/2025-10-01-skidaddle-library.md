@@ -3,8 +3,7 @@ title: "SKIDADDLE: a path follower that plans with physics"
 date: 2025-10-01
 info:
   language: Java
-  tools: [Its own simulator]
-  hardware: Built for mecanum FTC robots
+  hardware: FTC robot
   role: Solo
   status: Open source
 links:

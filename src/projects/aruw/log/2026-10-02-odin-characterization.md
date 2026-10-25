@@ -3,10 +3,10 @@ title: A test platform against motion capture
 date: 2026-10-02 12:00:00
 info:
   language: Python
-  tools: [OptiTrack motion capture, UDP]
-  hardware: [Odin1, NVIDIA Jetson, the sentry]
+  tools: [OptiTrack]
+  hardware: [Odin1, sentry]
   role: Solo
-  status: Ran the October 3 campaign
+  status: Done
 links:
   - label: "Code"
     url: "https://github.com/EricJGoossen/odin-characterization/tree/aa1cefe"

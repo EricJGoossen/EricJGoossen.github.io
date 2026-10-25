@@ -2,9 +2,9 @@
 title: Robotics with students in Gaborone
 date: 2025-07-17 12:00:00
 info:
-  language: Python (SPIKE Prime)
-  hardware: LEGO SPIKE Prime
-  role: Wrote the day's code; taught a small group
+  language: Python
+  hardware: SPIKE Prime
+  role: Teacher
 links:
   - label: "Trip blog"
     url: "https://teams.swerverobotics.org/news/botswana_2025/2025_botswana_blog.html"

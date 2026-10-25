@@ -3,10 +3,10 @@ title: Optical flow odometry, checked against mocap
 date: 2026-03-29 00:58:00
 info:
   language: [C++, Python]
-  tools: [micro-ROS, ArduPilot EKF, OptiTrack motion capture, ROS 2]
-  hardware: [Optical flow sensor, M5Stack, Pixhawk]
-  role: Solo (teammates found the mounting bug)
-  status: Ran on the robot; retired with the Pixhawk
+  tools: [micro-ROS, ArduPilot]
+  hardware: [Pixhawk, M5Stack]
+  role: Solo
+  status: Retired
 links:
   - label: "micro-ROS bridge"
     url: "https://github.com/EricJGoossen/M5_stack_sensor_transfer/tree/cdbf364"

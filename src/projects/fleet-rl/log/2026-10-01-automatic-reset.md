@@ -3,9 +3,9 @@ title: Resetting the peg without a person
 date: 2026-10-01
 info:
   language: Python
-  tools: [AprilTags, ChArUco calibration, MuJoCo]
-  hardware: SO-101 arms
-  role: Built the reset; designed the tagging with a teammate
+  tools: [AprilTags, MuJoCo]
+  hardware: SO-101 arm
+  role: Lead
 links:
   - label: "Code"
     url: "https://github.com/knightnemo/fleet_so101_infra/tree/7aa4d7f"

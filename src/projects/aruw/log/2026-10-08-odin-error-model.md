@@ -4,9 +4,9 @@ date: 2026-10-08 10:00:00
 info:
   language: Python
   tools: [NumPy, SciPy]
-  hardware: Odin1 on the sentry
+  hardware: Odin1
   role: Solo
-  status: Recommended the Odin as the sentry's only localization
+  status: Done
 skillTags: [State estimation, Experiment design, Python]
 links:
   - label: "Analysis code"

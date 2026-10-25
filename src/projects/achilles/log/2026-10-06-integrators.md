@@ -3,8 +3,8 @@ title: Integrators that hold energy
 date: 2026-10-06 15:28:48
 info:
   language: C++20
-  tools: [MuJoCo (as the reference)]
-  hardware: Laptop CPU
+  tools: [MuJoCo]
+  hardware: Laptop
   role: Solo
   status: In main
 links:

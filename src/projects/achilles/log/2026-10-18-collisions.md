@@ -4,7 +4,7 @@ date: 2026-10-18 14:43:13
 info:
   language: C++20
   tools: [xsimd]
-  hardware: Laptop CPU
+  hardware: Laptop
   role: Solo
   status: In main
 skillTags: [C++]

@@ -119,14 +119,17 @@ function render() {
     const text = snippet(item.text, terms);
     li.append(meta, link, text);
     if (item.html) {
+      // A click anywhere on the result (its title included) opens the entry;
+      // once it's open, the title goes to the entry on its project page.
+      li.classList.add("openable");
       link.setAttribute("aria-expanded", "false");
-      const first = (event) => {
-        if (li.classList.contains("open") || event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      li.addEventListener("click", (event) => {
+        if (li.classList.contains("open")) return;
+        const newTab = event.target === link && (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey);
+        if (newTab) return;
         event.preventDefault();
         open(li, item, link, terms);
-      };
-      link.addEventListener("click", first);
-      text.addEventListener("click", first);
+      });
     }
     list.append(li);
   }
