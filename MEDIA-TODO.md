@@ -63,14 +63,12 @@ Not needed to publish (Eric, Oct 25); for later:
 - [ ] HCRL: the "writing the paper" entry. The old draft and its page images are in
       `assets-src/hil-cap/writing-the-paper/`.
 
-## Entries with no link yet
+## Find links for these entries
 
-Every entry now has links under its title. These have nothing obvious to link to; send a link if
-there is one:
+Every other entry has links under its title. These still need one: find a link for each and send it.
 
 - [ ] FTC, "Two robots, so software never waits" (a team doc or photo of the schedule, if any).
 - [ ] OpenDubs, "Two 2D lidars, merged into one scan" (the team repo's URL names a teammate, so it isn't linked).
-- [ ] OpenDubs, "ARCS Night to Ignite Science" (an event page or the ARCS news post).
 - [ ] Atropos, "Project kickoff" (the project is still a draft).
 
 ## Published Oct 25 with gaps
