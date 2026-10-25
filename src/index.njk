@@ -10,7 +10,7 @@ permalink: /
     <p class="headline">{{ site.headline }}</p>
     {% for para in site.bio %}<p>{{ para }}</p>{% endfor %}
     <p class="bracket-links">
-      {% for link in site.links | readyLinks %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}
+      {% for link in site.links | readyLinks %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}<a href="/portfolio.pdf">Portfolio</a>
     </p>
   </div>
 </section>
@@ -62,8 +62,8 @@ permalink: /
   <div class="section-head">
     <h2>Resume</h2>
     <span class="section-actions">
-      <a class="button" href="/portfolio.pdf">Portfolio (PDF)</a>
-      <a class="button" href="{{ resume.pdf }}" download="{{ site.name }} Resume.pdf">Download PDF</a>
+      <a class="button" href="{{ resume.pdf }}" download="{{ site.name }} Resume.pdf">Download resume</a>
+      <a class="button" href="/portfolio.pdf" download="{{ site.name }} Portfolio.pdf">Download portfolio</a>
     </span>
   </div>
   {% if resume.preview %}
