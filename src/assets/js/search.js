@@ -1,8 +1,9 @@
 // The search results page (/search/?q=...), opened from the search box in the header. The index is a JSON file built with the site
 // (src/search-index.njk), so nothing leaves the site: every word typed has to
 // appear in a result's title, project or text. Titles count most.
-// Here the results update as you type. A log entry's result opens the full
-// entry in place on the first click, and goes to it on its project page on the second.
+// Here the results update as you type. A click anywhere on a result's card
+// opens it in place (a log entry in full, a skill's best example, a project's
+// overview beside its hero, a paper's card); after that, its title goes to its page.
 const root = new URL("../../", document.currentScript.src); // this file is /assets/js/search.js
 const form = document.querySelector(".search-page .search-form");
 const input = document.getElementById("search-input");
@@ -72,7 +73,7 @@ function markTerms(el, terms) {
   }
 }
 
-// The full entry, in place of its snippet.
+// The opened card, in place of its snippet.
 function open(li, item, link, terms) {
   const entry = document.createElement("div");
   entry.className = "entry result-entry";
@@ -119,8 +120,8 @@ function render() {
     const text = snippet(item.text, terms);
     li.append(meta, link, text);
     if (item.html) {
-      // A click anywhere on the result (its title included) opens the entry;
-      // once it's open, the title goes to the entry on its project page.
+      // A click anywhere on the card (its title included) opens it; once it's
+      // open, the title goes to its page.
       li.classList.add("openable");
       link.setAttribute("aria-expanded", "false");
       li.addEventListener("click", (event) => {

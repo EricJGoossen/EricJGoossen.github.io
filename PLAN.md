@@ -58,7 +58,7 @@ highlights:
 `skills.json` lists each skill and which entry is its best example:
 
 ```json
-{ "name": "C++", "best": "opendubs/simd-optimization" }
+{ "name": "C++", "rank": ["opendubs/simd-optimization", "..."] }
 ```
 
 Entries that aren't highlights can be tagged too, with `skillTags: [C++, SIMD]` in their front matter. The site builds everything else from these: the skill pages, the highlight chips, the entry tags and the anchor links. Add a highlight in one place and it shows up everywhere it should.

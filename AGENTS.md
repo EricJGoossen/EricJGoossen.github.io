@@ -50,8 +50,8 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
 
   Add a highlight in one place and it shows up everywhere it should.
 - **Entries that aren't highlights** can still be tagged: add `skillTags: [C++, SIMD]` to the entry's front matter. (Not `skills:`, which is taken by `skills.json`.) An entry's tags are its highlight's skills plus its `skillTags`.
-- **Skills** in `skills.json` set the chip order and each skill's `best` example (`"<folder>/<entry id>"`), which leads its skill page. A skill no entry is tagged with yet has no page and is hidden (the build prints a warning).
-- **Search**: the box in the header of every page (`src/_includes/search-form.njk`, included by `base.njk`) opens the results page (`/search/?q=...`, `src/search.njk`), which lists every matching entry with the matching text highlighted. It covers the intro, projects, log entries, skill pages and publications, from `search-index.json` (`src/search-index.njk`, `searchIndex` in `lib/skills.js`). Only published things are in it, and it updates itself with every build.
+- **Skills** in `skills.json` set the chip order and each skill's `rank`: every entry tagged with it (`"<folder>/<entry id>"`), in the fixed order its skill page shows them. The first is its best example. The search card for a skill opens that first entry. A skill no entry is tagged with yet has no page and is hidden (the build prints a warning).
+- **Search**: the box in the header of every page (`src/_includes/search-form.njk`, included by `base.njk`) opens the results page (`/search/?q=...`, `src/search.njk`), which lists a card for every match with the matching text highlighted, updating as you type. A click anywhere on a card opens it in place (a log entry in full, a skill's best example, a project's overview beside its hero, a paper's card; built as `html` in `searchIndex`); after that, its title goes to its page. It covers the intro, projects, log entries, skill pages and publications, from `search-index.json` (`src/search-index.njk`, `searchIndex` in `lib/skills.js`). Only published things are in it, and it updates itself with every build.
 
 ### Project front matter (`src/projects/<folder>/index.md`)
 
@@ -102,9 +102,9 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
    ```
 
 **Add or change a skill**
-- New skill: add `{ "name": "SIMD", "best": "opendubs/simd-optimization" }` to `skills.json`, at the position where its chip should appear. Then tag highlights with exactly the same spelling.
+- New skill: add `{ "name": "SIMD", "rank": ["opendubs/simd-optimization"] }` to `skills.json`, at the position where its chip should appear. Then tag highlights with exactly the same spelling.
 - Renaming a skill means renaming it in `skills.json` **and** in every highlight that uses it. The build lists any you miss.
-- `best` must be an entry tagged with this skill (by its highlight or its `skillTags`). Without `best`, the skill page starts with the newest tagged entry.
+- `rank` lists exactly the published entries tagged with this skill (by a highlight or `skillTags`), best first. When you tag a new entry with a skill, add it to that skill's `rank` where it belongs; the build stops until you do.
 
 **Add images and videos** (put the files in the project's `images/` folder)
 - A paragraph with its image or video beside it (the usual way to write a log entry). Until the file exists, `{% row "placeholder", "Video: what it will show" %}` holds its place with a gray box. The blank-line rules of Markdown apply inside, so keep the paragraph unindented:
@@ -149,7 +149,7 @@ Add an object to `publications.json`:
 
 **Reorder, rename or remove**
 - Reorder projects by changing their `order` numbers.
-- Renaming a project folder or a log entry changes its URL or anchor. Update every highlight `entry`, every skill `best`, and every publication `project` that points at it. The build lists any you miss. Avoid renames once the site is live, because people may have links to them; when one is needed, add the old path to `src/_redirects` (renaming a skill moves its page, `/skills/<name>/`, too).
+- Renaming a project folder or a log entry changes its URL or anchor. Update every highlight `entry`, every skill `rank`, and every publication `project` that points at it. The build lists any you miss. Avoid renames once the site is live, because people may have links to them; when one is needed, add the old path to `src/_redirects` (renaming a skill moves its page, `/skills/<name>/`, too).
 - To remove a project, delete its folder and fix whatever the build reports.
 
 ## Checks (what keeps the site from breaking)
@@ -157,7 +157,7 @@ Add an object to `publications.json`:
 `lib/checks.js` runs on every build. A real build (`npm run build`, `npm run check`, Cloudflare) **stops** on any of these. The live preview shows them in a red banner instead.
 - A highlight points at a log entry that doesn't exist.
 - A highlight uses a skill that's not in `skills.json`.
-- A skill's `best` isn't an entry tagged with that skill.
+- A skill's `rank` lists an entry that isn't tagged with it, or misses one that is.
 - A skill name is listed twice, or two skills would share a page URL (e.g. "C++" and "Cpp").
 - An entry's `skillTags` isn't a list, or names a skill that's not in `skills.json`.
 - A log file doesn't start with a date, or two entries in one project share an anchor.
