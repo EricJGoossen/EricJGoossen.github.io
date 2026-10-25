@@ -28,8 +28,8 @@ delete its line here.
 - [ ] The two videos as MP4s: round 2 of the match (https://www.youtube.com/watch?v=PqSzhmRSAZA) for the
       hero, and the robot reveal (https://www.youtube.com/watch?v=FGh1yQdJGeM) for the competition entry's
       clips. YouTube blocks downloads from the cloud session even with the network open.
-- [ ] Photos from your zipped ARUW files (SharePoint didn't work): the brief for the agent going through
-      them was sent in chat on Oct 24. A cover, a hero still, the sentry and engineer, competition shots.
+- [ ] Is `08-working-adjusting-robot.jpeg` in aruw-picks.zip you? If so it can go on the page. (The
+      cover, hero and the competition entry's two photos are in, from the same zip.)
 - [ ] The reveal's date, for the competition entry (October 1, 2025 is a stand-in).
 
 ## Fleet RL

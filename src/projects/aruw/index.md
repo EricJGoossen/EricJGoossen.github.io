@@ -6,6 +6,9 @@ org: "Advanced Robotics at UW"
 timeline: Oct 2025 – present
 tools: [C++, Python, ROS 2, Kalman filter, LQR, motion capture]
 order: 4
+cover: images/cover-sentry.jpg
+hero: images/hero-fleet.jpg
+heroAlt: Three of ARUW's 2026 robots side by side on a brick path under blossoming cherry trees, the sentry on the right, with visitors walking behind them
 summary: Localization and control for ARUW's competition robots, from Kalman-filter odometry and LQR path tracking to measuring the sentry's localization against motion capture.
 highlights:
   - label: Kalman-filter odometry
@@ -25,5 +28,5 @@ links:
   - label: Odin characterization
     url: https://github.com/EricJGoossen/odin-characterization
 ---
-{# Placeholder: Eric to confirm the whole page; the card image is his to add. Hero (Eric, Oct 24): round 2 of his favorite match from the last competition (https://www.youtube.com/watch?v=PqSzhmRSAZA, a best of three), or clips from the robot reveal (https://www.youtube.com/watch?v=FGh1yQdJGeM); try both once the videos can be downloaded. Overview from Eric (Oct 24): started on controls; after the sentry's autonomous navigation struggled at the ARC robotics competition, moved to vision to fix it; this year owns the sentry's path planning and state machine, and wants to look at learning-based control to counter opponents. #}
+{# Placeholder: Eric to confirm the whole page. Card and hero: photos from Eric's ARUW files picked by another session (aruw-picks.zip, Oct 25), the team's 2026 robots on the Quad in cherry blossom season (Mar 21, 2026); the hero is a stand-in until the match clip. Hero (Eric, Oct 24): round 2 of his favorite match from the last competition (https://www.youtube.com/watch?v=PqSzhmRSAZA, a best of three), or clips from the robot reveal (https://www.youtube.com/watch?v=FGh1yQdJGeM); try both once the videos can be downloaded. Overview from Eric (Oct 24): started on controls; after the sentry's autonomous navigation struggled at the ARC robotics competition, moved to vision to fix it; this year owns the sentry's path planning and state machine, and wants to look at learning-based control to counter opponents. #}
 I joined Advanced Robotics at UW, the university's RoboMaster team, as a control systems programmer: I reworked the chassis's Kalman-filter odometry for new odometry pods and led a rewrite of its path tracking from pure pursuit to LQR. At the ARC robotics competition, the sentry, our autonomous robot, didn't navigate as well as it needed to, so I switched to the vision team to be the one to fix that, starting by measuring exactly how good its localization is against motion capture. This year I own the sentry's path planning and state machine, and I want to look into learning-based control, so it can adapt to opponents as the match unfolds.
