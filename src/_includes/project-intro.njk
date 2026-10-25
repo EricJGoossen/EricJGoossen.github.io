@@ -15,7 +15,7 @@
 <section class="highlights" aria-labelledby="entries-title">
   <h2 id="entries-title">Entries</h2>
   <nav class="chips" aria-labelledby="entries-title">
-    {% for entry in entries %}<a class="chip{% if entry.data.featured %} chip-featured{% endif %}" href="#{{ entry | entryId }}"{% if entry.data.summary %} title="{{ entry.data.summary }}"{% endif %}>{{ entry.data.short or entry.data.title }}</a>{% endfor %}
+    {% for entry in entries %}<a class="chip{% if entry.data.featured %} chip-featured{% endif %}" href="#{{ entry | entryId }}"{% if entry.data.summary %} title="{{ entry.data.summary }}"{% endif %}>{{ entry.data.short or entry.data.title }}</a> {% endfor %}
   </nav>
 </section>
 {% endif %}

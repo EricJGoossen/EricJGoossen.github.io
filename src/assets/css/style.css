@@ -151,7 +151,10 @@ html { scroll-padding-top: 5.5rem; }
 .resume-page img { display: block; width: 100%; height: auto; margin: 0; }
 
 /* ---------- Chips (skills + highlights) ---------- */
-.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+/* Chips wrap like words, with balanced lines (rows of similar length rather
+   than full rows and a short last one). */
+.chips { display: block; text-wrap: balance; margin-bottom: -0.5rem; }
+.chips > .chip { margin: 0 0.2rem 0.5rem 0; }
 .chip {
   display: inline-block;
   padding: 0.35rem 0.85rem;
