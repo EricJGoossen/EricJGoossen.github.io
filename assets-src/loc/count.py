@@ -79,7 +79,8 @@ ENTRIES = {
     "achilles/integrators": [("Achilles", "9caef5c")],
     "achilles/mujoco-comparison": [("Achilles", "9caef5c..355a392")],
     "achilles/collisions": [("Achilles", "feb1611")],
-    "achilles/collision-response": [("Achilles", "feb1611..223af7c")],
+    "achilles/collision-response": [("Achilles", "feb1611..4cb6db0")],  # PR #26
+    "achilles/actuators": [("Achilles", "0507d3d..9e09383")],  # PR #28
     "aruw/lqr-path-tracking": [("LQRPathing", "999e391")],
     "aruw/kalman-filter": [("aruw-mcb", "57dd3eb62f9330f57eea4b856fb0c3f8f6fe5a7d"), ("aruw-mcb", "32612de587558ed10e7d0453618395ba06c242d3")],
     "aruw/odin-characterization": [("odin-characterization", "aa1cefe")],
@@ -123,4 +124,4 @@ if __name__ == "__main__":
             settle(repo)
         result[key] = n
         print(f"{n:7}  {key}")
-    json.dump(result, open(os.path.join(os.path.dirname(__file__), "loc.json"), "w"), indent=1)
+    json.dump(result, open(os.path.join(os.path.dirname(__file__), "counts.json"), "w"), indent=1)

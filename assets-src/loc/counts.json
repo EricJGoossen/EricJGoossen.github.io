@@ -7,6 +7,7 @@
  "opendubs/optical-flow": 2076,
  "achilles/v2": 2808,
  "hil-cap/experiment-design": 178,
+ "aruw/lqr-path-tracking": 1880,
  "aruw/kalman-filter": 905,
  "hil-cap/harness": 1853,
  "opendubs/impedance-control": 3525,
@@ -25,6 +26,6 @@
  "aruw/ld19-lidar": 769,
  "achilles/mujoco-comparison": 6022,
  "achilles/collisions": 2465,
- "achilles/collision-response": 2041,
- "aruw/lqr-path-tracking": 1880
+ "achilles/collision-response": 6497,
+ "achilles/actuators": 3807
 }

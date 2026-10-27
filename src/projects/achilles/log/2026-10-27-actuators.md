@@ -10,12 +10,12 @@ info:
   tools: [MuJoCo]
   hardware: Laptop
   role: Solo
-  status: On a branch
+  status: In main
 links:
-  - label: "Code"
-    url: "https://github.com/EricJGoossen/Achilles/tree/EricG/actuator-control"
+  - label: "Pull request"
+    url: "https://github.com/EricJGoossen/achilles/pull/28"
 ---
-{# From Eric (Oct 26): text, facts, line count and both media (~/projects/Achilles/media). The Code link is the EricG/actuator-control branch: pin it to a commit once his local commits (ball axis fix) are pushed or merged. #}
+{# From Eric (Oct 26): text, facts, line count and both media (~/projects/Achilles/media). Linked to PR #28 once merged (Oct 27). Its loc is Eric's own number: the PR alone counts 3,807 by assets-src/loc/count.py. #}
 {% row "images/ball-balance.mp4", "A square plate on two pivots, viewed from above at an angle, with a ball on it. The plate starts tipped with the ball on its high corner; it tilts to catch the ball before it rolls off, brings it to the center, then rolls it around a figure-8", { caption: "Real time, rendered by the Achilles viewer: semi-implicit Euler at a 4 ms step. The controller sees only the delayed, noisy camera; the simulation sees only the two pivot torques." } %}
 Until now, every torque in Achilles came from the scene file, so a robot could fall or collide but never react. Actuators let a controller outside the simulation push on a joint every step. An actuator is a direction in its joint's frame, an angular one for a torque or a linear one for a force. Attaching it projects that direction onto the joint's free axes once, so applying an effort later costs only a few multiply-adds into the joint-torque field. The simulation never owns or loops over actuators: each one is a small handle into that field, which is now double-buffered. A controller writes one half while the step reads the other, and the halves swap at the start of every step. An effort therefore acts over exactly the next step and is then gone, so a stale command can never leak into a later frame.
 {% endrow %}
