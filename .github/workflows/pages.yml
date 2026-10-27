@@ -1,0 +1,44 @@
+# The same site on GitHub Pages (https://ericjgoossen.github.io), for networks
+# that block ericjgoossen.com. Every push to main deploys here, from the same
+# commit Cloudflare deploys to ericjgoossen.com, so the two never drift.
+name: GitHub Pages copy
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Absolute links (the PDF portfolio, link previews, agent files) point at
+      # this copy, so they still work where the main domain is blocked.
+      - run: |
+          node -e 'const f="src/_data/site.json",fs=require("fs"),s=JSON.parse(fs.readFileSync(f));s.url="https://ericjgoossen.github.io";fs.writeFileSync(f,JSON.stringify(s,null,2))'
+      - run: npm run build
+      # Serve the files as they are (no Jekyll).
+      - run: touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -80,7 +80,7 @@ Add an entry to `src/_data/publications.json`. It shows at the bottom of the hom
 
 ## Deploying
 
-Pushing to `main` deploys. Cloudflare runs `npx wrangler deploy`, which first runs `npm ci && npm run build` (the `build.command` in `wrangler.jsonc`) and then uploads `_site/`.
+Pushing to `main` deploys to both addresses from the same commit: GitHub Pages (https://ericjgoossen.github.io, a copy for networks that block the main domain) builds it with `.github/workflows/pages.yml`, and Cloudflare runs `npx wrangler deploy`, which first runs `npm ci && npm run build` (the `build.command` in `wrangler.jsonc`) and then uploads `_site/`.
 
 The build command installs its own dependencies because Workers Builds doesn't: `phase-1` preview builds failed with `eleventy: not found` until it did (reproduced locally with `npx wrangler deploy --dry-run` on a fresh clone). Checked against Wrangler 4.151's source: for a static-assets-only Worker, `wrangler deploy` runs the custom build before it checks that `_site/` exists, so a fresh clone works.
 
