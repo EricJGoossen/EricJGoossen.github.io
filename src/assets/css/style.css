@@ -150,6 +150,22 @@ html { scroll-padding-top: 5.5rem; }
 .resume-page { display: block; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 1px 3px rgb(0 0 0 / 0.08); }
 .resume-page:hover { border-color: var(--accent); }
 .resume-page img { display: block; width: 100%; height: auto; margin: 0; }
+/* Says it opens, on every screen (a page image alone doesn't look clickable). */
+.resume-page { position: relative; }
+.resume-page::after {
+  content: "Open the PDF ↗";
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 4px 14px -4px rgb(0 0 0 / 0.35);
+}
+@media (prefers-color-scheme: dark) { .resume-page::after { color: #0d1526; } }
 
 /* ---------- Chips (skills + highlights) ---------- */
 /* Chips wrap like words, with balanced lines (rows of similar length rather
@@ -207,6 +223,25 @@ html { scroll-padding-top: 5.5rem; }
 .tile:hover .tile-media > *, .tile:focus-visible .tile-media > * { transform: scale(1.03); }
 .tile-media .ph span { transition: opacity 0.2s ease; }
 .tile:hover .ph span, .tile:focus-visible .ph span { opacity: 0; }
+/* An arrow in the corner of every tile, so it reads as a link before any hover. */
+.tile::after {
+  content: "→";
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.55);
+  color: #fff;
+  font-size: 1.15rem;
+  line-height: 1;
+  transition: opacity 0.2s ease;
+}
+.tile:hover::after, .tile:focus-visible::after { opacity: 0; }
+.tile-cta { margin-top: 0.5rem; font-size: 0.95rem; font-weight: 600; }
 .tile-text h3 { margin: 0; font-size: 1.3rem; }
 .tile-org { margin: 0.1rem 0 0.4rem; font-size: 0.9rem; opacity: 0.85; }
 .tile-summary { margin: 0; font-size: 0.95rem; line-height: 1.5; }
@@ -216,9 +251,13 @@ html { scroll-padding-top: 5.5rem; }
 .tile:last-child:nth-child(odd) .tile-media { aspect-ratio: 3 / 1; }
 
 @media (hover: none) {
-  .tile { color: var(--text); overflow: visible; }
-  .tile-media { border-radius: var(--radius); }
-  .tile-text { position: static; padding: 0.7rem 0.1rem 0; background: none; text-shadow: none; opacity: 1; }
+  /* Touch screens: each tile is a card (image, then title, summary and a
+     "View project" link), so it's plain that the whole thing opens. */
+  .tile { color: var(--text); border: 1px solid var(--border); border-radius: calc(var(--radius) + 2px); background: var(--surface); box-shadow: 0 1px 4px rgb(0 0 0 / 0.07); }
+  .tile-media { border-radius: 0; }
+  .tile-text { position: static; padding: 0.8rem 1rem 1rem; background: none; text-shadow: none; opacity: 1; }
+  .tile-cta { color: var(--accent); }
+  .tile:hover::after { opacity: 1; }
   .tile-text h3 { font-size: 1.15rem; }
   .tile-org { color: var(--muted); opacity: 1; }
   .tile:hover .tile-media > * { transform: none; }
@@ -456,6 +495,20 @@ main.wrap:has(> .project, > .skill-page) { --wrap: 72rem; }
 .entry-info div { display: flex; gap: 0.35rem; white-space: nowrap; }
 .entry-info dt { color: var(--muted); }
 .entry-info dd { margin: 0; }
+/* Lines of code Eric wrote: first in an entry's facts, and a total under a project's title. */
+.entry-info .info-loc dt { color: var(--text); }
+.entry-info .info-loc dd { color: var(--accent); font-weight: 650; font-variant-numeric: tabular-nums; }
+.project-loc {
+  display: inline-block;
+  margin: 0.6rem 0 0;
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.92rem;
+  font-weight: 550;
+}
+.project-loc strong { font-weight: 750; font-variant-numeric: tabular-nums; }
 .entry-skills { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; font-size: 0.85rem; }
 .tag { padding: 0.05rem 0.55rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
 .entry-skills a.tag { text-decoration: none; }
@@ -507,8 +560,8 @@ main.wrap:has(> .project, > .skill-page) { --wrap: 72rem; }
   to { opacity: 1; translate: 0 0; }
 }
 @keyframes slide-in {
-  from { opacity: 0; translate: 5rem 2rem; scale: 0.94; }
-  to { opacity: 1; translate: 0 0; scale: 1; }
+  from { opacity: 0; translate: 5rem 2rem; }
+  to { opacity: 1; translate: 0 0; }
 }
 
 /* {% video %} and {% youtube %} */
@@ -649,6 +702,7 @@ figure .credit + figcaption { margin-top: 0.15rem; }
 .result-snippet { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.95rem; }
 .result-snippet mark, .result-entry mark { background: var(--accent-soft); color: var(--text); border-radius: 3px; padding: 0 0.1em; }
 .search-results li.openable:not(.open) { cursor: pointer; }
+.search-results li.openable:not(.open)::after { content: "Show it here ↓"; display: block; margin-top: 0.35rem; color: var(--accent); font-size: 0.88rem; font-weight: 600; }
 
 /* The results page: a larger box in the middle of the column (lower down
    until something is typed), and room for an opened entry's media beside its text. */
@@ -663,6 +717,24 @@ main.wrap:has(> .search-page) { --wrap: 72rem; }
 .search-page .search-form .button { padding: 0.75rem 1.2rem; font-size: 1rem; }
 .search-results li.open { padding-bottom: 0; }
 .result-entry { padding: 0.5rem 0 1rem; border-top: 0; }
+/* A skill's opened search card: a card per entry that shows it. */
+.skill-entry-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 0.75rem; margin: 0.75rem 0 1rem; padding: 0; list-style: none; }
+.search-results .skill-entry-cards li { padding: 0; border: 0; animation: none; }
+.skill-entry-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  height: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+}
+.skill-entry-card:hover { border-color: var(--accent); text-decoration: none; }
+.skill-entry-card strong { font-size: 1.02rem; line-height: 1.35; }
+.skill-entry-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem; color: var(--muted); font-size: 0.82rem; }
+.skill-entry-summary { color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
 
 /* Pressing Enter in the header box moves it into the middle of the results
    page (and back when leaving): a cross-page view transition on the box alone,
@@ -687,12 +759,12 @@ main.wrap:has(> .search-page) { --wrap: 72rem; }
   to { opacity: 1; translate: 0 0; }
 }
 @keyframes photo-in {
-  from { opacity: 0; scale: 0.9; }
-  to { opacity: 1; scale: 1; }
+  from { opacity: 0; translate: 0 0.9rem; }
+  to { opacity: 1; translate: 0 0; }
 }
 @keyframes hero-in {
-  from { opacity: 0; scale: 1.05; }
-  to { opacity: 1; scale: 1; }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 @keyframes header-line {
   to { border-bottom-color: var(--border); box-shadow: 0 8px 24px -18px rgb(0 0 0 / 0.35); }
@@ -716,6 +788,17 @@ main.wrap:has(> .search-page) { --wrap: 72rem; }
   :is(.intro-text, .hero-content, .project-header, .skill-header) > :nth-child(5) { animation-delay: 0.28s; }
   :is(.intro-text, .hero-content, .project-header, .skill-header) > :nth-child(n + 6) { animation-delay: 0.35s; }
   .project-hero .hero-bg { animation: hero-in 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  /* Every page settles in on load: what follows the intro or header (the
+     first log entries, the home sections, a 404) comes in a beat after it. */
+  main > section:not(.intro, .search-page, .not-found),
+  :is(.project, .skill-page) > :is(.log, .project-pubs, .project-nav),
+  .not-found > * {
+    animation: settle-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.3s both;
+  }
+  main > section:not(.intro) ~ section:not(.search-page, .not-found) { animation-delay: 0.4s; }
+  .not-found > :nth-child(2) { animation-delay: 0.37s; }
+  .not-found > :nth-child(n + 3) { animation-delay: 0.44s; }
+  .search-page > .search-status { animation: settle-in 0.5s ease-out 0.1s both; }
   /* Search results arrive one after another as you type. */
   .search-results li { animation: settle-in 0.35s ease-out both; }
   .search-results li:nth-child(2) { animation-delay: 0.03s; }
@@ -759,15 +842,27 @@ main.wrap:has(> .search-page) { --wrap: 72rem; }
 html { scrollbar-width: none; }
 html::-webkit-scrollbar { display: none; }
 
-/* Things you can click grow a little under the pointer, like the project tiles. */
+/* Only things you can click move: they grow a little under the pointer (on
+   screens with one) and press in when clicked or tapped. Text, images and
+   videos that aren't links stay still. */
+.chip, .tag, .button, .bracket-links a, .project-nav a, .back, .site-header nav a, .site-name,
+.resume-page, .result-title, .tile, .youtube a, .pub h3 a, .entry h3 a, .entry h2 a,
+.skill-entry-card, .search-results li.openable:not(.open) {
+  -webkit-tap-highlight-color: transparent;
+}
+.bracket-links a, .project-nav a, .back, .result-title, .site-header nav a, .site-name { display: inline-block; }
 @media (prefers-reduced-motion: no-preference) {
-  .chip, .tag, .button, .search-form .button, .bracket-links a, .project-nav a, .back,
-  .entry .row-media img, .entry .row-media video, .pub img, .pub video, .resume-page, .result-title {
-    transition: scale 0.18s ease, border-color 0.15s, color 0.15s, box-shadow 0.18s;
+  .chip, .tag, .button, .bracket-links a, .project-nav a, .back, .site-header nav a, .site-name,
+  .resume-page, .result-title, .tile, .youtube a, .skill-entry-card, .search-results li.openable {
+    transition: scale 0.18s ease, border-color 0.15s, color 0.15s, box-shadow 0.18s, background-color 0.15s;
   }
-  .chip:hover, .tag:hover, .button:hover, .search-form .button:hover { scale: 1.05; }
-  .bracket-links a:hover, .project-nav a:hover, .back:hover, .result-title:hover { scale: 1.03; }
-  .bracket-links a, .project-nav a, .back, .result-title { display: inline-block; }
-  .entry .row-media img:hover, .entry .row-media video:hover, .pub img:hover, .pub video:hover { scale: 1.015; }
-  .resume-page:hover { scale: 1.01; box-shadow: 0 8px 28px -12px rgb(0 0 0 / 0.3); }
+  @media (hover: hover) {
+    .chip:hover, .tag:hover, .button:hover { scale: 1.05; }
+    .bracket-links a:hover, .project-nav a:hover, .back:hover, .result-title:hover, .site-header nav a:hover, .site-name:hover { scale: 1.04; }
+    .resume-page:hover, .youtube a:hover, .skill-entry-card:hover { scale: 1.015; box-shadow: 0 8px 28px -12px rgb(0 0 0 / 0.3); }
+  }
+  .chip:active, .tag:active, .button:active, .bracket-links a:active, .project-nav a:active, .back:active,
+  .result-title:active, .site-header nav a:active, .site-name:active { scale: 0.94; transition-duration: 0.08s; }
+  .tile:active, .resume-page:active, .youtube a:active, .skill-entry-card:active,
+  .search-results li.openable:not(.open):active { scale: 0.97; transition-duration: 0.08s; }
 }
