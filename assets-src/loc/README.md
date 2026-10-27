@@ -24,5 +24,3 @@ Entries without code (talks, the competition, the paper, demos) have no `loc:`.
 To recount: clone the repos into a folder, then
 `LOC_REPOS=<folder> python3 assets-src/loc/count.py` (in a cloud session) and
 copy the numbers from `counts.json` into each entry's `loc:`.
-
-Exception: `achilles/actuators` shows Eric's own count (6,303); PR #28 alone counts 3,807.
