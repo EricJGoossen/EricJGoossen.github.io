@@ -16,6 +16,7 @@
     "I co-authored research at the Human Centered Robotics Lab showing human feedback lifts Code-as-Policies 1.75× over base VLAs, work on the undergrad team at the Personal Robotics Lab building software for an NVIDIA-granted bimanual robot, and am working toward a paper on fleet-parallel RL at WEIRD Lab. Outside the labs, I program control and localization for ARUW, UW's RoboMaster team, and build Achilles, a SIMD-batched rigid-body simulator for faster RL training.",
     "I'm motivated by turning abstract math and computer science into reliable, real-world systems with measurable impact."
   ],
+  "mission": "I'm motivated by turning abstract math and computer science into reliable, real-world systems with measurable impact.",
   "links": [
     {
       "label": "GitHub",
