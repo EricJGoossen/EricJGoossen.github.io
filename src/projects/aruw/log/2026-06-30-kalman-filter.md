@@ -6,6 +6,7 @@ featured: true
 portfolio: true
 short: "Kalman-filter odometry"
 skillTags: [State estimation, C++]
+loc: 905
 info:
   language: [C++, Python]
   tools: [aruw-mcb]

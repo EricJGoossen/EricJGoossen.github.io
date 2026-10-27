@@ -6,6 +6,7 @@ featured: true
 portfolio: true
 short: "Automatic reset"
 skillTags: [Robot learning, Motion planning, Python]
+loc: 7208
 info:
   language: Python
   tools: [AprilTags, MuJoCo]

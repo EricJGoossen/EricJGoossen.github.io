@@ -6,6 +6,7 @@ featured: true
 portfolio: true
 short: "Impedance control"
 skillTags: [Impedance control, C++, ROS 2]
+loc: 3525
 info:
   language: C++
   tools: [Pinocchio, ROS 2]

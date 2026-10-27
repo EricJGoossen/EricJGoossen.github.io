@@ -6,6 +6,7 @@ featured: true
 portfolio: true
 short: "3× MuJoCo"
 skillTags: [Simulation (MuJoCo), Performance & SIMD, C++]
+loc: 6022
 info:
   language: [C++20, Python]
   tools: [MuJoCo]

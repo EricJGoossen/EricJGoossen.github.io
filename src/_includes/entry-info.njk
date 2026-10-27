@@ -1,4 +1,5 @@
 {#- A log entry's basic facts (`info:` in its front matter: language, tools, hardware, role, status),
-    under its links. Set `e` to the entry before including this. -#}
+    under its links, led by the lines of code Eric wrote for it (`loc:`). Set `e` to the entry before including this. -#}
 {% set facts = e | entryInfo %}
-{% if facts.length %}<dl class="entry-info">{% for fact in facts %}<div><dt>{{ fact.label }}</dt><dd>{{ fact.value }}</dd></div>{% endfor %}</dl>{% endif %}
+{% set loc = e | entryLoc %}
+{% if facts.length or loc %}<dl class="entry-info">{% if loc %}<div class="info-loc"><dt>Code I wrote</dt><dd>{{ loc | formatLoc }} lines</dd></div>{% endif %}{% for fact in facts %}<div><dt>{{ fact.label }}</dt><dd>{{ fact.value }}</dd></div>{% endfor %}</dl>{% endif %}

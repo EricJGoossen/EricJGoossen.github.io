@@ -6,6 +6,7 @@ featured: true
 portfolio: true
 short: "Contact solver"
 skillTags: [Kinematics & Dynamics, C++]
+loc: 2041
 info:
   language: C++20
   tools: [MuJoCo]

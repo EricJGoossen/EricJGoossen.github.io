@@ -6,6 +6,7 @@ featured: true
 portfolio: true
 short: "VLA benchmark"
 skillTags: [Experiment design, Robot learning]
+loc: 178
 info:
   tools: [YAML configs]
   hardware: Franka Panda

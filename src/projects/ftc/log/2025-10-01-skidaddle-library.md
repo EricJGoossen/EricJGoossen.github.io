@@ -6,6 +6,7 @@ featured: true
 portfolio: true
 short: "SKIDADDLE"
 skillTags: [Motion planning, Java, Open source]
+loc: 3091
 info:
   language: Java
   hardware: FTC robot

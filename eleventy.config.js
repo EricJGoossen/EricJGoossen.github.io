@@ -4,7 +4,7 @@ import { jsonLd, llmsFullTxt, llmsTxt, projectMarkdown } from "./lib/agents.js";
 import { checkSite } from "./lib/checks.js";
 import { buildPortfolioPdf, portfolioData } from "./lib/portfolio.js";
 import { isVideo, media, mediaUrl, rowShortcode, tileMedia, videoShortcode, youtubeShortcode } from "./lib/media.js";
-import { entryId, entryInfo, entrySkills, rebase, searchIndex, skillPages, skillSlug } from "./lib/skills.js";
+import { entryId, entryInfo, entryLoc, entrySkills, formatLoc, projectLoc, rebase, searchIndex, skillPages, skillSlug } from "./lib/skills.js";
 
 export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets");
@@ -108,6 +108,9 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("readyLinks", (links = []) => links.filter((link) => fileReady(link.url)));
 
   eleventyConfig.addFilter("entryId", entryId);
+  eleventyConfig.addFilter("entryLoc", entryLoc);
+  eleventyConfig.addFilter("projectLoc", projectLoc);
+  eleventyConfig.addFilter("formatLoc", formatLoc);
   eleventyConfig.addFilter("skillSlug", skillSlug);
   eleventyConfig.addFilter("rebase", rebase);
   eleventyConfig.addFilter("searchIndex", (collections, site, publications) =>

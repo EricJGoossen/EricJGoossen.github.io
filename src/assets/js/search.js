@@ -2,7 +2,7 @@
 // (src/search-index.njk), so nothing leaves the site: every word typed has to
 // appear in a result's title, project or text. Titles count most.
 // Here the results update as you type. A click anywhere on a result's card
-// opens it in place (a log entry in full, a skill's best example, a project's
+// opens it in place (a log entry in full, a skill's entries as cards, a project's
 // overview beside its hero, a paper's card); after that, its title goes to its page.
 const root = new URL("../../", document.currentScript.src); // this file is /assets/js/search.js
 const form = document.querySelector(".search-page .search-form");

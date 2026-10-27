@@ -6,6 +6,7 @@ featured: true
 portfolio: true
 short: "Integrators"
 skillTags: [Kinematics & Dynamics, C++]
+loc: 1032
 info:
   language: C++20
   tools: [MuJoCo]

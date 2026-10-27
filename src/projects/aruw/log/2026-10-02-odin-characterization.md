@@ -6,6 +6,7 @@ featured: true
 portfolio: true
 short: "Mocap pipeline"
 skillTags: [Experiment design, Python]
+loc: 5959
 info:
   language: Python
   tools: [OptiTrack]

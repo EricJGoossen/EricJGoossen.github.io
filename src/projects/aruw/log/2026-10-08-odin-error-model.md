@@ -6,6 +6,7 @@ featured: true
 portfolio: true
 short: "Error model"
 skillTags: [State estimation, Experiment design, Python]
+loc: 691
 info:
   language: Python
   tools: [NumPy, SciPy]
