@@ -4,6 +4,14 @@ Photos and videos Eric still needs to gather for the site, and entries still to 
 project's `images/` folder (see "Add images and videos" in `AGENTS.md`), wire it in, and
 delete its line here.
 
+## Whole site
+
+- [ ] Go through every link on the site by hand and make sure each one opens the right thing: the
+      intro and footer links, each project's links, every entry's `[Code]` / `[Pull request]` /
+      `[Paper]` links (the right repo, commit or PR, and public), publication links, and the
+      Portfolio and Resume PDFs. `npm run check` only checks links within the site; it can't tell
+      whether an outside link points at the right page.
+
 ## Home page
 
 - [ ] A higher-resolution headshot (the current `src/assets/photo.jpg` is small), so clicking the photo
