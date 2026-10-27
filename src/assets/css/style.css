@@ -495,20 +495,11 @@ main.wrap:has(> .project, > .skill-page) { --wrap: 72rem; }
 .entry-info div { display: flex; gap: 0.35rem; white-space: nowrap; }
 .entry-info dt { color: var(--muted); }
 .entry-info dd { margin: 0; }
-/* Lines of code Eric wrote: first in an entry's facts, and a total under a project's title. */
+/* Lines of code Eric wrote: first in an entry's facts, and first in a project's metadata line. */
 .entry-info .info-loc dt { color: var(--text); }
 .entry-info .info-loc dd { color: var(--accent); font-weight: 650; font-variant-numeric: tabular-nums; }
-.project-loc {
-  display: inline-block;
-  margin: 0.6rem 0 0;
-  padding: 0.25rem 0.8rem;
-  border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: 0.92rem;
-  font-weight: 550;
-}
-.project-loc strong { font-weight: 750; font-variant-numeric: tabular-nums; }
+.meta-loc { color: var(--accent); font-weight: 550; }
+.meta-loc strong { font-weight: 750; font-variant-numeric: tabular-nums; }
 .entry-skills { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; font-size: 0.85rem; }
 .tag { padding: 0.05rem 0.55rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
 .entry-skills a.tag { text-decoration: none; }
@@ -717,24 +708,9 @@ main.wrap:has(> .search-page) { --wrap: 72rem; }
 .search-page .search-form .button { padding: 0.75rem 1.2rem; font-size: 1rem; }
 .search-results li.open { padding-bottom: 0; }
 .result-entry { padding: 0.5rem 0 1rem; border-top: 0; }
-/* A skill's opened search card: a card per entry that shows it. */
-.skill-entry-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 0.75rem; margin: 0.75rem 0 1rem; padding: 0; list-style: none; }
-.search-results .skill-entry-cards li { padding: 0; border: 0; animation: none; }
-.skill-entry-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  height: 100%;
-  padding: 0.85rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--text);
-}
-.skill-entry-card:hover { border-color: var(--accent); text-decoration: none; }
-.skill-entry-card strong { font-size: 1.02rem; line-height: 1.35; }
-.skill-entry-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem; color: var(--muted); font-size: 0.82rem; }
-.skill-entry-summary { color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
+/* A skill's opened search card: its description, then a chip per entry. */
+.result-entry .skill-description { margin-bottom: 0.4rem; }
+.result-entry .chips { margin: 0.75rem 0 0.25rem; }
 
 /* Pressing Enter in the header box moves it into the middle of the results
    page (and back when leaving): a cross-page view transition on the box alone,
@@ -847,22 +823,22 @@ html::-webkit-scrollbar { display: none; }
    videos that aren't links stay still. */
 .chip, .tag, .button, .bracket-links a, .project-nav a, .back, .site-header nav a, .site-name,
 .resume-page, .result-title, .tile, .youtube a, .pub h3 a, .entry h3 a, .entry h2 a,
-.skill-entry-card, .search-results li.openable:not(.open) {
+.search-results li.openable:not(.open) {
   -webkit-tap-highlight-color: transparent;
 }
 .bracket-links a, .project-nav a, .back, .result-title, .site-header nav a, .site-name { display: inline-block; }
 @media (prefers-reduced-motion: no-preference) {
   .chip, .tag, .button, .bracket-links a, .project-nav a, .back, .site-header nav a, .site-name,
-  .resume-page, .result-title, .tile, .youtube a, .skill-entry-card, .search-results li.openable {
+  .resume-page, .result-title, .tile, .youtube a, .search-results li.openable {
     transition: scale 0.18s ease, border-color 0.15s, color 0.15s, box-shadow 0.18s, background-color 0.15s;
   }
   @media (hover: hover) {
     .chip:hover, .tag:hover, .button:hover { scale: 1.05; }
     .bracket-links a:hover, .project-nav a:hover, .back:hover, .result-title:hover, .site-header nav a:hover, .site-name:hover { scale: 1.04; }
-    .resume-page:hover, .youtube a:hover, .skill-entry-card:hover { scale: 1.015; box-shadow: 0 8px 28px -12px rgb(0 0 0 / 0.3); }
+    .resume-page:hover, .youtube a:hover { scale: 1.015; box-shadow: 0 8px 28px -12px rgb(0 0 0 / 0.3); }
   }
   .chip:active, .tag:active, .button:active, .bracket-links a:active, .project-nav a:active, .back:active,
   .result-title:active, .site-header nav a:active, .site-name:active { scale: 0.94; transition-duration: 0.08s; }
-  .tile:active, .resume-page:active, .youtube a:active, .skill-entry-card:active,
+  .tile:active, .resume-page:active, .youtube a:active,
   .search-results li.openable:not(.open):active { scale: 0.97; transition-duration: 0.08s; }
 }

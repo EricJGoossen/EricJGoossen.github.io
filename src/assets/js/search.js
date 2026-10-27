@@ -121,11 +121,12 @@ function render() {
     li.append(meta, link, text);
     if (item.html) {
       // A click anywhere on the card (its title included) opens it; once it's
-      // open, the title goes to its page.
+      // open, the title goes to its page. A skill's name always goes to its page.
       li.classList.add("openable");
       link.setAttribute("aria-expanded", "false");
       li.addEventListener("click", (event) => {
         if (li.classList.contains("open")) return;
+        if (item.type === "Skill" && event.target === link) return; // a skill's name goes straight to its page
         const newTab = event.target === link && (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey);
         if (newTab) return;
         event.preventDefault();

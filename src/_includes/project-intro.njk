@@ -1,18 +1,15 @@
 {#- Title, metadata, links, overview and entry chips: the top of a project page. -#}
 <h1>{{ title }}</h1>
+{#- Lines of code Eric wrote across the project (the sum of its entries' `loc:`) leads the metadata. -#}
+{% set totalLoc = entries | projectLoc %}
 <p class="meta">
+  {% if totalLoc %}<span class="meta-loc"><strong>{{ totalLoc | formatLoc }}</strong> lines of code I wrote</span>{% endif %}
   {% for item in [org, timeline, (tools | join(", ")) if tools] %}{% if item %}<span>{{ item }}</span>{% endif %}{% endfor %}
 </p>
 {% if links.length %}
 <p class="bracket-links project-links">
   {% for link in links %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}
 </p>
-{% endif %}
-{#- Lines of code Eric wrote across the project: the sum of its entries' `loc:` -#}
-{% set totalLoc = entries | projectLoc %}
-{% if totalLoc %}
-{% set counted = [] %}{% for entry in entries %}{% if entry | entryLoc %}{% set counted = (counted.push(entry), counted) %}{% endif %}{% endfor %}
-<p class="project-loc"><strong>{{ totalLoc | formatLoc }}</strong> lines of code I wrote{% if counted.length > 1 %}, across {{ counted.length }} entries{% endif %}</p>
 {% endif %}
 <div class="overview">{{ content | safe }}</div>
 {#- Every entry as a chip, newest first like the log; featured ones stand out,
