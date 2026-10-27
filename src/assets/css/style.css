@@ -842,3 +842,78 @@ html::-webkit-scrollbar { display: none; }
   .tile:active, .resume-page:active, .youtube a:active,
   .search-results li.openable:not(.open):active { scale: 0.97; transition-duration: 0.08s; }
 }
+
+/* ---------- Charts in dark mode ----------
+   SVG charts carry their own dark colors. A raster chart drawn on white
+   (`chart: true` on its row) is inverted with its hues kept, so it isn't a
+   white block on a dark page. */
+@media (prefers-color-scheme: dark) {
+  figure.chart > img { filter: invert(0.9) hue-rotate(180deg); }
+}
+
+/* ---------- Full-screen media (media-view.js) ----------
+   Images and videos in entries and paper cards open over the whole page on a
+   click. The expand button in the corner says so on every screen. */
+.media-box { position: relative; }
+.entry figure > img, .entry figure > video, .entry p > img, .pub-media > img, .pub-media > video { cursor: zoom-in; }
+.entry figure > video[controls] { cursor: zoom-in; }
+.media-expand {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.55);
+  color: #fff;
+  cursor: zoom-in;
+  -webkit-tap-highlight-color: transparent;
+}
+.media-expand svg { width: 1.05rem; height: 1.05rem; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.media-expand:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+@media (prefers-reduced-motion: no-preference) {
+  .media-expand { transition: scale 0.18s ease, background-color 0.15s; }
+  @media (hover: hover) { .media-expand:hover { scale: 1.1; background: rgb(0 0 0 / 0.75); } }
+  .media-expand:active { scale: 0.9; }
+  .entry figure > img, .entry figure > video, .pub-media > img, .pub-media > video { transition: scale 0.18s ease; }
+  .entry figure > img:active, .pub-media > img:active { scale: 0.98; }
+}
+.media-view {
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgb(10 10 10 / 0.94);
+  color: #f2f1ef;
+}
+.media-view::backdrop { background: rgb(0 0 0 / 0.6); }
+.media-view[open] { display: grid; place-items: center; cursor: zoom-out; }
+.media-view figure { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; margin: 0; padding: 3rem 1rem 1rem; }
+.media-view img, .media-view video { display: block; width: auto; height: auto; max-width: min(96vw, 100%); max-height: calc(100dvh - 7rem); margin: 0; border-radius: 6px; object-fit: contain; }
+.media-view video { min-width: min(70vw, 60rem); }
+.media-view figcaption { max-width: 50rem; color: #c9c4bf; text-align: center; }
+.media-view-close {
+  position: fixed;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid rgb(255 255 255 / 0.3);
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.1);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+html.media-view-open { overflow: hidden; }
+@media (prefers-reduced-motion: no-preference) {
+  .media-view[open] { animation: settle-in 0.25s ease-out; }
+}
