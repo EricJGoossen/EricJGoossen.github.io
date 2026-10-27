@@ -25,5 +25,6 @@
  "aruw/ld19-lidar": 769,
  "achilles/mujoco-comparison": 6022,
  "achilles/collisions": 2465,
- "achilles/collision-response": 2041
+ "achilles/collision-response": 2041,
+ "aruw/lqr-path-tracking": 1880
 }
