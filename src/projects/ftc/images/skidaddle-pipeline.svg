@@ -4,7 +4,7 @@
   <style>
     svg { --text:#1c1917; --muted:#6b6560; --grid:#e7e5e4; --axis:#a8a29e;
           --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#6250d6; --ref:#78716c; }
-    @media (prefers-color-scheme: dark) {
+    @media screen {
       svg { --text:#f2f1ef; --muted:#a39d97; --grid:#33312e; --axis:#57534e;
             --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#9085e9; --ref:#a8a29e; }
     }

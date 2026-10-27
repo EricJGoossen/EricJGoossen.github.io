@@ -1,37 +1,23 @@
-/* ---------- Tokens ---------- */
+/* ---------- Tokens ----------
+   The site is dark only (Eric, Oct 27): one set of colors, whatever the
+   browser or system prefers. */
 :root {
-  --bg: #fcfcfb;
-  --bg-rgb: 252 252 251;   /* --bg as rgb channels, for fades into the page */
-  --surface: #ffffff;
-  --text: #1c1917;
-  --muted: #6b6560;
-  --border: #e7e5e4;
-  --accent: #1d4ed8;
-  --accent-soft: #eff4ff;
-  --ph: #ecebe9;
-  --ph-text: #6b6560;
-  --award: #a15c07;
-  --award-soft: #fdf3e2;
+  color-scheme: dark;
+  --bg: #161514;
+  --bg-rgb: 22 21 20;   /* --bg as rgb channels, for fades into the page */
+  --surface: #1f1e1c;
+  --text: #f2f1ef;
+  --muted: #a39d97;
+  --border: #33312e;
+  --accent: #7aa2ff;
+  --accent-soft: #1d2433;
+  --ph: #2a2826;
+  --ph-text: #9a948e;
+  --award: #f3b04f;
+  --award-soft: #33270f;
   --radius: 10px;
   --wrap: 52rem;
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #161514;
-    --bg-rgb: 22 21 20;
-    --surface: #1f1e1c;
-    --text: #f2f1ef;
-    --muted: #a39d97;
-    --border: #33312e;
-    --accent: #7aa2ff;
-    --accent-soft: #1d2433;
-    --ph: #2a2826;
-    --ph-text: #9a948e;
-    --award: #f3b04f;
-    --award-soft: #33270f;
-  }
 }
 
 /* ---------- Base ---------- */
@@ -160,12 +146,11 @@ html { scroll-padding-top: 5.5rem; }
   padding: 0.45rem 1rem;
   border-radius: 999px;
   background: var(--accent);
-  color: #fff;
+  color: #0d1526;
   font-size: 0.95rem;
   font-weight: 600;
   box-shadow: 0 4px 14px -4px rgb(0 0 0 / 0.35);
 }
-@media (prefers-color-scheme: dark) { .resume-page::after { color: #0d1526; } }
 
 /* ---------- Chips (skills + highlights) ---------- */
 /* Chips wrap like words, with balanced lines (rows of similar length rather
@@ -843,13 +828,11 @@ html::-webkit-scrollbar { display: none; }
   .search-results li.openable:not(.open):active { scale: 0.97; transition-duration: 0.08s; }
 }
 
-/* ---------- Charts in dark mode ----------
-   SVG charts carry their own dark colors. A raster chart drawn on white
-   (`chart: true` on its row) is inverted with its hues kept, so it isn't a
-   white block on a dark page. */
-@media (prefers-color-scheme: dark) {
-  figure.chart > img { filter: invert(0.9) hue-rotate(180deg); }
-}
+/* ---------- Charts on the dark page ----------
+   SVG charts carry their own dark colors (in an `@media screen` block). A
+   raster chart drawn on white (`chart: true` on its row) is inverted with its
+   hues kept, so it isn't a white block on a dark page. */
+figure.chart > img { filter: invert(0.9) hue-rotate(180deg); }
 
 /* ---------- Full-screen media (media-view.js) ----------
    Images and videos in entries and paper cards open over the whole page on a

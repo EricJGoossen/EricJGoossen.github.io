@@ -5,7 +5,7 @@
     svg { --text:#1c1917; --muted:#6b6560; --box:#ffffff; --line:#d6d3d1; --arrow:#8a847e;
           --hi-fill:#eff4ff; --hi-line:#1d4ed8; --out:#1d4ed8; --out-fill:#e6eeff;
           --in:#c2410c; --in-fill:#fdeee6; --tag:#f0efed; }
-    @media (prefers-color-scheme: dark) {
+    @media screen {
       svg { --text:#f2f1ef; --muted:#a39d97; --box:#1f1e1c; --line:#3d3a37; --arrow:#8a847e;
             --hi-fill:#1d2433; --hi-line:#7aa2ff; --out:#7aa2ff; --out-fill:#1d2433;
             --in:#fb923c; --in-fill:#3a2418; --tag:#2a2826; }

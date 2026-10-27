@@ -121,7 +121,7 @@ assets-src/resume/resume.tex the resume's LaTeX source (not published); resume.p
   ```
   Videos work the same way (`{ poster: "images/still.jpg" }` for the still). To stack more media under the first (say a clip and the chart that backs it up), add `more: [{ src: "images/chart.svg", alt: "...", caption: "..." }]`. Portrait media sit at half width (two side by side); add `wide: true` to show one at full width. Add `half: true` to put landscape media at half width too, so two sit side by side (stacked again on phones), or `narrow: true` to show one at three quarters of the column (a square clip that would otherwise tower). The build stops if any of them has no media or no alt text.
 - Image in a log entry: `![What the image shows](images/photo.jpg)`. Always write real alt text.
-- Charts: draw SVG charts with CSS variables and a `prefers-color-scheme: dark` block (every chart on the site has one). A raster chart on a white background that can't be redrawn (a paper figure, a screenshot) gets `chart: true` in its `{% row %}` options (or its `more` item), which inverts it in dark mode with its hues kept. Photos and video stills never get it.
+- Charts: the site is **dark only** (Eric, Oct 27), whatever the browser prefers. Draw SVG charts with CSS variables: light colors first (the PDF portfolio uses those, on white), then the dark ones in an `@media screen { ... }` block, which every browser applies. Never `prefers-color-scheme` (the build stops on it: a light system would show a white chart). A raster chart on a white background that can't be redrawn (a paper figure, a screenshot) gets `chart: true` in its `{% row %}` options (or its `more` item), which inverts it with its hues kept. Photos and video stills never get it.
 - Every image and video in an entry or paper card opens full screen on a click (`media-view.js`); nothing to add per image.
 - Short clip that loops like a GIF (muted, with pause controls): `{% video "images/clip.mp4", "What it shows" %}`
 - Longer video with sound (click to play): `{% video "images/talk.mp4", "What it shows", { play: true, poster: "images/talk.jpg" } %}`
@@ -172,6 +172,7 @@ Add an object to `publications.json`:
 - A `cover`, `hero`, poster, publication `image`, `photo` or `ogImage` file doesn't exist.
 - A publication's `project` doesn't exist, or it has no `title` or `authors`.
 - A file is over 25 MB (files over 5 MB get a warning).
+- An SVG uses `prefers-color-scheme` (the site is dark only; its dark colors go in `@media screen`).
 
 `scripts/check-links.js` (part of `npm run build` and `npm run check`) then checks every internal link, image/video source and #anchor in `_site/`, and fails if a visible page has `Placeholder` text, a gray placeholder box or a `#` link. Fix the content or mark the item `draft: true`.
 
@@ -181,7 +182,7 @@ The checks can't judge content quality. Read what you wrote, and keep `Placehold
 
 - **Where things live:**
   - Templates: `src/index.njk` (home), `src/_includes/base.njk` (page shell), `project.njk` (project page), `pub.njk` (publication card)
-  - Styles: `src/assets/css/style.css` (color tokens at the top, with a dark-mode block)
+  - Styles: `src/assets/css/style.css` (color tokens at the top; the site is dark only)
   - Code: `eleventy.config.js` (collections, filters, shortcodes), `lib/checks.js`, `lib/media.js`
 - **Design rules** (from mateoguaman.com, timothypan.com and the mnats bio page):
   - one clean centered column with generous white space
@@ -190,7 +191,7 @@ The checks can't judge content quality. Read what you wrote, and keep `Placehold
   - compact `[bracketed]` links
 - Home sections render only when their data has entries, in this order: Intro, Skills, Projects, Publications, Resume. The nav follows the same order.
 - After a visual change, check:
-  - light mode, dark mode, and a ~375px-wide phone
+  - a laptop and a ~375px-wide phone (dark only: there's no light mode to check)
   - hover and keyboard focus on project tiles
   - a skill page, and a search from the header box (it opens `/search/`; `src/_headers` must keep `form-action 'self'` or browsers block the form)
   - no horizontal scrolling

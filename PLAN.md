@@ -30,7 +30,7 @@ Single scrolling page, in this order (a compact intro, then skills and projects 
 
 - 404 page
 - Social preview image + description so links look good when shared on LinkedIn/Slack
-- Works on phones, follows light/dark mode
+- Works on phones; dark only (Eric, Oct 27), whatever the browser prefers
 
 ## Projects
 

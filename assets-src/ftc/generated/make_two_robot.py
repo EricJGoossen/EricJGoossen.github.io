@@ -15,7 +15,7 @@ svg = [f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" role="i
   <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--text)"/></marker></defs>
   <style>
     svg {{ --text:#1c1917; --muted:#6b6560; --sw:#1d5fae; --me:#b8461c; --pre:#e7e5e4; }}
-    @media (prefers-color-scheme: dark) {{
+    @media screen {{
       svg {{ --text:#f2f1ef; --muted:#a39d97; --sw:#1d5fae; --me:#a8401a; --pre:#33312e; }}
     }}
     text {{ font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: var(--text); font-size: 13px; }}
