@@ -24,9 +24,10 @@ jobs:
           cache: npm
       - run: npm ci
       # Absolute links (the PDF portfolio, link previews, agent files) point at
-      # this copy, so they still work where the main domain is blocked.
+      # this copy, so they still work where the main domain is blocked. The
+      # canonical tag keeps naming ericjgoossen.com as the real site.
       - run: |
-          node -e 'const f="src/_data/site.json",fs=require("fs"),s=JSON.parse(fs.readFileSync(f));s.url="https://ericjgoossen.github.io";fs.writeFileSync(f,JSON.stringify(s,null,2))'
+          node -e 'const f="src/_data/site.json",fs=require("fs"),s=JSON.parse(fs.readFileSync(f));s.canonical=s.url;s.url="https://ericjgoossen.github.io";fs.writeFileSync(f,JSON.stringify(s,null,2))'
       - run: npm run build
       # Serve the files as they are (no Jekyll).
       - run: touch _site/.nojekyll
